@@ -48,6 +48,8 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Overlapping subproblem, memoization, tabulasi, dan resep 4 langkah merancang DP.'],
         ['slug' => 'dp-1d', 'track' => 'dp', 'level' => 1, 'title' => 'DP 1 Dimensi', 'subtitle' => 'Naik tangga & tukar koin', 'viz' => 'coin', 'minutes' => 25,
             'summary' => 'Merancang state, transisi, dan base case untuk soal menghitung cara dan mencari minimum.'],
+        ['slug' => 'dp-hitung', 'track' => 'dp', 'level' => 2, 'title' => 'DP Menghitung Cara & Modulo', 'subtitle' => 'Aturan menghitung, segitiga Pascal, modulo', 'viz' => 'pascal', 'minutes' => 30,
+            'summary' => 'Aturan penjumlahan dan perkalian, aritmetika modulo, C(n, k) dengan segitiga Pascal, invers modular, dan bilangan Catalan.'],
         ['slug' => 'dp-grid', 'track' => 'dp', 'level' => 2, 'title' => 'DP pada Grid', 'subtitle' => 'Menghitung jalur di petak', 'viz' => 'grid', 'minutes' => 25,
             'summary' => 'Tabel dua dimensi, urutan pengisian, rintangan, dan variasi maksimum/minimum.'],
         ['slug' => 'knapsack', 'track' => 'dp', 'level' => 2, 'title' => 'Knapsack 0/1', 'subtitle' => 'Memilih barang dengan kapasitas terbatas', 'viz' => 'knapsack', 'minutes' => 30,
@@ -60,6 +62,10 @@ class CurriculumSeeder extends Seeder
             'summary' => 'State dp[l][r] pada rentang, urutan pengisian berdasarkan panjang, dan pola "titik potong terakhir".'],
         ['slug' => 'dp-bitmask', 'track' => 'dp', 'level' => 3, 'title' => 'DP Bitmask', 'subtitle' => 'Himpunan sebagai bilangan biner', 'viz' => 'bitmask', 'minutes' => 35,
             'summary' => 'Menyimpan himpunan dalam satu bilangan, operasi bit, Travelling Salesman, dan pembagian tugas.'],
+        ['slug' => 'dp-pohon', 'track' => 'dp', 'level' => 3, 'title' => 'DP pada Pohon', 'subtitle' => 'Subtree sebagai subsoal', 'viz' => 'dp-tree', 'minutes' => 35,
+            'summary' => 'State dp[u][keadaan], menggabungkan anak, DP pohon tanpa rekursi, menghitung cara, teknik kontribusi, dan knapsack di pohon.'],
+        ['slug' => 'digit-dp', 'track' => 'dp', 'level' => 3, 'title' => 'Digit DP', 'subtitle' => 'Menghitung bilangan sampai 10^18', 'viz' => 'digit', 'minutes' => 35,
+            'summary' => 'Menyusun bilangan digit demi digit, flag ketat, memo keadaan bebas, F(B) − F(A − 1), nol di depan, dan sisa bagi.'],
     ];
 
     /** Urutan file soal; soal nantinya diurutkan mengikuti urutan materi. */
