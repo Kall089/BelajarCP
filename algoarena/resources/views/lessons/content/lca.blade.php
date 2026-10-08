@@ -258,7 +258,7 @@ CPP;
 @endphp
 
 <div class="lead-box">
-    <h3>🎯 Setelah materi ini kamu bisa:</h3>
+    <h3>Setelah materi ini kamu bisa:</h3>
     <ul>
         <li>Memahami istilah pohon berakar: <strong>parent, leluhur, kedalaman</strong>, dan <strong>Lowest Common Ancestor</strong> (LCA).</li>
         <li>Menjelaskan mengapa cara naif O(N) per pertanyaan terlalu lambat.</li>
@@ -336,7 +336,7 @@ CPP;
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi Interaktif">
     <h2><span class="sec-icon">🎬</span> Visualisasi Interaktif</h2>
     <div class="prose">
-        <p>Pilih simpul <strong>u</strong> dan <strong>v</strong> di atas visualisasi. Animasi mengisi tabel lompatan dulu, lalu menjawab LCA(u, v) langkah demi langkah. Di <strong>🎯 Mode Tebak</strong>, kamu mengisi sel tabel, mengklik simpul tujuan lompatan, dan memutuskan kapan harus melompat.</p>
+        <p>Pilih simpul <strong>u</strong> dan <strong>v</strong> di atas visualisasi. Animasi mengisi tabel lompatan dulu, lalu menjawab LCA(u, v) langkah demi langkah. Di <strong>Mode Tebak</strong>, kamu mengisi sel tabel, mengklik simpul tujuan lompatan, dan memutuskan kapan harus melompat.</p>
     </div>
     <div data-viz="lca"></div>
 </section>

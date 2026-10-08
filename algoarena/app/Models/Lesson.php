@@ -28,9 +28,9 @@ class Lesson extends Model
     ];
 
     public const LEVELS = [
-        1 => ['name' => 'Dasar', 'icon' => '🟢', 'class' => 'lvl-1'],
-        2 => ['name' => 'Menengah', 'icon' => '🟡', 'class' => 'lvl-2'],
-        3 => ['name' => 'Lanjut', 'icon' => '🔴', 'class' => 'lvl-3'],
+        1 => ['name' => 'Dasar', 'icon' => '', 'class' => 'lvl-1'],
+        2 => ['name' => 'Menengah', 'icon' => '', 'class' => 'lvl-2'],
+        3 => ['name' => 'Lanjut', 'icon' => '', 'class' => 'lvl-3'],
     ];
 
     public function getRouteKeyName(): string

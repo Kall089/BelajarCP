@@ -747,9 +747,9 @@ window.Viz = (() => {
     }
 
     // ═════════════════════════ Graph: renderer SVG interaktif ═════════════════════════
-    const MARKER_COLORS = { default: "#3d4864", active: "#f59e0b", tree: "#8b5cf6", path: "#22c55e", skip: "#ef4444", new: "#22d3ee" };
+    const MARKER_COLORS = { default: "var(--edge)", active: "#f59e0b", tree: "#8b5cf6", path: "#22c55e", skip: "#ef4444", new: "#22d3ee" };
     const NODE_GRADS = {
-        base: ["#2c3753", "#151b29"],
+        base: ["var(--node-a)", "var(--node-b)"],
         queued: ["#1d7189", "#0b2731"],
         current: ["#fff3c4", "#f59e0b"],
         visited: ["#8d72ee", "#382679"],
@@ -768,12 +768,12 @@ window.Viz = (() => {
                 { id: `aa-arrow-${name}`, viewBox: "0 0 10 10", refX: "8.5", refY: "5", markerWidth: "6.5", markerHeight: "6.5", orient: "auto-start-reverse" },
                 defs,
             );
-            svg("path", { d: "M0 0 10 5 0 10z", fill: color }, m);
+            svg("path", { d: "M0 0 10 5 0 10z", style: `fill:${color}` }, m);
         }
         for (const [name, [a, b]] of Object.entries(NODE_GRADS)) {
             const g = svg("radialGradient", { id: `aa-ng-${name}`, cx: "38%", cy: "30%", r: "78%" }, defs);
-            svg("stop", { offset: "0%", "stop-color": a }, g);
-            svg("stop", { offset: "100%", "stop-color": b }, g);
+            svg("stop", { offset: "0%", style: `stop-color:${a}` }, g);
+            svg("stop", { offset: "100%", style: `stop-color:${b}` }, g);
         }
         const glow = svg("filter", { id: "aa-glow", x: "-80%", y: "-80%", width: "260%", height: "260%" }, defs);
         svg("feGaussianBlur", { stdDeviation: "3.5", result: "b" }, glow);
@@ -1194,7 +1194,7 @@ window.Viz = (() => {
             ["aa-dp-g", "#22c55e"],
         ]) {
             const m = svg("marker", { id, viewBox: "0 0 10 10", refX: "8", refY: "5", markerWidth: "6", markerHeight: "6", orient: "auto-start-reverse" }, defs);
-            svg("path", { d: "M0 0 10 5 0 10z", fill: color }, m);
+            svg("path", { d: "M0 0 10 5 0 10z", style: `fill:${color}` }, m);
         }
         const arrowLayer = svg("g", {}, arrows);
         let clickCb = null;

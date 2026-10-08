@@ -12,6 +12,7 @@
             <button @class(['code-tab', 'active' => $key === $firstTab]) data-lang="{{ $key }}">{{ $label }}</button>
         @endforeach
         <button class="btn btn-ghost btn-sm code-copy" data-copy>Salin</button>
+        <button type="button" class="btn btn-ghost btn-sm fullcode-btn" data-fullcode>Layar penuh</button>
     </div>
     @foreach ($codeTabs as $key => [, $code])
         <pre data-lang="{{ $key }}" @if ($key !== $firstTab) hidden @endif><code class="language-{{ $key }}">{{ $code }}</code></pre>

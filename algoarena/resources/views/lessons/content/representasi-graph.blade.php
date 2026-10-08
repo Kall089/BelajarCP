@@ -175,7 +175,7 @@ CPP;
 @endphp
 
 <div class="lead-box">
-    <h3>🎯 Setelah materi ini kamu bisa:</h3>
+    <h3>Setelah materi ini kamu bisa:</h3>
     <ul>
         <li>Mengenali <strong>graph</strong> di balik cerita soal: apa simpulnya, apa sisinya, berarah atau tidak.</li>
         <li>Memahami istilah penting: tetangga, derajat, jalur, siklus, terhubung, pohon.</li>

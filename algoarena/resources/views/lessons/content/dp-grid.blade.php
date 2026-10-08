@@ -186,7 +186,7 @@ CPP;
 @endphp
 
 <div class="lead-box">
-    <h3>🎯 Setelah materi ini kamu bisa:</h3>
+    <h3>Setelah materi ini kamu bisa:</h3>
     <ul>
         <li>Merancang DP <strong>dua dimensi</strong> pada grid: state <code>dp[i][j]</code>, asal dari atas dan kiri.</li>
         <li>Menghitung <strong>banyak jalur</strong> (dengan rintangan) dan jalur <strong>termurah/termahal</strong>.</li>

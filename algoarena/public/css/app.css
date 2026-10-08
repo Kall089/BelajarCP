@@ -6,8 +6,8 @@
     --panel-2: #1a2030;
     --panel-3: #232b3d;
     --border: #262f42;
-    --border-soft: #1d2433;
-    --text: #e6e9f2;
+    --border-soft: var(--line-strong);
+    --text: var(--svg-text);
     --text-strong: #ffffff;
     --muted: #8b93a7;
     --faint: #5b6478;
@@ -37,6 +37,40 @@
     --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
     --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
     --shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+
+    --canvas: #0c1018;
+    --code-bg: #0d1119;
+    --code-text: #d6deeb;
+    --code-inline: #e9d5ff;
+    --text-soft: #cfd5e3;
+    --svg-text: #e6e9f2;
+    --panel-deep: #141a27;
+    --line-strong: #343e58;
+    --edge: #3d4864;
+    --hl-text: #fde68a;
+    --hl-fill: #fff7d6;
+    --violet-fill: #ddd6fe;
+    --on-amber: #1a1300;
+    --red-text: #fca5a5;
+    --green-text: #bbf7d0;
+    --violet-text: #c4b5fd;
+    --amber-text: #fcd34d;
+    --blocked-a: #2a1416;
+    --blocked-b: #341a1d;
+    --tint-rgb: 255, 255, 255;
+    --glass-rgb: 20, 25, 36;
+    --node-a: #2c3753;
+    --node-b: #151b29;
+    --node-text: #ffffff;
+
+    /* Warna sintaks kode */
+    --syn-comment: #6b7591;
+    --syn-keyword: #c4b5fd;
+    --syn-string: #86efac;
+    --syn-number: #fbbf24;
+    --syn-type: #67e8f9;
+    --syn-title: #93c5fd;
+    --syn-meta: #f9a8d4;
 }
 
 * {
@@ -93,14 +127,14 @@ textarea.mono {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #2b3448;
+    background: var(--panel-2);
     border-radius: 10px;
     border: 2px solid transparent;
     background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #3a4560;
+    background-color: var(--edge);
 }
 
 ::-webkit-scrollbar-track,
@@ -184,7 +218,7 @@ textarea.mono {
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     gap: 12px;
-    background: rgba(11, 14, 20, 0.82);
+    background: rgba(var(--glass-rgb), 0.82);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-soft);
 }
@@ -372,7 +406,7 @@ textarea.mono {
 }
 
 .user-dropdown .logout {
-    color: #fca5a5;
+    color: var(--red-text);
 }
 
 /* ═══════════════════════════════ Buttons ═══════════════════════════════ */
@@ -669,7 +703,7 @@ textarea.mono {
     border-radius: 12px;
     border: 1px solid rgba(34, 197, 94, 0.3);
     background: var(--green-soft);
-    color: #bbf7d0;
+    color: var(--green-text);
 }
 
 .empty {
@@ -746,7 +780,7 @@ textarea.mono {
     position: relative;
     aspect-ratio: 16 / 11;
     border-radius: 16px;
-    background: rgba(11, 14, 20, 0.55);
+    background: rgba(var(--glass-rgb), 0.55);
     border: 1px solid var(--border);
     overflow: hidden;
 }
@@ -758,7 +792,7 @@ textarea.mono {
 }
 
 .hv-edge {
-    stroke: #2c3650;
+    stroke: var(--line-strong);
     stroke-width: 2.5;
 }
 
@@ -769,13 +803,13 @@ textarea.mono {
 }
 
 .hv-node circle {
-    fill: #1a2132;
-    stroke: #3a4560;
+    fill: var(--panel-deep);
+    stroke: var(--edge);
     stroke-width: 2;
 }
 
 .hv-node text {
-    fill: #cbd2e1;
+    fill: var(--svg-text);
     font: 700 13px var(--mono);
     text-anchor: middle;
     dominant-baseline: central;
@@ -789,8 +823,8 @@ textarea.mono {
 @keyframes hvNode {
     0%,
     8% {
-        fill: #1a2132;
-        stroke: #3a4560;
+        fill: var(--panel-deep);
+        stroke: var(--edge);
     }
 
     12%,
@@ -800,8 +834,8 @@ textarea.mono {
     }
 
     100% {
-        fill: #1a2132;
-        stroke: #3a4560;
+        fill: var(--panel-deep);
+        stroke: var(--edge);
     }
 }
 
@@ -830,7 +864,7 @@ textarea.mono {
     gap: 4px;
     padding: 10px;
     border-radius: 12px;
-    background: rgba(20, 25, 36, 0.92);
+    background: rgba(var(--glass-rgb), 0.92);
     border: 1px solid var(--border);
     box-shadow: var(--shadow);
 }
@@ -857,7 +891,7 @@ textarea.mono {
     12%,
     80% {
         background: rgba(245, 158, 11, 0.22);
-        color: #fde68a;
+        color: var(--hl-text);
     }
 
     100% {
@@ -998,7 +1032,7 @@ textarea.mono {
 
 .lesson-card:hover {
     border-color: var(--border);
-    background: #171d2a;
+    background: var(--panel-2);
     transform: translateX(3px);
 }
 
@@ -1231,7 +1265,7 @@ textarea.mono {
 
 .prose {
     max-width: 76ch;
-    color: #cfd5e3;
+    color: var(--text-soft);
     font-size: 15px;
     line-height: 1.75;
 }
@@ -1262,8 +1296,8 @@ textarea.mono {
     padding: 1px 6px;
     border-radius: 5px;
     background: var(--panel-3);
-    border: 1px solid #333e57;
-    color: #e9d5ff;
+    border: 1px solid var(--border);
+    color: var(--code-inline);
     font-size: 0.88em;
 }
 
@@ -1420,7 +1454,7 @@ textarea.mono {
     margin: 6px 0 18px;
     border-radius: 12px;
     border: 1px solid var(--border);
-    background: #0d1119;
+    background: var(--code-bg);
     overflow: hidden;
 }
 
@@ -1466,7 +1500,7 @@ textarea.mono {
     background: transparent;
     border: 0;
     padding: 0;
-    color: #d6deeb;
+    color: var(--code-text);
 }
 
 /* Kuis */
@@ -1745,8 +1779,8 @@ textarea.mono {
     min-width: 0;
     padding: 12px;
     background:
-        radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0) 0 0 / 22px 22px,
-        #0c1018;
+        radial-gradient(circle at 1px 1px, rgba(var(--tint-rgb), 0.05) 1px, transparent 0) 0 0 / 22px 22px,
+        var(--canvas);
     overflow: auto;
 }
 
@@ -1795,7 +1829,7 @@ textarea.mono {
     margin: 0;
     padding: 8px 0;
     border-radius: 10px;
-    background: #0c1018;
+    background: var(--canvas);
     border: 1px solid var(--border-soft);
     font: 12.5px/1.75 var(--mono);
     counter-reset: line;
@@ -1806,7 +1840,7 @@ textarea.mono {
     position: relative;
     padding: 0 10px 0 36px;
     white-space: pre;
-    color: #9aa4ba;
+    color: var(--muted);
     transition:
         background 0.2s,
         color 0.2s;
@@ -1819,21 +1853,21 @@ textarea.mono {
     left: 0;
     width: 24px;
     text-align: right;
-    color: #3d4760;
+    color: var(--line-strong);
 }
 
 .pseudo div.on {
     background: rgba(245, 158, 11, 0.13);
-    color: #fde68a;
+    color: var(--hl-text);
     box-shadow: inset 3px 0 0 var(--amber);
 }
 
 .pseudo .kw {
-    color: #c4b5fd;
+    color: var(--violet-text);
 }
 
 .pseudo div.on .kw {
-    color: #fcd34d;
+    color: var(--amber-text);
 }
 
 /* Struktur data */
@@ -1844,7 +1878,7 @@ textarea.mono {
     min-height: 36px;
     padding: 6px;
     border-radius: 10px;
-    background: #0c1018;
+    background: var(--canvas);
     border: 1px dashed var(--border);
 }
 
@@ -1867,7 +1901,7 @@ textarea.mono {
     padding: 0 8px;
     border-radius: 8px;
     background: var(--panel-3);
-    border: 1px solid #36415a;
+    border: 1px solid var(--line-strong);
     color: var(--text-strong);
     font: 700 13px var(--mono);
     line-height: 1.1;
@@ -1883,7 +1917,7 @@ textarea.mono {
 .ds-item.hot {
     background: var(--amber-soft);
     border-color: var(--amber);
-    color: #fde68a;
+    color: var(--hl-text);
 }
 
 .ds-item.new {
@@ -1924,7 +1958,7 @@ textarea.mono {
     align-items: center;
     padding: 4px 2px;
     border-radius: 8px;
-    background: #0c1018;
+    background: var(--canvas);
     border: 1px solid var(--border-soft);
     transition:
         background 0.25s,
@@ -2020,7 +2054,7 @@ textarea.mono {
     height: 24px;
     text-align: center;
     border: 1px solid var(--border-soft);
-    color: #3a445c;
+    color: var(--line-strong);
     transition:
         background 0.25s,
         color 0.25s;
@@ -2065,7 +2099,7 @@ textarea.mono {
 }
 
 .viz-caption .text {
-    color: #d6dcea;
+    color: var(--text-soft);
 }
 
 .viz-caption .text b {
@@ -2076,7 +2110,7 @@ textarea.mono {
     padding: 1px 6px;
     border-radius: 5px;
     background: var(--panel-3);
-    color: #fde68a;
+    color: var(--hl-text);
     font-size: 0.9em;
 }
 
@@ -2185,7 +2219,7 @@ textarea.mono {
     top: 12px;
     padding: 4px 10px;
     border-radius: 999px;
-    background: rgba(20, 25, 36, 0.85);
+    background: rgba(var(--glass-rgb), 0.85);
     border: 1px solid var(--border);
     color: var(--muted);
     font-size: 12px;
@@ -2213,7 +2247,7 @@ textarea.mono {
 }
 
 .g-edge .g-line {
-    stroke: #343e58;
+    stroke: var(--line-strong);
     stroke-width: 2.5;
     fill: none;
     stroke-linecap: round;
@@ -2279,15 +2313,15 @@ textarea.mono {
 }
 
 .g-weight rect {
-    fill: #121722;
-    stroke: #343e58;
+    fill: var(--panel-deep);
+    stroke: var(--line-strong);
     transition:
         stroke 0.3s,
         fill 0.3s;
 }
 
 .g-weight text {
-    fill: #cbd2e1;
+    fill: var(--svg-text);
     font: 700 11.5px var(--mono);
     text-anchor: middle;
     dominant-baseline: central;
@@ -2299,7 +2333,7 @@ textarea.mono {
 }
 
 .g-weight.active text {
-    fill: #fde68a;
+    fill: var(--hl-text);
 }
 
 .g-weight.path rect {
@@ -2308,7 +2342,7 @@ textarea.mono {
 }
 
 .g-weight.path text {
-    fill: #bbf7d0;
+    fill: var(--green-text);
 }
 
 .g-weight.skip rect {
@@ -2325,7 +2359,7 @@ textarea.mono {
 
 .g-node circle.body {
     fill: url(#aa-ng-base);
-    stroke: #46526f;
+    stroke: var(--line-strong);
     stroke-width: 2.5;
     transition:
         stroke 0.35s,
@@ -2333,7 +2367,7 @@ textarea.mono {
 }
 
 .g-node circle.shine {
-    fill: rgba(255, 255, 255, 0.045);
+    fill: rgba(var(--tint-rgb), 0.045);
     pointer-events: none;
 }
 
@@ -2343,7 +2377,7 @@ textarea.mono {
 }
 
 .g-node text.label {
-    fill: #eef1f8;
+    fill: var(--svg-text);
     font: 700 14px var(--mono);
     text-anchor: middle;
     dominant-baseline: central;
@@ -2358,7 +2392,7 @@ textarea.mono {
 }
 
 .g-node:hover circle.body {
-    stroke: #6b7899;
+    stroke: var(--line-strong);
 }
 
 .g-node.queued circle.body {
@@ -2372,12 +2406,12 @@ textarea.mono {
 
 .g-node.current circle.body {
     fill: url(#aa-ng-current);
-    stroke: #fde68a;
+    stroke: var(--hl-text);
     filter: url(#aa-glow);
 }
 
 .g-node.current text.label {
-    fill: #1a1300;
+    fill: var(--on-amber);
 }
 
 .g-node.current circle.halo {
@@ -2410,7 +2444,7 @@ textarea.mono {
 
 .g-node.done circle.body {
     fill: url(#aa-ng-done);
-    stroke: #c4b5fd;
+    stroke: var(--violet-text);
 }
 
 .g-node.target circle.body {
@@ -2448,15 +2482,15 @@ textarea.mono {
 }
 
 .g-badge rect {
-    fill: #0c1018;
-    stroke: #46526f;
+    fill: var(--canvas);
+    stroke: var(--line-strong);
     transition:
         stroke 0.3s,
         fill 0.3s;
 }
 
 .g-badge text {
-    fill: #cbd2e1;
+    fill: var(--svg-text);
     font: 700 11px var(--mono);
     text-anchor: middle;
     dominant-baseline: central;
@@ -2482,16 +2516,16 @@ textarea.mono {
 }
 
 .g-badge.ask text {
-    fill: #fde68a;
+    fill: var(--hl-text);
 }
 
 .g-flow {
-    fill: #fff7d6;
+    fill: var(--hl-fill);
     filter: url(#aa-glow);
 }
 
 .g-flow.back {
-    fill: #ddd6fe;
+    fill: var(--violet-fill);
 }
 
 .g-flow-trail {
@@ -2522,7 +2556,7 @@ textarea.mono {
     gap: 2px;
     padding: 4px;
     border-radius: 10px;
-    background: rgba(20, 25, 36, 0.92);
+    background: rgba(var(--glass-rgb), 0.92);
     border: 1px solid var(--border);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(6px);
@@ -2598,8 +2632,8 @@ textarea.mono {
     width: var(--cell, 46px);
     height: var(--cell, 46px);
     border-radius: 9px;
-    background: #141a27;
-    border: 1px solid #222b3e;
+    background: var(--panel-deep);
+    border: 1px solid var(--line-strong);
     color: var(--text-strong);
     font: 700 14px var(--mono);
     transition:
@@ -2635,14 +2669,14 @@ textarea.mono {
 }
 
 .dp-cell.filled {
-    background: #1b2335;
-    border-color: #2f3a52;
+    background: var(--panel-2);
+    border-color: var(--line-strong);
 }
 
 .dp-cell.current {
     background: var(--amber);
-    border-color: #fde68a;
-    color: #1a1300;
+    border-color: var(--hl-text);
+    color: var(--on-amber);
     transform: scale(1.08);
     box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.25);
     z-index: 2;
@@ -2663,13 +2697,13 @@ textarea.mono {
 .dp-cell.path {
     background: var(--green-soft);
     border-color: var(--green);
-    color: #bbf7d0;
+    color: var(--green-text);
 }
 
 .dp-cell.block {
-    background: repeating-linear-gradient(45deg, #2a1416, #2a1416 6px, #341a1d 6px, #341a1d 12px);
-    border-color: #5c2a2f;
-    color: #f87171;
+    background: repeating-linear-gradient(45deg, var(--blocked-a), var(--blocked-a) 6px, var(--blocked-b) 6px, var(--blocked-b) 12px);
+    border-color: var(--line-strong);
+    color: var(--red-text);
 }
 
 .dp-cell.pop {
@@ -2733,10 +2767,10 @@ textarea.mono {
 .formula {
     padding: 10px 12px;
     border-radius: 10px;
-    background: #0c1018;
+    background: var(--canvas);
     border: 1px solid var(--border-soft);
     font: 600 13px/1.7 var(--mono);
-    color: #d6dcea;
+    color: var(--text-soft);
     word-break: break-word;
 }
 
@@ -2764,7 +2798,7 @@ textarea.mono {
     gap: 6px;
     padding: 5px 8px;
     border-radius: 8px;
-    background: #0c1018;
+    background: var(--canvas);
     border: 1px solid var(--border-soft);
     font: 600 12.5px var(--mono);
     transition:
@@ -2788,7 +2822,7 @@ textarea.mono {
 
 /* Pohon rekursi */
 .tree-edge {
-    stroke: #333d55;
+    stroke: var(--line-strong);
     stroke-width: 2;
     transition:
         stroke 0.3s,
@@ -2805,8 +2839,8 @@ textarea.mono {
 }
 
 .tree-node rect {
-    fill: #182031;
-    stroke: #3f4a64;
+    fill: var(--panel-2);
+    stroke: var(--line-strong);
     stroke-width: 2;
     transition:
         fill 0.3s,
@@ -2814,24 +2848,24 @@ textarea.mono {
 }
 
 .tree-node text {
-    fill: #e6e9f2;
+    fill: var(--svg-text);
     font: 700 12px var(--mono);
     text-anchor: middle;
     dominant-baseline: central;
 }
 
 .tree-node text.val {
-    fill: #fde68a;
+    fill: var(--hl-text);
     font-size: 11px;
 }
 
 .tree-node.active rect {
     fill: var(--amber);
-    stroke: #fde68a;
+    stroke: var(--hl-text);
 }
 
 .tree-node.active text {
-    fill: #1a1300;
+    fill: var(--on-amber);
 }
 
 .tree-node.done rect {
@@ -2862,7 +2896,7 @@ textarea.mono {
 .counter-box div {
     padding: 8px 10px;
     border-radius: 10px;
-    background: #0c1018;
+    background: var(--canvas);
     border: 1px solid var(--border-soft);
 }
 
@@ -2878,7 +2912,7 @@ textarea.mono {
 }
 
 .counter-box .bad b {
-    color: #fca5a5;
+    color: var(--red-text);
 }
 
 .result-chip {
@@ -2887,7 +2921,7 @@ textarea.mono {
     border-radius: 8px;
     background: var(--green-soft);
     border: 1px solid rgba(34, 197, 94, 0.4);
-    color: #bbf7d0;
+    color: var(--green-text);
     font: 700 14px var(--mono);
     letter-spacing: 0.04em;
 }
@@ -2983,7 +3017,7 @@ textarea.mono {
 }
 
 .table tbody tr.clickable:hover {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(var(--tint-rgb), 0.03);
 }
 
 .table tbody tr.clickable:hover .row-title {
@@ -3033,8 +3067,8 @@ textarea.mono {
 }
 
 .rank-1 {
-    background: linear-gradient(135deg, #fde68a, #f59e0b);
-    color: #1a1300;
+    background: linear-gradient(135deg, var(--hl-text), #f59e0b);
+    color: var(--on-amber);
 }
 
 .rank-2 {
@@ -3240,7 +3274,7 @@ textarea.mono {
 }
 
 .statement {
-    color: #cfd5e3;
+    color: var(--text-soft);
     font-size: 14.5px;
     line-height: 1.75;
 }
@@ -3312,7 +3346,7 @@ textarea.mono {
 .sample-note {
     padding: 10px 12px;
     border-top: 1px solid var(--border-soft);
-    background: #11161f;
+    background: var(--panel-2);
     color: var(--muted);
     font-size: 13.5px;
 }
@@ -3536,7 +3570,7 @@ textarea.mono {
     margin: 0;
     padding: 9px 12px;
     border-radius: 9px;
-    background: #0c1018;
+    background: var(--canvas);
     border: 1px solid var(--border-soft);
     color: var(--text-strong);
     font: 13px/1.55 var(--mono);
@@ -3565,7 +3599,7 @@ textarea.mono {
 }
 
 .io-block pre.err {
-    color: #fca5a5;
+    color: var(--red-text);
 }
 
 .run-summary {
@@ -3626,7 +3660,7 @@ textarea.mono {
 
 .test-box.WA b,
 .test-box.RE b {
-    color: #fca5a5;
+    color: var(--red-text);
 }
 
 .test-box.TLE {
@@ -3853,7 +3887,7 @@ textarea.mono {
     max-width: 440px;
     border-radius: 16px;
     border: 1px solid var(--border);
-    background: rgba(20, 25, 36, 0.75);
+    background: rgba(var(--glass-rgb), 0.75);
     box-shadow: var(--shadow);
     overflow: hidden;
 }
@@ -3870,7 +3904,7 @@ textarea.mono {
     justify-self: end;
     padding: 36px 32px 30px;
     border-radius: 18px;
-    background: rgba(20, 25, 36, 0.88);
+    background: rgba(var(--glass-rgb), 0.88);
     backdrop-filter: blur(10px);
     box-shadow: var(--shadow);
 }
@@ -3906,7 +3940,7 @@ textarea.mono {
 }
 
 .field small.error {
-    color: #fca5a5;
+    color: var(--red-text);
 }
 
 .field input {
@@ -4096,9 +4130,9 @@ textarea.mono {
 }
 
 .practice-toggle.active {
-    color: #1a1300;
+    color: var(--on-amber);
     border-color: var(--amber);
-    background: linear-gradient(135deg, #fde68a, #f59e0b);
+    background: linear-gradient(135deg, var(--hl-text), #f59e0b);
     box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);
 }
 
@@ -4139,18 +4173,18 @@ textarea.mono {
     align-items: flex-start;
     gap: 10px;
     font-size: 15px;
-    color: #f5e7c6;
+    color: var(--amber-text);
 }
 
 .prompt-q b {
-    color: #fde68a;
+    color: var(--hl-text);
 }
 
 .prompt-q code {
     padding: 1px 6px;
     border-radius: 5px;
     background: rgba(245, 158, 11, 0.16);
-    color: #fde68a;
+    color: var(--hl-text);
 }
 
 .prompt-icon {
@@ -4191,7 +4225,7 @@ textarea.mono {
 }
 
 .prompt-hint {
-    color: #fcd34d;
+    color: var(--amber-text);
     font-weight: 600;
     font-size: 13px;
     animation: pulse 1.4s infinite;
@@ -4207,7 +4241,7 @@ textarea.mono {
 }
 
 .prompt-fb.bad {
-    color: #fca5a5;
+    color: var(--red-text);
 }
 
 .viz.asking .viz-caption .text {
@@ -4372,7 +4406,7 @@ textarea.mono {
     gap: 10px;
     padding: 5px 9px;
     border-radius: 7px;
-    background: #0c1018;
+    background: var(--canvas);
     border: 1px solid var(--border-soft);
     font: 12.5px var(--mono);
     transition:
@@ -4405,7 +4439,7 @@ textarea.mono {
 }
 
 .watch-row.ask b {
-    color: #fde68a;
+    color: var(--hl-text);
 }
 
 /* Struktur data: stack vertikal & bar PQ */
@@ -4454,7 +4488,7 @@ textarea.mono {
 }
 
 .dist-cell.ask b {
-    color: #fde68a;
+    color: var(--hl-text);
 }
 
 /* Pohon rekursi: sel yang ditebak */
@@ -4472,7 +4506,7 @@ textarea.mono {
 .dp-cell.ask {
     background: var(--amber-soft) !important;
     border-color: var(--amber) !important;
-    color: #fde68a !important;
+    color: var(--hl-text) !important;
     animation: pulse 1s infinite;
 }
 
@@ -4489,7 +4523,7 @@ textarea.mono {
     font: 800 10.5px var(--mono);
     text-anchor: middle;
     paint-order: stroke;
-    stroke: #0c1018;
+    stroke: var(--canvas);
     stroke-width: 4px;
 }
 
@@ -4638,7 +4672,7 @@ textarea.mono {
     gap: 4px;
     padding: 4px 7px;
     border-radius: 7px;
-    background: #0c1018;
+    background: var(--canvas);
     border: 1px solid var(--border-soft);
     font: 12px var(--mono);
     color: var(--muted);
@@ -4661,13 +4695,13 @@ textarea.mono {
 .edge-row.current {
     border-color: var(--amber);
     background: var(--amber-soft);
-    color: #fde68a;
+    color: var(--hl-text);
 }
 
 .edge-row.take {
     border-color: rgba(34, 197, 94, 0.55);
     background: var(--green-soft);
-    color: #bbf7d0;
+    color: var(--green-text);
 }
 
 .edge-row.take i {
@@ -4706,8 +4740,8 @@ textarea.mono {
 
 /* LIS: batang & busur */
 svg.bars .lis-bar .bar {
-    fill: #222b3f;
-    stroke: #3d4864;
+    fill: var(--panel-2);
+    stroke: var(--edge);
     stroke-width: 1.5;
     transition:
         fill 0.3s,
@@ -4729,7 +4763,7 @@ svg.bars .bar-idx {
 
 svg.bars .lis-bar.cur .bar {
     fill: var(--amber);
-    stroke: #fde68a;
+    stroke: var(--hl-text);
     filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.6));
 }
 
@@ -4753,8 +4787,8 @@ svg.bars .lis-bar.lis .bar {
 }
 
 svg.bars .lis-dp rect {
-    fill: #121722;
-    stroke: #343e58;
+    fill: var(--panel-deep);
+    stroke: var(--line-strong);
 }
 
 svg.bars .lis-dp text {
@@ -4817,7 +4851,7 @@ svg.bars .lis-dp-label {
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
     gap: 16px;
     padding: 16px;
-    background: #0c1018;
+    background: var(--canvas);
 }
 
 .bigo-slider input[type="range"] {
@@ -4840,7 +4874,7 @@ svg.bars .lis-dp-label {
 }
 
 .bigo-grid {
-    stroke: #1d2433;
+    stroke: var(--line-strong);
     stroke-width: 1;
 }
 
@@ -4879,7 +4913,7 @@ svg.bars .lis-dp-label {
 }
 
 .bigo-limit-label {
-    fill: #fca5a5;
+    fill: var(--red-text);
     font: 700 11px var(--sans);
 }
 
@@ -4898,7 +4932,7 @@ svg.bars .lis-dp-label {
 }
 
 .bigo-dot {
-    stroke: #0c1018;
+    stroke: var(--canvas);
     stroke-width: 2;
 }
 
@@ -4972,7 +5006,7 @@ svg.bars .lis-dp-label {
 }
 
 .bigo-status.bad {
-    color: #fca5a5;
+    color: var(--red-text);
 }
 
 .bigo-row.bad {
@@ -4986,8 +5020,8 @@ svg.bars .lis-dp-label {
     padding: 16px;
     border-radius: 16px;
     background:
-        radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.045) 1px, transparent 0) 0 0 / 20px 20px,
-        #0c1018;
+        radial-gradient(circle at 1px 1px, rgba(var(--tint-rgb), 0.045) 1px, transparent 0) 0 0 / 20px 20px,
+        var(--canvas);
     border: 1px solid var(--border);
 }
 
@@ -5013,7 +5047,7 @@ svg.bars .lis-dp-label {
 .diagram-grid > div {
     padding: 10px;
     border-radius: 12px;
-    background: rgba(20, 25, 36, 0.7);
+    background: rgba(var(--glass-rgb), 0.7);
     border: 1px solid var(--border-soft);
 }
 
@@ -5026,13 +5060,13 @@ svg.bars .lis-dp-label {
 
 .dg-node circle {
     fill: url(#dg-node);
-    stroke: #46526f;
+    stroke: var(--line-strong);
     stroke-width: 2;
 }
 
 .dg-node text,
 .dg-text {
-    fill: #e6e9f2;
+    fill: var(--svg-text);
     font: 700 13px var(--mono);
     text-anchor: middle;
     dominant-baseline: central;
@@ -5045,7 +5079,7 @@ svg.bars .lis-dp-label {
 }
 
 .dg-edge {
-    stroke: #3d4864;
+    stroke: var(--edge);
     stroke-width: 2.5;
     fill: none;
 }
@@ -5072,27 +5106,27 @@ svg.bars .lis-dp-label {
 }
 
 .dg-w {
-    fill: #fde68a;
+    fill: var(--hl-text);
     font: 700 12px var(--mono);
     text-anchor: middle;
     dominant-baseline: central;
     paint-order: stroke;
-    stroke: #0c1018;
+    stroke: var(--canvas);
     stroke-width: 4px;
 }
 
 .dg-node.cur circle {
     fill: #f59e0b;
-    stroke: #fde68a;
+    stroke: var(--hl-text);
 }
 
 .dg-node.cur text {
-    fill: #1a1300;
+    fill: var(--on-amber);
 }
 
 .dg-node.vis circle {
     fill: #4e30b6;
-    stroke: #c4b5fd;
+    stroke: var(--violet-text);
 }
 
 .dg-node.cyan circle {
@@ -5117,14 +5151,14 @@ svg.bars .lis-dp-label {
 }
 
 .dg-box {
-    fill: #141a27;
-    stroke: #2f3a52;
+    fill: var(--panel-deep);
+    stroke: var(--line-strong);
     stroke-width: 1.5;
 }
 
 .dg-box.cur {
     fill: #f59e0b;
-    stroke: #fde68a;
+    stroke: var(--hl-text);
 }
 
 .dg-box.dep {
@@ -5175,7 +5209,7 @@ svg.bars .lis-dp-label {
 .trace-table td {
     padding: 8px 12px;
     border-top: 1px solid var(--border-soft);
-    color: #cfd5e3;
+    color: var(--text-soft);
     vertical-align: top;
 }
 
@@ -5198,7 +5232,7 @@ svg.bars .lis-dp-label {
 }
 
 .trace-table .new {
-    color: #fde68a;
+    color: var(--hl-text);
     font-weight: 700;
 }
 
@@ -5249,7 +5283,7 @@ svg.bars .lis-dp-label {
     padding: 1px 5px;
     border-radius: 5px;
     background: var(--panel-3);
-    color: #e9d5ff;
+    color: var(--code-inline);
     font-size: 0.88em;
 }
 
@@ -5262,7 +5296,7 @@ svg.bars .lis-dp-label {
     background: linear-gradient(0deg, rgba(34, 211, 238, 0.06), rgba(34, 211, 238, 0.06)), var(--panel);
     font-size: 14.5px;
     line-height: 1.7;
-    color: #cfd5e3;
+    color: var(--text-soft);
 }
 
 .proof p {
@@ -5304,7 +5338,7 @@ svg.bars .lis-dp-label {
 .lead-box ul {
     margin: 0;
     padding-left: 20px;
-    color: #cfd5e3;
+    color: var(--text-soft);
     font-size: 14px;
 }
 
@@ -5405,7 +5439,7 @@ svg.bars .lis-dp-label {
     margin: 0;
     padding: 12px 16px;
     border-bottom: 1px solid var(--border-soft);
-    color: #cfd5e3;
+    color: var(--text-soft);
     font-size: 14px;
 }
 
@@ -5413,7 +5447,7 @@ svg.bars .lis-dp-label {
     padding: 1px 6px;
     border-radius: 5px;
     background: var(--panel-3);
-    color: #e9d5ff;
+    color: var(--code-inline);
     font-size: 0.88em;
 }
 
@@ -5426,7 +5460,7 @@ svg.bars .lis-dp-label {
     position: relative;
     max-height: 620px;
     overflow: auto;
-    background: #0d1119;
+    background: var(--code-bg);
     border-right: 1px solid var(--border);
 }
 
@@ -5443,7 +5477,7 @@ svg.bars .lis-dp-label {
     min-width: max-content;
     padding: 0 !important;
     background: transparent !important;
-    color: #d6deeb;
+    color: var(--code-text);
 }
 
 .wl {
@@ -5461,13 +5495,13 @@ svg.bars .lis-dp-label {
     display: inline-block;
     width: 46px;
     padding-right: 14px;
-    color: #3d4760;
+    color: var(--line-strong);
     text-align: right;
     user-select: none;
 }
 
 .wl:hover {
-    background: rgba(255, 255, 255, 0.035);
+    background: rgba(var(--tint-rgb), 0.035);
 }
 
 .walkthrough.has-focus .wt-code .wl:not(.on) {
@@ -5565,7 +5599,7 @@ svg.bars .lis-dp-label {
 }
 
 .wt-text {
-    color: #cfd5e3;
+    color: var(--text-soft);
     font-size: 14.5px;
     line-height: 1.75;
 }
@@ -5592,8 +5626,8 @@ svg.bars .lis-dp-label {
     padding: 1px 6px;
     border-radius: 5px;
     background: var(--panel-3);
-    border: 1px solid #333e57;
-    color: #e9d5ff;
+    border: 1px solid var(--border);
+    color: var(--code-inline);
     font-size: 0.86em;
 }
 
@@ -5601,9 +5635,9 @@ svg.bars .lis-dp-label {
     margin: 8px 0 10px;
     padding: 10px 12px;
     border-radius: 8px;
-    background: #0d1119;
+    background: var(--code-bg);
     border: 1px solid var(--border-soft);
-    color: #d6deeb;
+    color: var(--code-text);
     font-size: 12.5px;
     line-height: 1.6;
     overflow: auto;
@@ -5689,9 +5723,9 @@ svg.bars .lis-dp-label {
     margin: 0 0 12px;
     padding: 8px 0 !important;
     border-radius: 10px;
-    background: #0d1119 !important;
+    background: var(--code-bg) !important;
     border: 1px solid var(--border-soft);
-    color: #d6deeb;
+    color: var(--code-text);
     font-size: 12.5px;
     line-height: 1.7;
     overflow: auto;
@@ -5725,9 +5759,9 @@ svg.bars .lis-dp-label {
     max-height: 180px;
     padding: 10px 12px;
     border-radius: 8px;
-    background: #0d1119;
+    background: var(--code-bg);
     border: 1px solid var(--border-soft);
-    color: #d6deeb;
+    color: var(--code-text);
     font-size: 12.5px;
     overflow: auto;
 }
@@ -5764,7 +5798,7 @@ svg.bars .lis-dp-label {
     margin: 6px 0 14px;
     padding: 12px 14px;
     border-radius: 10px;
-    background: #0d1119;
+    background: var(--code-bg);
     border: 1px solid var(--border);
     font-size: 13px;
     line-height: 1.6;
@@ -5775,7 +5809,7 @@ svg.bars .lis-dp-label {
     padding: 0;
     border: 0;
     background: transparent !important;
-    color: #d6deeb;
+    color: var(--code-text);
     font-size: inherit;
 }
 
@@ -5829,7 +5863,7 @@ svg.bars .lis-dp-label {
 }
 
 .lvl-3 {
-    color: #f87171;
+    color: var(--red-text);
     background: var(--red-soft);
     border: 1px solid rgba(239, 68, 68, 0.3);
 }
@@ -5935,7 +5969,7 @@ svg.bars .lis-dp-label {
 }
 
 .toc li.toc-group.l3 a {
-    color: #f87171;
+    color: var(--red-text);
 }
 
 .toc a .toc-dot {
@@ -5974,9 +6008,9 @@ svg.bars .lis-dp-label {
     height: 32px;
     padding: 0 6px;
     border-radius: 7px;
-    background: #141a27;
-    border: 1px solid #2f3a52;
-    color: #cfd5e3;
+    background: var(--panel-deep);
+    border: 1px solid var(--line-strong);
+    color: var(--text-soft);
 }
 
 .dp-mini span.h {
@@ -5988,8 +6022,8 @@ svg.bars .lis-dp-label {
 
 .dp-mini span.cur {
     background: var(--amber);
-    border-color: #fde68a;
-    color: #1a1300;
+    border-color: var(--hl-text);
+    color: var(--on-amber);
 }
 
 .dp-mini span.dep {
@@ -6007,13 +6041,13 @@ svg.bars .lis-dp-label {
 .dp-mini span.ok {
     background: rgba(34, 197, 94, 0.18);
     border-color: var(--green);
-    color: #bbf7d0;
+    color: var(--green-text);
 }
 
 .dp-mini span.bad {
     background: rgba(239, 68, 68, 0.12);
     border-color: rgba(239, 68, 68, 0.5);
-    color: #fca5a5;
+    color: var(--red-text);
 }
 
 .dp-mini span.dim {
@@ -6097,7 +6131,7 @@ svg.bars .lis-dp-label {
 .hint-item p {
     margin: 0;
     padding: 0 12px 12px 42px;
-    color: #fde68a;
+    color: var(--hl-text);
     font-size: 13.5px;
 }
 
@@ -6115,8 +6149,8 @@ svg.bars .lis-dp-label {
 .sample-visual {
     border-top: 1px solid var(--border-soft);
     background:
-        radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.045) 1px, transparent 0) 0 0 / 20px 20px,
-        #0c1018;
+        radial-gradient(circle at 1px 1px, rgba(var(--tint-rgb), 0.045) 1px, transparent 0) 0 0 / 20px 20px,
+        var(--canvas);
 }
 
 .sample-visual summary {
@@ -6170,7 +6204,7 @@ svg.bars .lis-dp-label {
 }
 
 .mini-grid span.wall {
-    background: #3a4560;
+    background: var(--edge);
 }
 
 .mini-grid span.start {
@@ -6193,7 +6227,7 @@ svg.bars .lis-dp-label {
 
 .mini-grid span.special {
     background: var(--amber);
-    color: #1a1300;
+    color: var(--on-amber);
 }
 
 .mini-bars {

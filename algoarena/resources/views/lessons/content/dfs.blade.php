@@ -244,7 +244,7 @@ CPP;
 @endphp
 
 <div class="lead-box">
-    <h3>🎯 Setelah materi ini kamu bisa:</h3>
+    <h3>Setelah materi ini kamu bisa:</h3>
     <ul>
         <li>Menjelaskan cara DFS <strong>menyelam sedalam mungkin</strong> lalu <strong>kembali</strong> (backtrack).</li>
         <li>Menulis DFS rekursif di C++ dan memahami peran <strong>call stack</strong>.</li>
@@ -303,7 +303,7 @@ CPP;
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi Interaktif">
     <h2><span class="sec-icon">🎬</span> Visualisasi Interaktif</h2>
     <div class="prose">
-        <p>Perhatikan panel <strong>call stack</strong> yang tumbuh saat menyelam dan menyusut saat kembali. Coba mode <strong>Hitung komponen</strong> untuk melihat DFS diulang dari setiap simpul yang belum dikunjungi. Dengan <strong>🎯 Mode Tebak</strong>, kamu diminta menebak ke simpul mana DFS menyelam berikutnya.</p>
+        <p>Perhatikan panel <strong>call stack</strong> yang tumbuh saat menyelam dan menyusut saat kembali. Coba mode <strong>Hitung komponen</strong> untuk melihat DFS diulang dari setiap simpul yang belum dikunjungi. Dengan <strong>Mode Tebak</strong>, kamu diminta menebak ke simpul mana DFS menyelam berikutnya.</p>
     </div>
     <div data-viz="dfs"></div>
 </section>

@@ -168,7 +168,7 @@ CPP;
 @endphp
 
 <div class="lead-box">
-    <h3>🎯 Setelah materi ini kamu bisa:</h3>
+    <h3>Setelah materi ini kamu bisa:</h3>
     <ul>
         <li>Merancang DP satu dimensi untuk <strong>menghitung cara</strong> dan mencari <strong>minimum</strong>.</li>
         <li>Menjelaskan mengapa strategi <strong>serakah</strong> (ambil koin terbesar) bisa salah.</li>
@@ -193,7 +193,7 @@ CPP;
                 <span class="h">v</span><span class="h">0</span><span class="h">1</span><span class="h">2</span><span class="h">3</span><span class="h">4</span><span class="h">5</span><span class="h">6</span>
                 <span class="h">dp</span><span class="ok">0</span><span>1</span><span class="dep2">2</span><span class="dep">1</span><span>1</span><span class="dep2">2</span><span class="cur">2</span>
             </div>
-            <p class="muted" style="font-size: 12.5px; margin: 6px 4px 0">dp[6] = min(dp[5]+1, <b style="color:#a5f3fc">dp[3]+1</b>, dp[2]+1) = min(3, 2, 3) = 2</p>
+            <p class="muted" style="font-size: 12.5px; margin: 6px 4px 0">dp[6] = min(dp[5]+1, <b style="color:var(--cyan)">dp[3]+1</b>, dp[2]+1) = min(3, 2, 3) = 2</p>
         </div>
         <div>
             <h5>Banyak cara naik tangga (1 atau 2): dp[i] = dp[i−1] + dp[i−2]</h5>

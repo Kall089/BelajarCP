@@ -5,7 +5,6 @@
 @php($diffClass = ['Mudah' => 'easy', 'Sedang' => 'medium', 'Sulit' => 'hard'])
 
 @push('head')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 @endpush
 
 @section('content')
@@ -40,7 +39,7 @@
                 <p class="subtitle">{{ $lesson->subtitle }}</p>
                 <div class="meta">
                     <span class="pill pill-{{ $lesson->track }}">{{ $lesson->trackName() }}</span>
-                    <span class="lvl {{ $lesson->levelInfo()['class'] }}">{{ $lesson->levelInfo()['icon'] }} Materi {{ $lesson->levelInfo()['name'] }}</span>
+                    <span class="lvl {{ $lesson->levelInfo()['class'] }}">Materi {{ $lesson->levelInfo()['name'] }}</span>
                     <span class="pill">⏱ {{ $lesson->minutes }} menit</span>
                     <span class="pill">{{ $lesson->problems->count() }} soal latihan</span>
                     @if ($done)
@@ -48,9 +47,9 @@
                     @endif
                 </div>
                 <nav class="level-rail" aria-label="Tingkatan isi materi" data-level-rail>
-                    <a href="#dasar"><span class="lvl lvl-1">🟢 Dasar</span> konsep, contoh &amp; visualisasi</a>
-                    <a href="#menengah"><span class="lvl lvl-2">🟡 Menengah</span> kode C++ baris demi baris</a>
-                    <a href="#lanjut"><span class="lvl lvl-3">🔴 Lanjut</span> teknik untuk soal sulit</a>
+                    <a href="#dasar"><span class="lvl lvl-1">Dasar</span> konsep, contoh &amp; visualisasi</a>
+                    <a href="#menengah"><span class="lvl lvl-2">Menengah</span> kode C++ baris demi baris</a>
+                    <a href="#lanjut"><span class="lvl lvl-3">Lanjut</span> teknik untuk soal sulit</a>
                 </nav>
             </header>
 

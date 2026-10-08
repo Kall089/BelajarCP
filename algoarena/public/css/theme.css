@@ -1,0 +1,390 @@
+/*
+ * Tema & tipografi tambahan.
+ *  - Tema terang (default): html[data-theme="light"], termasuk blok kode, editor, dan visualisasi.
+ *  - Tema gelap tetap tersedia lewat tombol di navbar.
+ *  - Mode baca kode layar penuh (.is-fullcode).
+ */
+
+/* ═══════════════════════════════ Tema terang ═══════════════════════════════ */
+html[data-theme="light"] {
+    color-scheme: light;
+
+    --bg: #f6f5f1;
+    --bg-2: #efede7;
+    --panel: #ffffff;
+    --panel-2: #f3f2ee;
+    --panel-3: #ebe9e3;
+    --border: #dcd9d0;
+    --border-soft: #e8e6df;
+    --text: #23262d;
+    --text-strong: #111318;
+    --muted: #646a76;
+    --faint: #8e939d;
+
+    --primary: #2f5bd3;
+    --primary-2: #2448ad;
+    --primary-soft: rgba(47, 91, 211, 0.09);
+    --cyan: #0b7f9a;
+    --cyan-soft: rgba(11, 127, 154, 0.09);
+    --amber: #b86e00;
+    --amber-soft: rgba(214, 140, 18, 0.12);
+    --green: #1d8a4a;
+    --green-soft: rgba(29, 138, 74, 0.1);
+    --red: #c93434;
+    --red-soft: rgba(201, 52, 52, 0.09);
+    --pink: #c02a74;
+
+    --easy: #1d8a4a;
+    --medium: #b86e00;
+    --hard: #c93434;
+
+    --grad-graph: linear-gradient(#0b7f9a, #0b7f9a);
+    --grad-dp: linear-gradient(#c45a10, #c45a10);
+    --grad-primary: linear-gradient(#2f5bd3, #2f5bd3);
+    --shadow: 0 10px 30px rgba(30, 30, 20, 0.1);
+
+    --canvas: #fbfaf7;
+    --code-bg: #fbfaf7;
+    --code-text: #24292f;
+    --code-inline: #8a2b5c;
+    --text-soft: #363a43;
+    --svg-text: #23262d;
+    --panel-deep: #f1efe9;
+    --line-strong: #c9c5ba;
+    --edge: #a9a597;
+    --hl-text: #8a5a00;
+    --hl-fill: #fff3c4;
+    --violet-fill: #e4e9fb;
+    --on-amber: #3b2500;
+    --red-text: #b42323;
+    --green-text: #17703c;
+    --violet-text: #2448ad;
+    --amber-text: #8a5a00;
+    --blocked-a: #f6dede;
+    --blocked-b: #efcfcf;
+    --tint-rgb: 0, 0, 0;
+    --glass-rgb: 255, 255, 255;
+    --node-a: #ffffff;
+    --node-b: #ecebe6;
+    --node-text: #111318;
+
+    --syn-comment: #6e7781;
+    --syn-keyword: #cf222e;
+    --syn-string: #0a3069;
+    --syn-number: #0550ae;
+    --syn-type: #953800;
+    --syn-title: #6639ba;
+    --syn-meta: #116329;
+}
+
+html[data-theme="light"] body {
+    background: var(--bg);
+}
+
+/* Hilangkan cahaya/gradien dekoratif pada tema terang */
+html[data-theme="light"] .lead-box,
+html[data-theme="light"] .hero,
+html[data-theme="light"] .auth-wrap,
+html[data-theme="light"] .walkthrough .wt-head,
+html[data-theme="light"] [class*="hero"] {
+    background-image: none !important;
+}
+
+html[data-theme="light"] .topbar {
+    background: rgba(246, 245, 241, 0.92);
+    border-bottom-color: var(--border);
+}
+
+html[data-theme="light"] .prose code,
+html[data-theme="light"] .statement code,
+html[data-theme="light"] .callout code,
+html[data-theme="light"] .step-card code,
+html[data-theme="light"] .quiz code {
+    background: #f1efe9;
+    border-color: #e1ded5;
+}
+
+/* Simpul graph: lingkaran putih bertepi gelap */
+html[data-theme="light"] .dg-node circle,
+html[data-theme="light"] svg.graph .node > circle {
+    stroke: #5c606b;
+}
+
+html[data-theme="light"] .dg-node text {
+    fill: var(--node-text);
+}
+
+/* ═══════════════════════════════ Sintaks kode (highlight.js) ═══════════════════════════════ */
+.hljs {
+    color: var(--code-text);
+    background: transparent;
+}
+
+.hljs-comment,
+.hljs-quote {
+    color: var(--syn-comment);
+    font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-built_in {
+    color: var(--syn-keyword);
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition {
+    color: var(--syn-string);
+}
+
+.hljs-number,
+.hljs-symbol {
+    color: var(--syn-number);
+}
+
+.hljs-type,
+.hljs-class .hljs-title,
+.hljs-title.class_ {
+    color: var(--syn-type);
+}
+
+.hljs-title,
+.hljs-title.function_,
+.hljs-section {
+    color: var(--syn-title);
+}
+
+.hljs-meta,
+.hljs-meta .hljs-keyword,
+.hljs-meta .hljs-string {
+    color: var(--syn-meta);
+}
+
+.hljs-deletion {
+    color: var(--red-text);
+}
+
+/* ═══════════════════════════════ Tipografi materi yang lebih tenang ═══════════════════════════════ */
+/* Judul bagian diberi nomor, bukan ikon emoji */
+.lesson-main {
+    counter-reset: sec;
+}
+
+.lesson-section > h2 .sec-icon {
+    display: none;
+}
+
+.lesson-section > h2::before {
+    counter-increment: sec;
+    content: counter(sec, decimal-leading-zero);
+    min-width: 30px;
+    font: 600 13px/1 var(--mono);
+    color: var(--faint);
+    padding-top: 4px;
+    align-self: flex-start;
+}
+
+.lesson-section > h2 {
+    align-items: baseline;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+/* Callout: label teks di kiri menggantikan emoji */
+.callout {
+    border-left-width: 3px;
+}
+
+.callout .callout-icon {
+    font-size: 0;
+    min-width: 46px;
+}
+
+.callout .callout-icon::before {
+    display: inline-block;
+    font: 700 10.5px/1.9 var(--sans);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    content: "Catatan";
+    color: var(--muted);
+}
+
+.callout.key .callout-icon::before {
+    content: "Inti";
+    color: var(--primary-2);
+}
+
+.callout.tip .callout-icon::before {
+    content: "Tips";
+    color: var(--cyan);
+}
+
+.callout.warn .callout-icon::before {
+    content: "Awas";
+    color: var(--amber);
+}
+
+/* Penanda level: titik berwarna, bukan emoji */
+.lvl::before,
+.level-band .lb-icon::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    vertical-align: 1px;
+}
+
+.level-band .lb-icon {
+    font-size: 0;
+}
+
+.level-band .lb-icon::before {
+    width: 12px;
+    height: 12px;
+    margin: 0;
+}
+
+.lvl-band-1 .lb-icon,
+.lvl.lvl-1 {
+    color: var(--green);
+}
+
+.lvl-band-2 .lb-icon,
+.lvl.lvl-2 {
+    color: var(--amber);
+}
+
+.lvl-band-3 .lb-icon,
+.lvl.lvl-3 {
+    color: var(--red);
+}
+
+/* ═══════════════════════════════ Tabel pelacakan & rumus ═══════════════════════════════ */
+.recurrence {
+    max-width: 76ch;
+    margin: 10px 0 18px;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--primary);
+    border-radius: 8px;
+    background: var(--panel);
+    font: 500 14px/1.9 var(--mono);
+    color: var(--text-strong);
+    white-space: pre-wrap;
+    overflow-x: auto;
+}
+
+.recurrence small {
+    display: block;
+    font: 600 11px/1.6 var(--sans);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+/* ═══════════════════════════════ Tombol tema ═══════════════════════════════ */
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 12px;
+    margin-right: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--panel);
+    color: var(--muted);
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+.theme-toggle:hover {
+    color: var(--text-strong);
+    border-color: var(--line-strong);
+}
+
+.theme-toggle .t-dark,
+html[data-theme="dark"] .theme-toggle .t-light {
+    display: none;
+}
+
+html[data-theme="dark"] .theme-toggle .t-dark {
+    display: inline;
+}
+
+/* ═══════════════════════════════ Kode layar penuh ═══════════════════════════════ */
+.fullcode-btn {
+    white-space: nowrap;
+}
+
+.is-fullcode {
+    position: fixed !important;
+    inset: 0;
+    z-index: 1000;
+    margin: 0 !important;
+    max-width: none !important;
+    border-radius: 0 !important;
+    display: flex;
+    flex-direction: column;
+    background: var(--code-bg) !important;
+    overflow: hidden;
+}
+
+html.has-fullcode {
+    overflow: hidden;
+}
+
+.code-tabs.is-fullcode pre {
+    flex: 1;
+    max-height: none !important;
+    margin: 0;
+    overflow: auto;
+    font-size: 15px;
+    line-height: 1.75;
+}
+
+.walkthrough.is-fullcode .wt-body {
+    flex: 1;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1.5fr) minmax(320px, 1fr);
+}
+
+.walkthrough.is-fullcode .wt-code {
+    max-height: none !important;
+    height: 100%;
+    overflow: auto;
+}
+
+.walkthrough.is-fullcode .wt-code pre {
+    font-size: 15px;
+    line-height: 1.75;
+}
+
+.walkthrough.is-fullcode .wt-explain {
+    overflow: auto;
+}
+
+.walkthrough.is-fullcode[data-mode="all"] .wt-body {
+    overflow: auto;
+}
+
+.walkthrough.is-fullcode .wt-sample,
+.walkthrough.is-fullcode .wt-alt,
+.walkthrough.is-fullcode .wt-intro {
+    display: none;
+}
+
+/* Label simpul berwarna tetap terbaca di tema terang */
+html[data-theme="light"] .g-node:is(.queued, .visited, .done, .path) text.label,
+html[data-theme="light"] .dg-node:is(.vis, .cyan, .green, .red) text {
+    fill: #ffffff;
+}
+
+.walkthrough.is-fullcode.has-focus .wt-code .wl:not(.on) {
+    opacity: 0.8;
+}

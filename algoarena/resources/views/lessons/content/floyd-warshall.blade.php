@@ -291,7 +291,7 @@ CPP;
 @endphp
 
 <div class="lead-box">
-    <h3>🎯 Setelah materi ini kamu bisa:</h3>
+    <h3>Setelah materi ini kamu bisa:</h3>
     <ul>
         <li>Menghitung jarak terpendek antara <strong>semua pasangan</strong> simpul dengan <strong>Floyd-Warshall</strong>.</li>
         <li>Memahami Floyd-Warshall sebagai <strong>DP di atas graph</strong>: "bolehkah lewat simpul k?".</li>
