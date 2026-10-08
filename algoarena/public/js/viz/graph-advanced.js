@@ -91,28 +91,41 @@
         const cycleLabel = () => (cycleBtn.textContent = negCycle ? "✂️ Hapus siklus negatif" : "🔁 Tambah siklus negatif");
 
         const PSEUDO = {
-            floyd: [
-                "dist[i][j] ← bobot i→j  (0 jika i = j, ∞ jika tak ada sisi)",
-                "untuk k ← 1..N:            ← perantara yang diizinkan",
-                "  untuk i ← 1..N:",
-                "    untuk j ← 1..N:",
-                "      jika dist[i][k] + dist[k][j] < dist[i][j]:",
-                "        dist[i][j] ← dist[i][k] + dist[k][j]",
-            ],
-            bf: [
-                "dist[semua] ← ∞,  dist[1] ← 0",
-                "ulangi N − 1 kali:",
-                "  untuk setiap sisi (u, v, w):",
-                "    jika dist[u] + w < dist[v]:",
-                "      dist[v] ← dist[u] + w",
-                "untuk setiap sisi (u, v, w):   ← ronde ke-N",
-                "  jika masih bisa membaik: ada siklus negatif!",
-            ],
+            floyd: `
+const long long INF = 1e18;
+vector<vector<long long>> dist(n + 1,           //@0
+        vector<long long>(n + 1, INF));         //@0
+for (int i = 1; i <= n; i++) dist[i][i] = 0;    //@0
+for (auto& e : sisi)                            //@0
+    dist[e.u][e.v] = min(dist[e.u][e.v], e.w);  //@0
+
+// k = simpul perantara yang boleh dipakai
+for (int k = 1; k <= n; k++)                    //@1
+  for (int i = 1; i <= n; i++)                  //@2
+    for (int j = 1; j <= n; j++)                //@3
+      if (dist[i][k] + dist[k][j] < dist[i][j]) //@4
+        dist[i][j] = dist[i][k] + dist[k][j];   //@5`,
+            bf: `
+const long long INF = 1e18;
+vector<long long> dist(n + 1, INF);             //@0
+dist[1] = 0;                                    //@0
+for (int r = 1; r <= n - 1; r++)                //@1
+    for (auto& e : sisi)                        //@2
+        if (dist[e.u] != INF &&                 //@3
+            dist[e.u] + e.w < dist[e.v])        //@3
+            dist[e.v] = dist[e.u] + e.w;        //@4
+
+// ronde ke-N: jika masih membaik, ada siklus negatif
+bool siklusNegatif = false;
+for (auto& e : sisi)                            //@5
+    if (dist[e.u] != INF &&                     //@6
+        dist[e.u] + e.w < dist[e.v])            //@6
+        siklusNegatif = true;                   //@6`,
         };
 
         function setup() {
             sh.side.innerHTML = "";
-            pseudo = V.pseudoPanel(sh.side, "Pseudocode", PSEUDO[mode]);
+            pseudo = V.codePanel(sh.side, PSEUDO[mode]);
             if (mode === "floyd") {
                 const parts = splitStage(sh.stage);
                 view = V.graphView(parts.graph, { hint: "Seret simpul untuk merapikan · 🎲 Acak untuk graph lain" });
@@ -433,17 +446,28 @@
         let qv = 10;
         const parts = splitStage(sh.stage, "tall");
         const view = V.graphView(parts.graph, { hint: "Akar di simpul 1 (paling atas) · klik simpul untuk menjawab di Mode Tebak" });
-        const pseudo = V.pseudoPanel(sh.side, "Pseudocode", [
-            "up[0][v] ← parent(v),  depth[v] dari BFS akar",
-            "untuk j ← 1..LOG−1:  up[j][v] ← up[j−1][ up[j−1][v] ]",
-            "LCA(u, v):",
-            "  jika depth[u] < depth[v]: tukar u dan v",
-            "  naikkan u sebanyak depth[u] − depth[v] (per bit)",
-            "  jika u = v: kembalikan u",
-            "  untuk j ← LOG−1 turun ke 0:",
-            "    jika up[j][u] ≠ up[j][v]: u ← up[j][u];  v ← up[j][v]",
-            "  kembalikan up[0][u]",
-        ]);
+        const pseudo = V.codePanel(
+            sh.side,
+            `
+// up[0][v] = orang tua v; depth[v] dari BFS akar        //@0
+for (int j = 1; j < LOG; j++)                            //@1
+    for (int v = 1; v <= n; v++)                         //@1
+        up[j][v] = up[j - 1][up[j - 1][v]];              //@1
+
+int lca(int u, int v) {                                  //@2
+    if (depth[u] < depth[v]) swap(u, v);                 //@3
+    int beda = depth[u] - depth[v];                      //@4
+    for (int j = 0; j < LOG; j++)                        //@4
+        if (beda >> j & 1) u = up[j][u];                 //@4
+    if (u == v) return u;                                //@5
+    for (int j = LOG - 1; j >= 0; j--)                   //@6
+        if (up[j][u] != up[j][v]) {                      //@7
+            u = up[j][u];                                //@7
+            v = up[j][v];                                //@7
+        }
+    return up[0][u];                                     //@8
+}`,
+        );
         const watch = V.watchPanel(sh.side);
         const selU = sh.head.querySelector("[data-u]");
         const selV = sh.head.querySelector("[data-v]");

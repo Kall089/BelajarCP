@@ -35,14 +35,21 @@
             const sum = (l, r) => pre[r + 1] - pre[l];
 
             sh.side.innerHTML = "";
-            const pseudo = V.pseudoPanel(sh.side, "Pseudocode", [
-                "dp[i][i] ← 0 untuk semua i",
-                "untuk len dari 2 sampai n:",
-                "  untuk l dari 0 sampai n − len:",
-                "    r ← l + len − 1;  dp[l][r] ← ∞",
-                "    untuk k dari l sampai r − 1:",
-                "      dp[l][r] ← min(dp[l][r], dp[l][k] + dp[k+1][r] + sum(l, r))",
-            ]);
+            const pseudo = V.codePanel(
+                sh.side,
+                `
+for (int i = 0; i < n; i++) dp[i][i] = 0;               //@0
+for (int len = 2; len <= n; len++)                      //@1
+    for (int l = 0; l + len - 1 < n; l++) {             //@2
+        int r = l + len - 1;                            //@3
+        dp[l][r] = INF;                                 //@3
+        for (int k = l; k < r; k++) {                   //@4
+            long long biaya = dp[l][k] + dp[k + 1][r]   //@5
+                            + sum(l, r);                //@5
+            dp[l][r] = min(dp[l][r], biaya);            //@5
+        }
+    }`,
+            );
             const formula = V.htmlPanel(sh.side, "Perhitungan");
             const piles = V.htmlPanel(sh.side, "Tumpukan", "angka = banyak batu");
             const table = V.tableView(sh.stage, {
@@ -199,15 +206,27 @@
             const bin = (m) => m.toString(2).padStart(n, "0");
 
             sh.side.innerHTML = "";
-            const pseudo = V.pseudoPanel(sh.side, "Pseudocode", [
-                "dp[1][0] ← 0;  selain itu ∞      // mask 0…01: baru di kota 0",
-                "untuk mask naik, untuk v di mask:",
-                "  jika dp[mask][v] = ∞: lewati",
-                "  untuk u yang BELUM di mask:",
-                "    baru ← mask | (1 << u)",
-                "    dp[baru][u] ← min(dp[baru][u], dp[mask][v] + d[v][u])",
-                "jawaban ← min( dp[penuh][v] + d[v][0] )",
-            ]);
+            const pseudo = V.codePanel(
+                sh.side,
+                `
+// semua dp = INF, kecuali: baru di kota 0
+dp[1][0] = 0;                                              //@0
+for (int mask = 1; mask < (1 << n); mask++)                //@1
+    for (int v = 0; v < n; v++) {                          //@1
+        if (!(mask >> v & 1)) continue;
+        if (dp[mask][v] == INF) continue;                  //@2
+        for (int u = 0; u < n; u++) {                      //@3
+            if (mask >> u & 1) continue;  // sudah   //@3
+            int baru = mask | (1 << u);                    //@4
+            dp[baru][u] = min(dp[baru][u],                 //@5
+                              dp[mask][v] + d[v][u]);      //@5
+        }
+    }
+int penuh = (1 << n) - 1;
+long long jawaban = INF;
+for (int v = 1; v < n; v++)                                //@6
+    jawaban = min(jawaban, dp[penuh][v] + d[v][0]);        //@6`,
+            );
             const formula = V.htmlPanel(sh.side, "Perhitungan");
             const matrix = V.htmlPanel(sh.side, "Jarak antar kota", "d[baris][kolom]");
             const table = V.tableView(sh.stage, {

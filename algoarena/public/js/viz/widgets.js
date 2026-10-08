@@ -184,14 +184,19 @@
         const nSel = sh.head.querySelector("[data-n]");
         const tSel = sh.head.querySelector("[data-target]");
         const counter = V.htmlPanel(sh.side, "Jumlah langkah");
-        const pseudo = V.pseudoPanel(sh.side, "Pencarian biner", [
-            "lo ← 0,  hi ← N − 1",
-            "selama lo ≤ hi:",
-            "  mid ← (lo + hi) / 2  (bulatkan ke bawah)",
-            "  jika a[mid] = target: ketemu!",
-            "  jika a[mid] < target: lo ← mid + 1",
-            "  lain: hi ← mid − 1",
-        ]);
+        const pseudo = V.codePanel(
+            sh.side,
+            `
+int lo = 0, hi = n - 1;                  //@0
+while (lo <= hi) {                       //@1
+    int mid = (lo + hi) / 2;             //@2
+    if (a[mid] == target) return mid;    //@3
+    if (a[mid] < target) lo = mid + 1;   //@4
+    else hi = mid - 1;                   //@5
+}
+return -1;  // tidak ditemukan`,
+            "Kode C++: pencarian biner",
+        );
         const watch = V.watchPanel(sh.side, "Variabel biner");
         let arr = [];
         let table = null;

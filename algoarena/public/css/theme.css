@@ -452,3 +452,55 @@ html[data-theme="light"] .dg-node:is(.vis, .cyan, .green, .red) text {
 .bit-table code {
     font-family: var(--mono);
 }
+
+/* ═══════════════════════════════ Visualisasi: panel kode C++ lebih lebar ═══════════════════════════════ */
+.lesson-layout {
+    max-width: 1480px;
+}
+
+.viz-body {
+    grid-template-columns: minmax(0, 1fr) minmax(400px, 44%);
+}
+
+.viz-side {
+    max-height: 640px;
+}
+
+.viz:fullscreen .viz-body {
+    grid-template-columns: minmax(0, 1fr) minmax(480px, 42%);
+}
+
+.pseudo.cpp {
+    max-height: 340px;
+    overflow: auto;
+    padding: 10px 0;
+    background: var(--code-bg);
+    font: 12.5px/1.7 var(--mono);
+    font-variant-ligatures: none;
+}
+
+.pseudo.cpp div {
+    padding-right: 14px;
+    color: var(--code-text);
+}
+
+.pseudo.cpp div.on {
+    background: rgba(245, 158, 11, 0.16);
+    color: var(--code-text);
+    box-shadow: inset 3px 0 0 var(--amber);
+}
+
+.viz:fullscreen .pseudo.cpp {
+    max-height: 52vh;
+    font-size: 14px;
+}
+
+@media (max-width: 1100px) {
+    .viz-body {
+        grid-template-columns: 1fr;
+    }
+
+    .viz-side {
+        max-height: none;
+    }
+}

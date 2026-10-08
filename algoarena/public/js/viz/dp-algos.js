@@ -66,12 +66,26 @@
             sh.stage.classList.remove("graph-stage");
             sh.side.innerHTML = "";
             const memoMode = mode === "memo";
-            const pseudo = V.pseudoPanel(
+            const pseudo = V.codePanel(
                 sh.side,
-                "Pseudocode",
                 memoMode
-                    ? ["fib(n):", "  jika memo[n] sudah ada: kembalikan memo[n]", "  jika n ≤ 1: kembalikan n", "  hasil ← fib(n−1) + fib(n−2)", "  memo[n] ← hasil", "  kembalikan hasil"]
-                    : ["fib(n):", "  jika n ≤ 1: kembalikan n", "  kembalikan fib(n−1) + fib(n−2)"],
+                    ? `
+long long memo[100];
+bool sudah[100];
+
+long long fib(int n) {                       //@0
+    if (sudah[n]) return memo[n];              //@1
+    if (n <= 1) return n;                      //@2
+    long long hasil = fib(n - 1) + fib(n - 2); //@3
+    sudah[n] = true;                           //@4
+    memo[n] = hasil;                           //@4
+    return hasil;                              //@5
+}`
+                    : `
+long long fib(int n) {                   //@0
+    if (n <= 1) return n;                  //@1
+    return fib(n - 1) + fib(n - 2);        //@2
+}`,
             );
             const counter = V.htmlPanel(sh.side, "Statistik pemanggilan");
             const memoPanel = memoMode ? V.arrayPanel(sh.side, "Tabel memo", "hasil yang diingat") : null;
@@ -235,7 +249,16 @@
         // ---------- Mode tabulasi ----------
         function buildTable() {
             sh.side.innerHTML = "";
-            const pseudo = V.pseudoPanel(sh.side, "Pseudocode", ["dp[0] ← 0", "dp[1] ← 1", "untuk i dari 2 sampai n:", "  dp[i] ← dp[i−1] + dp[i−2]", "kembalikan dp[n]"]);
+            const pseudo = V.codePanel(
+                sh.side,
+                `
+vector<long long> dp(n + 1);
+dp[0] = 0;                            //@0
+dp[1] = 1;                            //@1
+for (int i = 2; i <= n; i++)          //@2
+    dp[i] = dp[i - 1] + dp[i - 2];    //@3
+cout << dp[n] << '\\n';              //@4`,
+            );
             const formula = V.htmlPanel(sh.side, "Perhitungan");
             const table = V.tableView(sh.stage, { rows: 1, cols: n + 1, colHead: Array.from({ length: n + 1 }, (_, i) => i), rowHead: ["dp"], cell: 48 });
             const dp = new Array(n + 1).fill(null);
@@ -327,12 +350,30 @@
             const n = V.clampInt(nInput.value, 1, 15, 7);
             nInput.value = n;
             sh.side.innerHTML = "";
-            const pseudo = V.pseudoPanel(
+            const pseudo = V.codePanel(
                 sh.side,
-                "Pseudocode",
                 mode === "ways"
-                    ? ["dp[0] ← 1          // satu cara: diam di bawah", "untuk i dari 1 sampai n:", "  dp[i] ← 0", "  untuk setiap langkah s:", "    jika s ≤ i: dp[i] ← dp[i] + dp[i−s]", "kembalikan dp[n]"]
-                    : ["dp[0] ← 0          // nominal 0 butuh 0 koin", "untuk x dari 1 sampai n:", "  dp[x] ← ∞", "  untuk setiap koin c:", "    jika c ≤ x: dp[x] ← min(dp[x], dp[x−c] + 1)", "kembalikan dp[n]  (∞ berarti mustahil)"],
+                    ? `
+vector<long long> dp(n + 1, 0);
+dp[0] = 1;   // satu cara: diam di bawah          //@0
+for (int i = 1; i <= n; i++) {                    //@1
+    dp[i] = 0;                                    //@2
+    for (int s : langkah)                         //@3
+        if (s <= i) dp[i] += dp[i - s];           //@4
+}
+cout << dp[n] << '\\n';                          //@5`
+                    : `
+const int INF = 1e9;
+vector<int> dp(n + 1, INF);
+dp[0] = 0;   // nominal 0 butuh 0 koin            //@0
+for (int x = 1; x <= n; x++) {                    //@1
+    dp[x] = INF;                                  //@2
+    for (int c : koin)                            //@3
+        if (c <= x && dp[x - c] != INF)           //@4
+            dp[x] = min(dp[x], dp[x - c] + 1);    //@4
+}
+// INF berarti nominal n mustahil dibentuk
+cout << (dp[n] == INF ? -1 : dp[n]) << '\\n';     //@5`,
             );
             const formula = V.htmlPanel(sh.side, "Perhitungan");
             const setPanel = V.dsPanel(sh.side, mode === "ways" ? "Pilihan langkah" : "Jenis koin");
@@ -515,15 +556,22 @@
                 }),
             );
             sh.side.innerHTML = "";
-            const pseudo = V.pseudoPanel(sh.side, "Pseudocode", [
-                "dp[0][0] ← 1",
-                "untuk setiap baris i, kolom j (kiri→kanan):",
-                "  jika (i, j) rintangan: dp[i][j] ← 0",
-                "  lain:",
-                "    atas ← dp[i−1][j]  (0 jika di luar)",
-                "    kiri ← dp[i][j−1]  (0 jika di luar)",
-                "    dp[i][j] ← atas + kiri",
-            ]);
+            const pseudo = V.codePanel(
+                sh.side,
+                `
+dp[0][0] = 1;                                      //@0
+for (int i = 0; i < R; i++)                        //@1
+    for (int j = 0; j < C; j++) {                  //@1
+        if (i == 0 && j == 0) continue;
+        if (petak[i][j] == '#') {                  //@2
+            dp[i][j] = 0;   // rintangan           //@2
+            continue;
+        }
+        long long atas = i > 0 ? dp[i - 1][j] : 0; //@3,4
+        long long kiri = j > 0 ? dp[i][j - 1] : 0; //@5
+        dp[i][j] = atas + kiri;                    //@6
+    }`,
+            );
             const formula = V.htmlPanel(sh.side, "Perhitungan");
             table = V.tableView(sh.stage, {
                 rows: R,
@@ -701,14 +749,19 @@
             wIn.value = W;
             const n = items.length;
             sh.side.innerHTML = "";
-            const pseudo = V.pseudoPanel(sh.side, "Pseudocode", [
-                "dp[0][c] ← 0 untuk semua c",
-                "untuk i dari 1 sampai n:      // barang ke-i",
-                "  untuk c dari 0 sampai W:    // kapasitas",
-                "    dp[i][c] ← dp[i−1][c]     // tidak diambil",
-                "    jika w[i] ≤ c:",
-                "      dp[i][c] ← max(dp[i][c], dp[i−1][c−w[i]] + v[i])",
-            ]);
+            const pseudo = V.codePanel(
+                sh.side,
+                `
+// baris 0 (tanpa barang) bernilai 0 semua
+vector<vector<int>> dp(n + 1, vector<int>(W + 1, 0));   //@0
+for (int i = 1; i <= n; i++)          // barang ke-i     //@1
+    for (int c = 0; c <= W; c++) {    // kapasitas       //@2
+        dp[i][c] = dp[i - 1][c];      // tidak diambil   //@3
+        if (w[i] <= c)                                   //@4
+            dp[i][c] = max(dp[i][c],                     //@5
+                           dp[i - 1][c - w[i]] + v[i]);  //@5
+    }`,
+            );
             const formula = V.htmlPanel(sh.side, "Perhitungan");
             const itemPanel = V.htmlPanel(sh.side, "Daftar barang");
             table = V.tableView(sh.stage, {
@@ -918,15 +971,20 @@
             const n = A.length;
             const m = B.length;
             sh.side.innerHTML = "";
-            const pseudo = V.pseudoPanel(sh.side, "Pseudocode", [
-                "dp[0][*] ← 0,  dp[*][0] ← 0",
-                "untuk i dari 1 sampai |A|:",
-                "  untuk j dari 1 sampai |B|:",
-                "    jika A[i] = B[j]:",
-                "      dp[i][j] ← dp[i−1][j−1] + 1",
-                "    lain:",
-                "      dp[i][j] ← max(dp[i−1][j], dp[i][j−1])",
-            ]);
+            const pseudo = V.codePanel(
+                sh.side,
+                `
+int n = A.size(), m = B.size();
+// baris 0 dan kolom 0 = string kosong, bernilai 0
+vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));   //@0
+for (int i = 1; i <= n; i++)                             //@1
+    for (int j = 1; j <= m; j++) {                       //@2
+        if (A[i - 1] == B[j - 1])                        //@3
+            dp[i][j] = dp[i - 1][j - 1] + 1;             //@4
+        else                                             //@5
+            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);  //@6
+    }`,
+            );
             const formula = V.htmlPanel(sh.side, "Perhitungan");
             const result = V.htmlPanel(sh.side, "LCS terbentuk");
             table = V.tableView(sh.stage, {
@@ -1153,14 +1211,21 @@
         });
         const arrIn = sh.head.querySelector("[data-arr]");
         const view = barsView(sh.stage);
-        const pseudo = V.pseudoPanel(sh.side, "Pseudocode", [
-            "untuk i dari 0 sampai n−1:",
-            "  dp[i] ← 1;  prev[i] ← −1",
-            "  untuk j dari 0 sampai i−1:",
-            "    jika a[j] < a[i] dan dp[j] + 1 > dp[i]:",
-            "      dp[i] ← dp[j] + 1;  prev[i] ← j",
-            "jawaban ← max(dp)",
-        ]);
+        const pseudo = V.codePanel(
+            sh.side,
+            `
+vector<int> dp(n), prev(n);
+for (int i = 0; i < n; i++) {                       //@0
+    dp[i] = 1;                                      //@1
+    prev[i] = -1;                                   //@1
+    for (int j = 0; j < i; j++)                     //@2
+        if (a[j] < a[i] && dp[j] + 1 > dp[i]) {     //@3
+            dp[i] = dp[j] + 1;                      //@4
+            prev[i] = j;                            //@4
+        }
+}
+int jawaban = *max_element(dp.begin(), dp.end());   //@5`,
+        );
         const dPanel = V.arrayPanel(sh.side, "Array dp", "LIS yang berakhir di i");
         const watch = V.watchPanel(sh.side);
 
