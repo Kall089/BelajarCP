@@ -388,3 +388,67 @@ html[data-theme="light"] .dg-node:is(.vis, .cyan, .green, .red) text {
 .walkthrough.is-fullcode.has-focus .wt-code .wl:not(.on) {
     opacity: 0.8;
 }
+
+/* ═══════════════════════════════ Visualisasi DP lanjutan ═══════════════════════════════ */
+.iv-piles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.iv-piles span {
+    min-width: 34px;
+    padding: 6px 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--panel-2);
+    font: 700 13px/1 var(--mono);
+    text-align: center;
+    color: var(--muted);
+}
+
+.iv-piles span.on {
+    border-color: var(--amber);
+    color: var(--text-strong);
+}
+
+.iv-piles span.left {
+    border-color: var(--cyan);
+    background: var(--cyan-soft);
+    color: var(--text-strong);
+}
+
+.iv-piles span.right {
+    border-color: var(--pink);
+    background: rgba(236, 72, 153, 0.12);
+    color: var(--text-strong);
+}
+
+.mini-matrix {
+    border-collapse: collapse;
+    font: 600 12.5px/1 var(--mono);
+}
+
+.mini-matrix th,
+.mini-matrix td {
+    width: 30px;
+    height: 26px;
+    border: 1px solid var(--border-soft);
+    text-align: center;
+}
+
+.mini-matrix th {
+    color: var(--faint);
+    background: var(--panel-2);
+}
+
+.mini-matrix td.on {
+    background: var(--amber-soft);
+    color: var(--amber);
+    outline: 2px solid var(--amber);
+}
+
+.bit-table td,
+.bit-table code {
+    font-family: var(--mono);
+}
