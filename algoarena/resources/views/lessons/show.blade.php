@@ -56,7 +56,7 @@
             @includeFirst(['lessons.content.'.$lesson->slug, 'lessons.content._soon'])
 
             <section class="lesson-section" id="latihan" data-toc="Latihan Soal" data-level="0">
-                <h2><span class="sec-icon">🏁</span> Latihan Soal</h2>
+                <h2>Latihan Soal</h2>
                 <p class="prose">Sudah paham caranya? Saatnya membuktikan! Soal-soal ini memakai teknik yang sama dengan materi di atas.</p>
                 <div class="practice-grid">
                     @foreach ($lesson->problems as $p)
@@ -77,7 +77,7 @@
 
                 <div @class(['complete-box', 'is-done' => $done]) data-complete-box>
                     <div style="flex: 1">
-                        <b data-complete-title>{{ $done ? 'Materi ini sudah kamu selesaikan 🎉' : 'Sudah memahami materi ini?' }}</b>
+                        <b data-complete-title>{{ $done ? 'Materi ini sudah kamu selesaikan.' : 'Sudah memahami materi ini?' }}</b>
                         <div class="muted" data-complete-sub>
                             {{ $done ? 'Kamu tetap bisa mengulasnya kapan saja.' : 'Tandai selesai agar progresmu tercatat di peta belajar.' }}
                         </div>

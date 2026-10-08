@@ -254,7 +254,7 @@ CPP;
 @include('lessons.level', ['n' => 1, 'title' => 'memahami spanning tree', 'desc' => 'Menyambungkan semua simpul semurah mungkin, lalu ide serakah Kruskal.'])
 
 <section class="lesson-section" id="intuisi" data-toc="Intuisi: Kabel Termurah">
-    <h2><span class="sec-icon">💡</span> Intuisi: Kabel Paling Murah</h2>
+    <h2>Intuisi: Kabel Paling Murah</h2>
     <div class="prose">
         <p>Sekolah ingin menyambungkan 7 laboratorium dengan kabel jaringan. Setiap pasangan lab punya biaya pemasangan berbeda. Syaratnya: setiap lab harus bisa berkomunikasi dengan lab lain (boleh lewat lab perantara). Berapa biaya <strong>termurah</strong>?</p>
         <ul>
@@ -276,20 +276,20 @@ CPP;
 </section>
 
 <section class="lesson-section" id="contoh" data-toc="Coba dengan Tangan">
-    <h2><span class="sec-icon">✍️</span> Coba dengan Tangan</h2>
+    <h2>Coba dengan Tangan</h2>
     <div class="prose">
         <p>Urutkan semua sisi dari bobot terkecil, lalu putuskan satu per satu sambil mencatat kelompok yang sudah tersambung.</p>
     </div>
     <div class="trace-wrap">
         <table class="trace-table">
             <tr><th>Sisi (bobot)</th><th>Keputusan</th><th>Kelompok setelahnya</th><th>Total</th></tr>
-            <tr class="ok"><td>4–5 (2)</td><td>✅ Ambil</td><td>{1} {2} {3} {4,5} {6} {7}</td><td>2</td></tr>
-            <tr class="ok"><td>1–3 (3)</td><td>✅ Ambil</td><td>{1,3} {2} {4,5} {6} {7}</td><td>5</td></tr>
-            <tr class="ok"><td>6–7 (3)</td><td>✅ Ambil</td><td>{1,3} {2} {4,5} {6,7}</td><td>8</td></tr>
-            <tr class="ok"><td>1–2 (4)</td><td>✅ Ambil</td><td>{1,2,3} {4,5} {6,7}</td><td>12</td></tr>
-            <tr class="hl"><td>2–3 (5)</td><td>❌ Lewati: 2 dan 3 sudah satu kelompok</td><td>tetap</td><td>12</td></tr>
-            <tr class="ok"><td>5–7 (5)</td><td>✅ Ambil</td><td>{1,2,3} {4,5,6,7}</td><td>17</td></tr>
-            <tr class="ok"><td>2–4 (6)</td><td>✅ Ambil, sudah 6 = N − 1 sisi</td><td>{1,2,3,4,5,6,7}</td><td><b>23</b></td></tr>
+            <tr class="ok"><td>4–5 (2)</td><td>Ambil</td><td>{1} {2} {3} {4,5} {6} {7}</td><td>2</td></tr>
+            <tr class="ok"><td>1–3 (3)</td><td>Ambil</td><td>{1,3} {2} {4,5} {6} {7}</td><td>5</td></tr>
+            <tr class="ok"><td>6–7 (3)</td><td>Ambil</td><td>{1,3} {2} {4,5} {6,7}</td><td>8</td></tr>
+            <tr class="ok"><td>1–2 (4)</td><td>Ambil</td><td>{1,2,3} {4,5} {6,7}</td><td>12</td></tr>
+            <tr class="hl"><td>2–3 (5)</td><td>Lewati: 2 dan 3 sudah satu kelompok</td><td>tetap</td><td>12</td></tr>
+            <tr class="ok"><td>5–7 (5)</td><td>Ambil</td><td>{1,2,3} {4,5,6,7}</td><td>17</td></tr>
+            <tr class="ok"><td>2–4 (6)</td><td>Ambil, sudah 6 = N − 1 sisi</td><td>{1,2,3,4,5,6,7}</td><td><b>23</b></td></tr>
         </table>
     </div>
     <div class="callout tip">
@@ -299,7 +299,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi Interaktif">
-    <h2><span class="sec-icon">🎬</span> Visualisasi Interaktif</h2>
+    <h2>Visualisasi Interaktif</h2>
     <div class="prose">
         <p>Perhatikan daftar sisi terurut di panel samping dan warna kelompok yang perlahan menyatu. Dengan <strong>Mode Tebak</strong>, kamu memutuskan sendiri apakah setiap sisi diambil atau dilewati, lalu menebak total biayanya.</p>
     </div>
@@ -307,7 +307,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="cara" data-toc="Cara Pengerjaan">
-    <h2><span class="sec-icon">🧭</span> Cara Pengerjaan</h2>
+    <h2>Cara Pengerjaan</h2>
     <div class="steps">
         <div class="step-card"><b>Kenali ciri soal MST</b><span>"Sambungkan semua", "biaya total minimum", "jaringan", "semua harus terhubung", dan sisi dua arah.</span></div>
         <div class="step-card"><b>Simpan edge list</b><span>Vector berisi <code>{u, v, w}</code>, lalu urutkan dari bobot terkecil.</span></div>
@@ -320,7 +320,7 @@ CPP;
 @include('lessons.level', ['n' => 2, 'title' => 'menulis Kruskal + Union-Find di C++', 'desc' => 'Program lengkap: struct sisi, sort dengan lambda, find, dan unite.'])
 
 <section class="lesson-section" id="kode" data-toc="Kode C++ Lengkap">
-    <h2><span class="sec-icon">💻</span> Kode C++ Lengkap</h2>
+    <h2>Kode C++ Lengkap</h2>
     <div class="prose">
         <p><strong>Soal contoh:</strong> graph tak berarah berbobot. Cetak total bobot MST dan sisi-sisi yang dipilih (sesuai urutan dipilih), atau <code>-1</code> jika graph tidak terhubung.</p>
     </div>
@@ -334,19 +334,19 @@ CPP;
 </section>
 
 <section class="lesson-section" id="pola" data-toc="Pola Soal">
-    <h2><span class="sec-icon">🧠</span> Pola Soal yang Sering Muncul</h2>
+    <h2>Pola Soal yang Sering Muncul</h2>
     <div class="pattern-grid">
-        <div class="pattern"><h4>🔌 Biaya minimum</h4><p>"Sambungkan semua kota/lab semurah mungkin". Kruskal langsung.</p></div>
-        <div class="pattern"><h4>💰 Keuntungan maksimum</h4><p>Maximum spanning tree: urutkan sisi dari yang <b>terbesar</b>.</p></div>
-        <div class="pattern"><h4>👥 Gabung & tanya</h4><p>"Apakah A dan B satu grup?" setelah serangkaian penggabungan. Cukup DSU, tanpa MST.</p></div>
-        <div class="pattern"><h4>🧮 Banyak kelompok</h4><p>Mulai dari N, kurangi 1 setiap <code>unite</code> berhasil.</p></div>
-        <div class="pattern"><h4>🔗 Sudah ada kabel</h4><p>Beberapa sisi sudah terpasang gratis: <code>unite</code> dulu sisi-sisi itu, baru Kruskal.</p></div>
-        <div class="pattern"><h4>⛓️ Bottleneck</h4><p>"Minimalkan bobot sisi terbesar di rute": jawabannya ada di sepanjang MST.</p></div>
+        <div class="pattern"><h4>Biaya minimum</h4><p>"Sambungkan semua kota/lab semurah mungkin". Kruskal langsung.</p></div>
+        <div class="pattern"><h4>Keuntungan maksimum</h4><p>Maximum spanning tree: urutkan sisi dari yang <b>terbesar</b>.</p></div>
+        <div class="pattern"><h4>Gabung & tanya</h4><p>"Apakah A dan B satu grup?" setelah serangkaian penggabungan. Cukup DSU, tanpa MST.</p></div>
+        <div class="pattern"><h4>Banyak kelompok</h4><p>Mulai dari N, kurangi 1 setiap <code>unite</code> berhasil.</p></div>
+        <div class="pattern"><h4>Sudah ada kabel</h4><p>Beberapa sisi sudah terpasang gratis: <code>unite</code> dulu sisi-sisi itu, baru Kruskal.</p></div>
+        <div class="pattern"><h4>Bottleneck</h4><p>"Minimalkan bobot sisi terbesar di rute": jawabannya ada di sepanjang MST.</p></div>
     </div>
 </section>
 
 <section class="lesson-section" id="kompleksitas" data-toc="Kompleksitas & Jebakan">
-    <h2><span class="sec-icon">⏱️</span> Kompleksitas & Jebakan</h2>
+    <h2>Kompleksitas & Jebakan</h2>
     <table class="cx-table">
         <tr><th>Bagian</th><th>Waktu</th><th>Keterangan</th></tr>
         <tr><td>Mengurutkan sisi</td><td><code>O(M log M)</code></td><td>Bagian paling mahal dari Kruskal.</td></tr>
@@ -366,7 +366,7 @@ CPP;
 @include('lessons.level', ['n' => 3, 'title' => 'MST untuk soal sulit', 'desc' => 'Mengapa serakah itu benar, algoritma Prim, dan DSU untuk keterhubungan dinamis.'])
 
 <section class="lesson-section" id="bukti" data-toc="Mengapa Kruskal Benar?">
-    <h2><span class="sec-icon">🔬</span> Mengapa Serakah Itu Benar? (Cut Property)</h2>
+    <h2>Mengapa Serakah Itu Benar? (Cut Property)</h2>
     <div class="proof">
         <p><strong>Cut property.</strong> Bagi simpul-simpul menjadi dua kubu sembarang. Di antara semua sisi yang menyeberangi dua kubu itu, sisi yang <strong>termurah</strong> pasti termasuk dalam suatu MST.</p>
         <p><strong>Bukti.</strong> Ambil MST mana pun yang tidak memuat sisi termurah e itu. Tambahkan e: terbentuk siklus yang pasti menyeberangi kubu di sisi lain melalui sisi f. Karena e termurah, <code>w(e) ≤ w(f)</code>. Tukar f dengan e: hasilnya tetap spanning tree dan totalnya tidak bertambah.</p>
@@ -375,7 +375,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="teknik" data-toc="Teknik Lanjutan">
-    <h2><span class="sec-icon">🚀</span> Teknik Lanjutan</h2>
+    <h2>Teknik Lanjutan</h2>
     <div class="prose">
         <h3>1. Algoritma Prim</h3>
         <p>Jika graph sudah tersimpan sebagai adjacency list, Prim sering lebih praktis. Mulai dari satu simpul, lalu berulang kali tambahkan sisi termurah yang menghubungkan pohon dengan simpul di luar pohon. Kodenya sangat mirip Dijkstra, hanya kuncinya bobot sisi, bukan jarak total.</p>
@@ -397,7 +397,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="kuis" data-toc="Cek Pemahaman">
-    <h2><span class="sec-icon">✅</span> Cek Pemahaman</h2>
+    <h2>Cek Pemahaman</h2>
     <div class="quiz" data-quiz data-answer="2" data-explain="Spanning tree adalah pohon yang memuat semua N simpul, dan pohon dengan N simpul selalu punya tepat N − 1 sisi.">
         <p class="quiz-q">Graph dengan 10 simpul. Berapa banyak sisi pada MST-nya (jika terhubung)?</p>
         <div class="quiz-options">

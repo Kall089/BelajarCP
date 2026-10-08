@@ -171,13 +171,13 @@ long long fib(int n) {                   //@0
                 const repeated = !d.memo && (seenK[d.k] || 0) > 0;
                 state[d.id] = { cls: "active" + (repeated && !memoMode ? " repeat" : ""), val: "" };
                 if (repeated && !memoMode) repeats++;
-                snap(0, `Panggil <b>fib(${d.k})</b>.` + (repeated && !memoMode ? ` ⚠️ fib(${d.k}) <b>sudah pernah dihitung</b> sebelumnya, tapi rekursi biasa menghitungnya lagi dari nol!` : ""), {
+                snap(0, `Panggil <b>fib(${d.k})</b>.` + (repeated && !memoMode ? ` fib(${d.k}) <b>sudah pernah dihitung</b> sebelumnya, tapi rekursi biasa menghitungnya lagi dari nol!` : ""), {
                     mark: repeated && !memoMode ? "skip" : undefined,
                 });
                 if (d.memo) {
                     hits++;
                     state[d.id] = { cls: "memo", val: `=${memo[d.k]}` };
-                    snap(1, `<code>memo[${d.k}]</code> sudah ada → langsung kembalikan <b>${memo[d.k]}</b> tanpa menghitung ulang. ⚡`, { mark: "discover" });
+                    snap(1, `<code>memo[${d.k}]</code> sudah ada → langsung kembalikan <b>${memo[d.k]}</b> tanpa menghitung ulang. `, { mark: "discover" });
                     return memo[d.k];
                 }
                 let result;
@@ -215,7 +215,7 @@ long long fib(int n) {                   //@0
             snap(
                 -1,
                 memoMode
-                    ? `🎉 fib(${n}) = <b>${ans}</b> hanya dengan <b>${calls}</b> pemanggilan (${hits} di antaranya langsung dari memo). Setiap fib(k) dihitung <b>sekali</b>, jadi O(n).`
+                    ? `fib(${n}) = <b>${ans}</b> hanya dengan <b>${calls}</b> pemanggilan (${hits} di antaranya langsung dari memo). Setiap fib(k) dihitung <b>sekali</b>, jadi O(n).`
                     : `fib(${n}) = <b>${ans}</b>, tapi butuh <b>${calls}</b> pemanggilan, dan <b>${repeats}</b> di antaranya menghitung ulang hal yang sama! Jumlahnya tumbuh eksponensial (≈1,6ⁿ). Coba mode <b>Memoization</b>.`,
                 { mark: "done" },
             );
@@ -296,7 +296,7 @@ cout << dp[n] << '\\n';              //@4`,
                     ask: { type: "value", answer: dp[i], prompt: `Berapa nilai <code>dp[${i}]</code>?`, hint: "Jumlahkan dua sel sebelumnya.", mask: [0, i], context: `Menghitung sel <b>dp[${i}]</b>.` },
                 });
             }
-            snap(4, `🎉 fib(${n}) = <b>${dp[n]}</b>. Tabel terisi dalam <b>${n + 1}</b> langkah: O(n) waktu, tanpa rekursi sama sekali.`, n, { mark: "done" });
+            snap(4, `fib(${n}) = <b>${dp[n]}</b>. Tabel terisi dalam <b>${n + 1}</b> langkah: O(n) waktu, tanpa rekursi sama sekali.`, n, { mark: "done" });
 
             render = (f) => {
                 pseudo.set(f.line);
@@ -425,7 +425,7 @@ cout << (dp[n] == INF ? -1 : dp[n]) << '\\n';     //@5`,
                         ask: { type: "value", answer: dp[i], prompt: `Berapa banyak cara mencapai anak tangga ${i}? (<code>dp[${i}]</code>)`, hint: "Jumlahkan nilai sel-sel yang ditunjuk panah.", mask: [0, i], context: `Menghitung <b>dp[${i}]</b>.` },
                     });
                 }
-                snap(5, `🎉 Ada <b>${dp[n]}</b> cara berbeda untuk mencapai anak tangga ${n}.`, undefined, { path: [n], mark: "done" });
+                snap(5, `Ada <b>${dp[n]}</b> cara berbeda untuk mencapai anak tangga ${n}.`, undefined, { path: [n], mark: "done" });
             } else {
                 snap(-1, `Bentuk nominal <b>${n}</b> dengan koin {${S.join(", ")}} sesedikit mungkin. <code>dp[x]</code> = koin minimum untuk nominal x.`);
                 dp[0] = 0;
@@ -491,7 +491,7 @@ cout << (dp[n] == INF ? -1 : dp[n]) << '\\n';     //@5`,
                         });
                     }
                     path.push(0);
-                    snap(5, `🎉 Minimum <b>${dp[n]}</b> koin: <b>${used.join(" + ")}</b> = ${n}.`, undefined, { path, pathLine: path.map((p) => [0, p]), mark: "done" });
+                    snap(5, `Minimum <b>${dp[n]}</b> koin: <b>${used.join(" + ")}</b> = ${n}.`, undefined, { path, pathLine: path.map((p) => [0, p]), mark: "done" });
                 }
             }
             render = (f) => {
@@ -524,9 +524,9 @@ cout << (dp[n] == INF ? -1 : dp[n]) << '\\n';     //@5`,
             controls: `
                 <label class="viz-input">Baris <input class="short" data-r value="4"></label>
                 <label class="viz-input">Kolom <input class="short" data-c value="5"></label>
-                <button class="btn btn-sm" data-random>🎲 Rintangan</button>
+                <button class="btn btn-sm" data-random>Rintangan</button>
                 <button class="btn btn-sm btn-ghost" data-clear>Kosongkan</button>
-                <button class="btn btn-sm btn-ghost" data-heat>🌡 Heatmap</button>`,
+                <button class="btn btn-sm btn-ghost" data-heat>Heatmap</button>`,
             legend: [
                 ["Sel dihitung", "#f59e0b", "#f59e0b"],
                 ["Dari atas", "#22d3ee", "rgba(34,211,238,.14)"],
@@ -669,7 +669,7 @@ for (int i = 0; i < R; i++)                        //@1
             }
             snap(
                 -1,
-                ans > 0 ? `🎉 Ada <b>${ans}</b> jalur berbeda menuju pojok kanan bawah. Garis hijau adalah salah satu contohnya.` : "Tidak ada jalur sama sekali, karena rintangan menutup semua rute.",
+                ans > 0 ? `Ada <b>${ans}</b> jalur berbeda menuju pojok kanan bawah. Garis hijau adalah salah satu contohnya.` : "Tidak ada jalur sama sekali, karena rintangan menutup semua rute.",
                 null,
                 { path: path.map((p) => p.join(",")), pathLine: path, mark: "done" },
             );
@@ -716,8 +716,8 @@ for (int i = 0; i < R; i++)                        //@1
                 <label class="viz-input">Barang (berat:nilai) <input data-items value="1:1, 3:4, 4:5, 5:7" style="width:170px"></label>
                 <label class="viz-input">Kapasitas <input class="short" data-w value="7"></label>
                 <button class="btn btn-sm btn-primary" data-apply>Terapkan</button>
-                <button class="btn btn-sm" data-random title="Barang acak">🎲</button>
-                <button class="btn btn-sm btn-ghost" data-heat>🌡 Heatmap</button>`,
+                <button class="btn btn-sm" data-random title="Barang acak">Acak</button>
+                <button class="btn btn-sm btn-ghost" data-heat>Heatmap</button>`,
             legend: [
                 ["Sel dihitung", "#f59e0b", "#f59e0b"],
                 ["Tidak ambil (atas)", "#22d3ee", "rgba(34,211,238,.14)"],
@@ -730,7 +730,7 @@ for (int i = 0; i < R; i++)                        //@1
         const heatBtn = sh.head.querySelector("[data-heat]");
         let heat = false;
         let table = null;
-        const ICONS = ["🎒", "🔦", "⛺", "🥾", "🍫", "🧭"];
+        
         let render = () => {};
 
         function parseItems() {
@@ -767,7 +767,7 @@ for (int i = 1; i <= n; i++)          // barang ke-i     //@1
             table = V.tableView(sh.stage, {
                 rows: n + 1,
                 cols: W + 1,
-                rowHead: ["–", ...items.map((_, i) => `${ICONS[i]}${i + 1}`)],
+                rowHead: ["–", ...items.map((_, i) => `${i + 1}`)],
                 colHead: Array.from({ length: W + 1 }, (_, c) => c),
                 corner: "i \\ c",
                 cell: 44,
@@ -779,7 +779,7 @@ for (int i = 1; i <= n; i++)          // barang ke-i     //@1
                 `<div class="items-list">${items
                     .map(
                         ([w, v], i) =>
-                            `<div class="item-row ${hot === i + 1 ? "hot" : ""} ${picked.includes(i + 1) ? "pick" : ""}"><span class="ic">${ICONS[i]}</span><span>berat ${w}</span><span>nilai ${v}</span></div>`,
+                            `<div class="item-row ${hot === i + 1 ? "hot" : ""} ${picked.includes(i + 1) ? "pick" : ""}"><span class="ic">${i + 1}</span><span>berat ${w}</span><span>nilai ${v}</span></div>`,
                     )
                     .join("")}</div>` +
                 (cap !== null
@@ -817,7 +817,7 @@ for (int i = 1; i <= n; i++)          // barang ke-i     //@1
             snap(0, "Baris 0: tanpa barang apa pun, nilainya selalu <b>0</b>.");
             for (let i = 1; i <= n; i++) {
                 const [w, v] = items[i - 1];
-                snap(1, `Sekarang pertimbangkan barang <b>${ICONS[i - 1]} ${i}</b> (berat ${w}, nilai ${v}).`, null, { hot: i, hlRow: i, mark: "key" });
+                snap(1, `Sekarang pertimbangkan barang <b>${i}</b> (berat ${w}, nilai ${v}).`, null, { hot: i, hlRow: i, mark: "key" });
                 for (let c = 0; c <= W; c++) {
                     const skip = dp[i - 1][c];
                     const ask = (ans) => ({
@@ -867,16 +867,16 @@ for (int i = 1; i <= n; i++)          // barang ke-i     //@1
                 const took = dp[i][c] !== dp[i - 1][c];
                 const q = {
                     type: "choice",
-                    options: ["✅ Diambil", "❌ Tidak diambil"],
+                    options: ["Diambil", "Tidak diambil"],
                     answer: took ? 0 : 1,
-                    prompt: `Telusur balik di <code>dp[${i}][${c}] = ${dp[i][c]}</code> (sel atasnya ${dp[i - 1][c]}). Apakah barang ${ICONS[i - 1]} ${i} diambil?`,
+                    prompt: `Telusur balik di <code>dp[${i}][${c}] = ${dp[i][c]}</code> (sel atasnya ${dp[i - 1][c]}). Apakah barang ${i} diambil?`,
                     hint: "Jika nilainya berbeda dari sel di atasnya, berarti barang itu diambil.",
                     context: "Menelusuri pilihan optimal dari pojok kanan bawah.",
                 };
                 if (took) {
                     picked.push(i);
                     cap += items[i - 1][0];
-                    snap(-1, `Telusur balik: <code>dp[${i}][${c}] = ${dp[i][c]}</code> ≠ dp[${i - 1}][${c}] = ${dp[i - 1][c]} → barang <b>${ICONS[i - 1]} ${i}</b> <b>diambil</b>.`, null, {
+                    snap(-1, `Telusur balik: <code>dp[${i}][${c}] = ${dp[i][c]}</code> ≠ dp[${i - 1}][${c}] = ${dp[i - 1][c]} → barang <b>${i}</b> <b>diambil</b>.`, null, {
                         path: [...path],
                         pathLine: [...pathLine],
                         picked: [...picked],
@@ -900,7 +900,7 @@ for (int i = 1; i <= n; i++)          // barang ke-i     //@1
             }
             path.push(`0,${c}`);
             pathLine.push([0, c]);
-            snap(-1, `🎉 Nilai maksimum <b>${dp[n][W]}</b> dengan membawa barang <b>${[...picked].reverse().join(", ") || "–"}</b> (total berat ${cap} ≤ ${W}).`, null, {
+            snap(-1, `Nilai maksimum <b>${dp[n][W]}</b> dengan membawa barang <b>${[...picked].reverse().join(", ") || "–"}</b> (total berat ${cap} ≤ ${W}).`, null, {
                 path,
                 pathLine,
                 picked,
@@ -943,7 +943,7 @@ for (int i = 1; i <= n; i++)          // barang ke-i     //@1
                 <label class="viz-input">A <input data-a value="ACGTAG" style="width:100px"></label>
                 <label class="viz-input">B <input data-b value="CATAGG" style="width:100px"></label>
                 <button class="btn btn-sm btn-primary" data-apply>Terapkan</button>
-                <button class="btn btn-sm btn-ghost" data-heat>🌡 Heatmap</button>`,
+                <button class="btn btn-sm btn-ghost" data-heat>Heatmap</button>`,
             legend: [
                 ["Sel dihitung", "#f59e0b", "#f59e0b"],
                 ["Huruf sama: diagonal + 1", "#22d3ee", "rgba(34,211,238,.14)"],
@@ -1080,7 +1080,7 @@ for (int i = 1; i <= n; i++)                             //@1
                 path.push(`${i},${j}`);
                 pathLine.push([i, j]);
             }
-            snap(-1, `🎉 Panjang LCS = <b>${dp[n][m]}</b>, salah satu LCS-nya adalah <b>"${lcs || "–"}"</b>.`, null, { path, pathLine, lcs, mark: "done" });
+            snap(-1, `Panjang LCS = <b>${dp[n][m]}</b>, salah satu LCS-nya adalah <b>"${lcs || "–"}"</b>.`, null, { path, pathLine, lcs, mark: "done" });
 
             render = (f) => {
                 pseudo.set(f.line);
@@ -1201,7 +1201,7 @@ for (int i = 1; i <= n; i++)                             //@1
             controls: `
                 <label class="viz-input">Array <input data-arr value="3, 10, 2, 1, 20, 4, 6, 8" style="width:190px"></label>
                 <button class="btn btn-sm btn-primary" data-apply>Terapkan</button>
-                <button class="btn btn-sm" data-random title="Array acak">🎲</button>`,
+                <button class="btn btn-sm" data-random title="Array acak">Acak</button>`,
             legend: [
                 ["Elemen i (sedang dihitung)", "#f59e0b", "#f59e0b"],
                 ["a[j] < a[i]: bisa disambung", "#22d3ee", "rgba(34,211,238,.18)"],

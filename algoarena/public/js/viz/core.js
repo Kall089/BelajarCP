@@ -325,11 +325,11 @@ window.Viz = (() => {
             }
             const p = this.promptEl;
             p.innerHTML = `
-                <div class="prompt-q"><span class="prompt-icon">🎯</span><div><b>Tebak dulu!</b> ${ask.prompt}</div></div>
+                <div class="prompt-q"><div><b>Tebak dulu!</b> ${ask.prompt}</div></div>
                 <div class="prompt-a">
                     ${ask.type === "value" ? '<input class="prompt-input" data-in autocomplete="off" spellcheck="false" placeholder="jawabanmu"><button class="btn btn-sm btn-primary" data-check>Cek</button>' : ""}
                     ${ask.type === "choice" ? ask.options.map((o, k) => `<button class="btn btn-sm prompt-opt" data-opt="${k}">${esc(o)}</button>`).join("") : ""}
-                    ${ask.type === "node" ? '<span class="prompt-hint">👆 Klik simpulnya langsung pada graph</span>' : ""}
+                    ${ask.type === "node" ? '<span class="prompt-hint">Klik simpulnya langsung pada graph</span>' : ""}
                     <button class="btn btn-sm btn-ghost" data-reveal>Tunjukkan jawaban</button>
                 </div>
                 <div class="prompt-fb" data-fb></div>`;
@@ -368,7 +368,7 @@ window.Viz = (() => {
                 const fb = this.promptEl.querySelector("[data-fb]");
                 fb.className = "prompt-fb bad";
                 fb.innerHTML =
-                    this.attempts >= 2 && ask.hint ? `❌ Belum tepat. <b>Petunjuk:</b> ${ask.hint}` : "❌ Belum tepat, coba lagi.";
+                    this.attempts >= 2 && ask.hint ? `Belum tepat. <b>Petunjuk:</b> ${ask.hint}` : "Belum tepat, coba lagi.";
                 this.promptEl.classList.remove("shake");
                 void this.promptEl.offsetWidth;
                 this.promptEl.classList.add("shake");
@@ -849,12 +849,12 @@ window.Viz = (() => {
         if (opts.editable) {
             tools = html(`
                 <div class="graph-tools" role="toolbar" aria-label="Alat edit graph">
-                    <button data-gmode="move" class="active" title="Geser: seret simpul untuk merapikan">✋<span>Geser</span></button>
+                    <button data-gmode="move" class="active" title="Geser: seret simpul untuk merapikan">✥<span>Geser</span></button>
                     <button data-gmode="node" title="Tambah simpul: klik area kosong">＋<span>Simpul</span></button>
                     <button data-gmode="edge" title="Tambah / hapus sisi: klik dua simpul">⟷<span>Sisi</span></button>
                     <button data-gmode="erase" title="Hapus: klik simpul atau sisi">⌫<span>Hapus</span></button>
                     <label class="gt-weight" data-gweight hidden>bobot <input type="number" min="1" max="99" value="5"></label>
-                    <button data-gclear title="Hapus semua sisi">🧹</button>
+                    <button data-gclear title="Hapus semua sisi">Kosongkan</button>
                 </div>`);
             stage.appendChild(tools);
             tools.querySelectorAll("[data-gmode]").forEach((b) => b.addEventListener("click", () => setMode(b.dataset.gmode)));

@@ -2226,6 +2226,12 @@ textarea.mono {
     pointer-events: none;
 }
 
+/* Graph yang bisa diedit: toolbar di atas, petunjuk pindah ke bawah agar tidak tertutup */
+.graph-stage:has(.graph-tools) > .viz-hint {
+    top: auto;
+    bottom: 10px;
+}
+
 /* Graph SVG (v2) */
 .graph-stage {
     position: relative;
@@ -2817,7 +2823,14 @@ textarea.mono {
 }
 
 .item-row .ic {
-    font-size: 15px;
+    min-width: 22px;
+    height: 22px;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 6px;
+    font: 700 12px var(--mono);
+    color: var(--text-strong);
+    background: var(--panel-3);
 }
 
 /* Pohon rekursi */
