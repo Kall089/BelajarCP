@@ -401,9 +401,45 @@ html.has-fullcode {
 }
 
 /* Label simpul berwarna tetap terbaca di tema terang */
-html[data-theme="light"] .g-node:is(.queued, .visited, .done, .path) text.label,
-html[data-theme="light"] .dg-node:is(.vis, .cyan, .green, .red) text {
+html[data-theme="light"] .g-node:is(.queued, .visited, .done, .path) text.label {
     fill: #ffffff;
+}
+
+/* Simpul diagram yang disorot: warna lembut, bukan isian gelap */
+html[data-theme="light"] .dg-node.vis circle {
+    fill: #e4e9fb;
+    stroke: #2f5bd3;
+}
+
+html[data-theme="light"] .dg-node.cyan circle {
+    fill: #d9f1f7;
+    stroke: #0b7f9a;
+}
+
+html[data-theme="light"] .dg-node.green circle {
+    fill: #dcf3e4;
+    stroke: #1d8a4a;
+}
+
+html[data-theme="light"] .dg-node.red circle {
+    fill: #fbe1e1;
+    stroke: #c93434;
+}
+
+html[data-theme="light"] .dg-node.vis text {
+    fill: #1e3a8a;
+}
+
+html[data-theme="light"] .dg-node.cyan text {
+    fill: #0b4f60;
+}
+
+html[data-theme="light"] .dg-node.green text {
+    fill: #14532d;
+}
+
+html[data-theme="light"] .dg-node.red text {
+    fill: #8f1d1d;
 }
 
 .walkthrough.is-fullcode.has-focus .wt-code .wl:not(.on) {

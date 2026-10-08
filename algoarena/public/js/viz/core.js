@@ -973,7 +973,7 @@ window.Viz = (() => {
                 el.line.setAttribute("d", graph.directed ? gm.trimmed : gm.full);
                 el.hit.setAttribute("d", gm.full);
                 if (el.weight) {
-                    const w = Math.max(24, String(e.w).length * 8 + 12);
+                    const w = Math.max(24, String(el.wt.textContent).length * 8 + 12);
                     el.wr.setAttribute("x", gm.lx - w / 2);
                     el.wr.setAttribute("y", gm.ly - 10);
                     el.wr.setAttribute("width", w);
@@ -1016,6 +1016,17 @@ window.Viz = (() => {
                 const cls = edges[key] || "";
                 el.grp.setAttribute("class", `g-edge ${cls}`);
                 if (el.weight) el.weight.setAttribute("class", `g-weight ${cls}`);
+                if (el.wt) {
+                    // f.wlabels: teks label sisi per frame (mis. "aliran/kapasitas")
+                    const txt = String(f.wlabels && f.wlabels[key] !== undefined ? f.wlabels[key] : el.e.w);
+                    if (el.wt.textContent !== txt) {
+                        el.wt.textContent = txt;
+                        const w = Math.max(24, txt.length * 8 + 12);
+                        const cx = +el.wt.getAttribute("x");
+                        el.wr.setAttribute("x", cx - w / 2);
+                        el.wr.setAttribute("width", w);
+                    }
+                }
                 if (graph.directed) {
                     const state = ["active", "path", "tree", "skip", "new"].find((s) => cls.includes(s)) || "default";
                     el.line.setAttribute("marker-end", `url(#aa-arrow-${state})`);
