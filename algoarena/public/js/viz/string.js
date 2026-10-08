@@ -211,4 +211,167 @@ long long ambil(int l, int r) {                       //@2
         [sIn, aIn, bIn].forEach((el) => el.addEventListener("keydown", (e) => e.key === "Enter" && build()));
         build();
     });
+
+    // ════════════════════════════ Trie ════════════════════════════
+    V.register("trie", (root) => {
+        const sh = V.shell(root, {
+            title: "Trie: Pohon Awalan",
+            controls: `
+                <label class="viz-input">Kata <input data-w value="bola, bolu, bot, buku, bus" style="width:170px"></label>
+                <label class="viz-input">Awalan <input class="short" data-p value="bo" style="width:52px"></label>
+                <button class="btn btn-sm btn-primary" data-apply>Terapkan</button>`,
+            legend: [
+                ["Simpul saat ini", "#f59e0b", "rgba(245,158,11,.3)"],
+                ["Jalur kata/awalan", "#22d3ee", "rgba(34,211,238,.2)"],
+                ["Simpul baru", "#22c55e", "rgba(34,197,94,.25)"],
+                ["Akhir kata (cincin tebal)", "#8b5cf6"],
+            ],
+        });
+        const wIn = sh.head.querySelector("[data-w]");
+        const pIn = sh.head.querySelector("[data-p]");
+        const code = V.codePanel(
+            sh.side,
+            `
+void sisip(const string& w) {                         //@1
+    int v = 0;                       // akar          //@1
+    for (char c : w) {                                //@2
+        int x = c - 'a';
+        if (!anak[v][x]) anak[v][x] = jumlahSimpul++; //@3
+        v = anak[v][x];                               //@2
+        cnt[v]++;      // satu kata lagi lewat sini   //@4
+    }
+    akhir[v]++;                                       //@5
+}
+int hitungAwalan(const string& p) {                   //@6
+    int v = 0;
+    for (char c : p) {
+        v = anak[v][c - 'a'];                         //@6
+        if (v == 0) return 0;     // jalan buntu      //@7
+    }
+    return cnt[v];                                    //@8
+}`,
+        );
+        const watch = V.watchPanel(sh.side);
+
+        function build() {
+            let words = wIn.value
+                .split(/[\s,;]+/)
+                .map((w) => w.replace(/[^a-z]/gi, "").toLowerCase().slice(0, 6))
+                .filter(Boolean)
+                .slice(0, 6);
+            if (!words.length) words = ["bola", "bolu", "bot", "buku", "bus"];
+            wIn.value = words.join(", ");
+            const pref = (pIn.value.replace(/[^a-z]/gi, "").toLowerCase().slice(0, 6)) || "bo";
+            pIn.value = pref;
+            // bangun struktur akhir untuk tata letak tetap
+            const nodes = [{ id: 0, ch: "", parent: -1, depth: 0, kids: {} }];
+            for (const w of words) {
+                let v = 0;
+                for (const c of w) {
+                    if (nodes[v].kids[c] === undefined) {
+                        nodes[v].kids[c] = nodes.length;
+                        nodes.push({ id: nodes.length, ch: c, parent: v, depth: nodes[v].depth + 1, kids: {} });
+                    }
+                    v = nodes[v].kids[c];
+                }
+            }
+            let leaf = 0;
+            const place = (v) => {
+                const ks = Object.keys(nodes[v].kids).sort();
+                if (!ks.length) {
+                    nodes[v].x = leaf++;
+                    return;
+                }
+                ks.forEach((c) => place(nodes[v].kids[c]));
+                const xs = ks.map((c) => nodes[nodes[v].kids[c]].x);
+                nodes[v].x = (Math.min(...xs) + Math.max(...xs)) / 2;
+            };
+            place(0);
+            const maxDepth = Math.max(...nodes.map((n) => n.depth));
+            const W = 560;
+            const gapX = leaf > 1 ? (W - 80) / (leaf - 1) : 0;
+            const H = maxDepth * 62 + 70;
+            const px = (n) => (leaf > 1 ? 40 + n.x * gapX : W / 2);
+            const py = (n) => 34 + n.depth * 62;
+
+            const exists = new Set([0]);
+            const cnt = new Array(nodes.length).fill(0);
+            const end = new Array(nodes.length).fill(0);
+            const frames = [];
+            const render = (st) => {
+                let svg = `<svg viewBox="0 0 ${W} ${H}" class="tr-svg">`;
+                for (const n of nodes) {
+                    if (n.parent < 0 || !exists.has(n.id)) continue;
+                    const p = nodes[n.parent];
+                    const onPath = st.path && st.path.includes(n.id);
+                    svg += `<line x1="${px(p)}" y1="${py(p)}" x2="${px(n)}" y2="${py(n)}" class="tr-edge ${onPath ? "on" : ""}"/>`;
+                    svg += `<text x="${(px(p) + px(n)) / 2 + (px(n) >= px(p) ? 9 : -9)}" y="${(py(p) + py(n)) / 2}" class="tr-ch ${onPath ? "on" : ""}">${n.ch}</text>`;
+                }
+                for (const n of nodes) {
+                    if (!exists.has(n.id)) continue;
+                    const cls = ["tr-node"];
+                    if (st.cur === n.id) cls.push("cur");
+                    else if (st.fresh === n.id) cls.push("fresh");
+                    else if (st.path && st.path.includes(n.id)) cls.push("on");
+                    if (end[n.id]) cls.push("end");
+                    svg += `<g class="${cls.join(" ")}" transform="translate(${px(n)} ${py(n)})"><circle r="17"/><text>${n.id === 0 ? "akar" : cnt[n.id]}</text></g>`;
+                }
+                return `${svg}</svg><p class="mq-note">angka di simpul = cnt (banyak kata yang melewati simpul itu); huruf ada di sisi</p>`;
+            };
+            const push = (line, text, st, w) => frames.push({ line, text, html: render(st), watch: w });
+            push(1, `Trie menyimpan banyak kata dengan <b>berbagi awalan</b>. Setiap sisi adalah satu huruf, setiap jalur dari akar adalah sebuah awalan. Sisipkan ${words.length} kata satu per satu.`, {}, [["kata", words.length], ["simpul", 1]]);
+            for (const w of words) {
+                let v = 0;
+                const path = [0];
+                push(1, `Sisipkan "<b>${w}</b>": mulai dari akar.`, { cur: 0, path }, [["kata", w], ["simpul", exists.size]]);
+                for (let i = 0; i < w.length; i++) {
+                    const c = w[i];
+                    const nx = nodes[v].kids[c];
+                    const isNew = !exists.has(nx);
+                    exists.add(nx);
+                    v = nx;
+                    path.push(v);
+                    cnt[v]++;
+                    push(isNew ? 3 : 4, isNew ? `Belum ada sisi '${c}' dari simpul ini: <b>buat simpul baru</b>, lalu cnt = ${cnt[v]}.` : `Sisi '${c}' sudah ada (awalan "${w.slice(0, i + 1)}" dipakai bersama): ikuti, cnt naik menjadi ${cnt[v]}.`, { cur: v, path: path.slice(), fresh: isNew ? v : undefined }, [["kata", w], ["awalan", w.slice(0, i + 1)], ["cnt", cnt[v]], ["simpul", exists.size]]);
+                }
+                end[v]++;
+                push(5, `Kata "${w}" berakhir di sini: tandai akhir kata (cincin tebal).`, { cur: v, path: path.slice() }, [["kata", w], ["simpul", exists.size]]);
+            }
+            let v = 0;
+            const path = [0];
+            let ok = true;
+            push(6, `Berapa kata yang diawali "<b>${pref}</b>"? Telusuri hurufnya dari akar.`, { cur: 0, path }, [["awalan", pref]]);
+            for (const c of pref) {
+                const nx = nodes[v].kids[c];
+                if (nx === undefined) {
+                    push(7, `Tidak ada sisi '${c}': tidak ada kata yang diawali "${pref}". Jawaban <b>0</b>.`, { cur: v, path: path.slice() }, [["awalan", pref], ["jawaban", 0]]);
+                    ok = false;
+                    break;
+                }
+                v = nx;
+                path.push(v);
+                push(6, `Ikuti sisi '${c}'.`, { cur: v, path: path.slice() }, [["awalan", pref], ["cnt", cnt[v]]]);
+            }
+            if (ok) {
+                const list = words.filter((w) => w.startsWith(pref));
+                frames.push({
+                    line: 8,
+                    text: `Sampai di ujung awalan: <code>cnt = ${cnt[v]}</code> kata (${list.join(", ")}). Waktu hanya O(panjang awalan), tidak bergantung pada banyaknya kata di kamus.`,
+                    html: render({ cur: v, path: path.slice() }),
+                    watch: [["awalan", pref], ["jawaban", cnt[v]]],
+                    mark: "done",
+                });
+            }
+            player.load(frames);
+        }
+
+        const player = new V.Player(sh, (f) => {
+            sh.stage.innerHTML = f.html;
+            code.set(f.line);
+            watch.set(f.watch, f.masked);
+        });
+        sh.head.querySelector("[data-apply]").onclick = build;
+        [wIn, pIn].forEach((el) => el.addEventListener("keydown", (e) => e.key === "Enter" && build()));
+        build();
+    });
 })();
