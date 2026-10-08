@@ -297,4 +297,129 @@ for (long long p = 2; p * p <= n; p++) {         //@1
         });
         build();
     });
+
+    // ════════════════════════════ Jalur grid: kombinasi & inklusi–eksklusi ════════════════════════════
+    V.register("gridpath", (root) => {
+        const sh = V.shell(root, {
+            title: "Jalur Grid = Kombinasi",
+            controls: `
+                <label class="viz-input">Baris <input class="short" data-h value="5"></label>
+                <label class="viz-input">Kolom <input class="short" data-w value="7"></label>
+                <label class="viz-input">Lubang r c <input class="short" data-x value="2 3" style="width:52px"></label>
+                <button class="btn btn-sm btn-primary" data-apply>Terapkan</button>`,
+            legend: [
+                ["Sedang diisi", "#f59e0b", "rgba(245,158,11,.25)"],
+                ["Awal → lubang", "#22d3ee", "rgba(34,211,238,.18)"],
+                ["Lubang → akhir", "#8b5cf6", "rgba(139,92,246,.16)"],
+                ["Lubang", "#ef4444", "rgba(239,68,68,.25)"],
+            ],
+        });
+        const hIn = sh.head.querySelector("[data-h]");
+        const wIn = sh.head.querySelector("[data-w]");
+        const xIn = sh.head.querySelector("[data-x]");
+        const code = V.codePanel(
+            sh.side,
+            `
+// jalur hanya ke kanan/bawah dari (0, 0) ke (r, c):
+// pilih r langkah "bawah" di antara r + c langkah
+long long jalur(int r, int c) { return C(r + c, r); }   //@0
+// cara DP: jalur[r][c] = jalur[r-1][c] + jalur[r][c-1]  //@1
+// hindari satu lubang X = (xr, xc):
+total  = jalur(H - 1, W - 1);                            //@2
+lewatX = jalur(xr, xc) * jalur(H - 1 - xr, W - 1 - xc);  //@3
+jawab  = total - lewatX;                                 //@4`,
+        );
+        const watch = V.watchPanel(sh.side);
+        const binom = (n, k) => {
+            if (k < 0 || k > n) return 0;
+            let r = 1;
+            for (let i = 1; i <= k; i++) r = (r * (n - k + i)) / i;
+            return Math.round(r);
+        };
+
+        function build() {
+            const H = V.clampInt(hIn.value, 2, 7, 5);
+            const W = V.clampInt(wIn.value, 2, 9, 7);
+            hIn.value = H;
+            wIn.value = W;
+            const xs = xIn.value.trim().split(/[\s,]+/).map(Number);
+            let xr = V.clampInt(xs[0], 0, H - 1, 2);
+            let xc = V.clampInt(xs[1], 0, W - 1, 3);
+            if ((xr === 0 && xc === 0) || (xr === H - 1 && xc === W - 1)) {
+                xr = Math.floor(H / 2);
+                xc = Math.floor(W / 2);
+            }
+            xIn.value = `${xr} ${xc}`;
+            const val = Array.from({ length: H }, () => new Array(W).fill(null));
+            const frames = [];
+            const render = (st) => {
+                let h = `<div class="gp-grid" style="grid-template-columns: repeat(${W}, minmax(0, 1fr))">`;
+                for (let r = 0; r < H; r++)
+                    for (let c = 0; c < W; c++) {
+                        const cls = ["gp-cell"];
+                        if (st.diag !== undefined && r + c === st.diag) cls.push("cur");
+                        if (st.split) {
+                            if (r === xr && c === xc) cls.push("hole");
+                            else if (r <= xr && c <= xc) cls.push("pre");
+                            else if (r >= xr && c >= xc) cls.push("post");
+                        }
+                        const v = st.values ? st.values[r][c] : val[r][c];
+                        h += `<div class="${cls.join(" ")}">${v === null ? "" : v}</div>`;
+                    }
+                return `${h}</div><p class="mq-note">mulai di pojok kiri atas, akhir di pojok kanan bawah, hanya ke kanan atau ke bawah</p>`;
+            };
+            frames.push({ line: 0, text: `Berapa banyak jalur dari pojok kiri atas ke pojok kanan bawah grid ${H} × ${W} jika hanya boleh ke <b>kanan</b> atau ke <b>bawah</b>? Setiap jalur terdiri dari ${H - 1} langkah bawah dan ${W - 1} langkah kanan.`, html: render({}), watch: [["bawah", H - 1], ["kanan", W - 1]] });
+            for (let d = 0; d <= H + W - 2; d++) {
+                const cells = [];
+                for (let r = 0; r < H; r++) {
+                    const c = d - r;
+                    if (c < 0 || c >= W) continue;
+                    val[r][c] = r === 0 || c === 0 ? 1 : val[r - 1][c] + val[r][c - 1];
+                    cells.push([r, c]);
+                }
+                const [er, ec] = cells[Math.floor(cells.length / 2)];
+                frames.push({
+                    line: 1,
+                    text: d === 0 ? "Sel awal: 1 jalur (diam di tempat)." : `Diagonal ${d}: setiap sel = sel atas + sel kiri (langkah terakhir datang dari atas atau dari kiri). Contoh (${er}, ${ec}): ${val[er][ec]} = <code>C(${er + ec}, ${er})</code>, yaitu memilih posisi ${er} langkah bawah di antara ${er + ec} langkah.`,
+                    html: render({ diag: d }),
+                    watch: [["diagonal r + c", d], [`C(${er + ec}, ${er})`, binom(er + ec, er)]],
+                });
+            }
+            const total = binom(H + W - 2, H - 1);
+            const pre = binom(xr + xc, xr);
+            const post = binom(H - 1 - xr + W - 1 - xc, H - 1 - xr);
+            frames.push({ line: 2, text: `Inilah segitiga Pascal yang dimiringkan. Total jalur = <code>C(${H + W - 2}, ${H - 1}) = ${total}</code>, tanpa perlu mengisi tabel.`, html: render({}), watch: [["total", total]], mark: "key" });
+            frames.push({
+                line: 3,
+                text: `Sekarang sel (${xr}, ${xc}) berlubang. Jalur yang <b>melewati</b> lubang = jalur awal → lubang × jalur lubang → akhir = <code>C(${xr + xc}, ${xr}) · C(${H - 1 - xr + W - 1 - xc}, ${H - 1 - xr}) = ${pre} · ${post} = ${pre * post}</code> (aturan perkalian).`,
+                html: render({ split: true }),
+                watch: [["awal → lubang", pre], ["lubang → akhir", post], ["lewat lubang", pre * post]],
+                ask: { type: "value", answer: pre * post, prompt: "Berapa jalur yang melewati lubang?", hint: "Kalikan jalur ke lubang dengan jalur dari lubang." },
+            });
+            const blocked = Array.from({ length: H }, () => new Array(W).fill(0));
+            for (let r = 0; r < H; r++)
+                for (let c = 0; c < W; c++) {
+                    if (r === xr && c === xc) blocked[r][c] = 0;
+                    else if (r === 0 && c === 0) blocked[r][c] = 1;
+                    else blocked[r][c] = (r > 0 ? blocked[r - 1][c] : 0) + (c > 0 ? blocked[r][c - 1] : 0);
+                }
+            frames.push({
+                line: 4,
+                text: `Jalur yang menghindari lubang = total − lewat lubang = <code>${total} − ${pre * post} = ${total - pre * post}</code>. Tabel di atas dihitung ulang dengan DP (lubang bernilai 0) dan hasilnya sama. Dengan banyak lubang, kurangi jalur yang melewati lubang <em>pertama</em> yang diinjak: inklusi–eksklusi, lihat Level 3.`,
+                html: render({ split: true, values: blocked.map((row, r) => row.map((v, c) => (r === xr && c === xc ? "×" : v))) }),
+                watch: [["total", total], ["lewat lubang", pre * post], ["jawaban", total - pre * post]],
+                mark: "done",
+            });
+            player.load(frames);
+        }
+
+        const player = new V.Player(sh, (f) => {
+            sh.stage.innerHTML = f.html;
+            code.set(f.line);
+            watch.set(f.watch, f.masked);
+        });
+        sh.head.querySelector("[data-apply]").onclick = build;
+        [hIn, wIn, xIn].forEach((el) => el.addEventListener("keydown", (e) => e.key === "Enter" && build()));
+        build();
+    });
 })();
