@@ -717,3 +717,141 @@ html[data-theme="light"] .g-node.colored text.label {
     right: 6px;
     color: var(--amber);
 }
+
+/* ═══════════════════════════════ Visualisasi deque monoton ═══════════════════════════════ */
+.mq-wrap {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    padding: 36px 12px 20px;
+}
+
+.mq-row,
+.mq-dq-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.mq-dq-wrap {
+    margin-top: 18px;
+}
+
+.mq-lbl {
+    width: 52px;
+    margin-right: 4px;
+    text-align: right;
+    font: 600 12px var(--mono);
+    color: var(--muted);
+}
+
+.mq-cell {
+    width: 44px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 2px solid var(--border);
+    border-radius: 9px;
+    background: var(--panel);
+    font: 700 15px var(--mono);
+    color: var(--text-strong);
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.mq-cell.idx {
+    height: 18px;
+    border-color: transparent;
+    background: transparent;
+    font-size: 11px;
+    color: var(--faint);
+}
+
+.mq-cell.mq-na {
+    color: var(--faint);
+}
+
+.mq-cell.win {
+    border-color: var(--cyan);
+    background: var(--cyan-soft);
+}
+
+.mq-cell.inq {
+    box-shadow: inset 0 -4px 0 var(--green);
+}
+
+.mq-cell.front {
+    border-color: var(--green);
+    background: var(--green-soft);
+}
+
+.mq-cell.cur {
+    border-color: var(--amber);
+    background: var(--amber-soft);
+}
+
+.mq-cell.gone {
+    border-color: var(--red);
+    background: var(--red-soft);
+}
+
+.mq-dq {
+    display: flex;
+    gap: 6px;
+    min-width: 220px;
+    min-height: 52px;
+    padding: 6px 10px;
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+}
+
+.mq-dq .it {
+    display: grid;
+    place-items: center;
+    min-width: 54px;
+    padding: 3px 8px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: var(--panel);
+    font-family: var(--mono);
+}
+
+.mq-dq .it small {
+    font-size: 10px;
+    color: var(--faint);
+}
+
+.mq-dq .it b {
+    font-size: 15px;
+    color: var(--text-strong);
+}
+
+.mq-dq .it.front {
+    border-color: var(--green);
+    background: var(--green-soft);
+}
+
+.mq-dq .it.new {
+    border-color: var(--amber);
+    background: var(--amber-soft);
+}
+
+.mq-dq .it.gone {
+    border-color: var(--red);
+    background: var(--red-soft);
+    opacity: 0.75;
+}
+
+.mq-dq .it.gone b {
+    text-decoration: line-through;
+}
+
+.mq-empty,
+.mq-note {
+    align-self: center;
+    font-size: 12px;
+    color: var(--faint);
+}
+
+.mq-note {
+    margin: 2px 0 0;
+}

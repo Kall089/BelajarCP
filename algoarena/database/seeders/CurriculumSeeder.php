@@ -74,10 +74,12 @@ class CurriculumSeeder extends Seeder
             'summary' => 'State dp[u][keadaan], menggabungkan anak, DP pohon tanpa rekursi, menghitung cara, teknik kontribusi, dan knapsack di pohon.'],
         ['slug' => 'digit-dp', 'track' => 'dp', 'level' => 3, 'title' => 'Digit DP', 'subtitle' => 'Menghitung bilangan sampai 10^18', 'viz' => 'digit', 'minutes' => 35,
             'summary' => 'Menyusun bilangan digit demi digit, flag ketat, memo keadaan bebas, F(B) − F(A − 1), nol di depan, dan sisa bagi.'],
+        ['slug' => 'dp-optimasi', 'track' => 'dp', 'level' => 3, 'title' => 'Optimasi Transisi DP', 'subtitle' => 'Prefix sum, deque monoton, binary search', 'viz' => 'monoqueue', 'minutes' => 35,
+            'summary' => 'Mempercepat transisi DP: jumlah rentang dengan prefix sum, minimum jendela dengan deque monoton, memisahkan suku, dan penjadwalan berbobot.'],
     ];
 
     /** Urutan file soal; soal nantinya diurutkan mengikuti urutan materi. */
-    private const PROBLEM_FILES = ['fondasi', 'fondasi_more', 'graph', 'graph_more', 'graph_extra', 'graph_extra2', 'graph_extra3', 'graph_euler', 'graph_flow', 'dp', 'dp_more', 'dp_extra', 'dp_extra2'];
+    private const PROBLEM_FILES = ['fondasi', 'fondasi_more', 'graph', 'graph_more', 'graph_extra', 'graph_extra2', 'graph_extra3', 'graph_euler', 'graph_flow', 'dp', 'dp_more', 'dp_extra', 'dp_extra2', 'dp_optimasi'];
 
     public function run(): void
     {
