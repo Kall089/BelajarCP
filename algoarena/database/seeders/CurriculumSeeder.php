@@ -73,7 +73,7 @@ class CurriculumSeeder extends Seeder
     ];
 
     /** Urutan file soal; soal nantinya diurutkan mengikuti urutan materi. */
-    private const PROBLEM_FILES = ['fondasi', 'graph', 'graph_more', 'graph_extra', 'graph_extra2', 'dp', 'dp_more', 'dp_extra', 'dp_extra2'];
+    private const PROBLEM_FILES = ['fondasi', 'graph', 'graph_more', 'graph_extra', 'graph_extra2', 'graph_extra3', 'dp', 'dp_more', 'dp_extra', 'dp_extra2'];
 
     public function run(): void
     {
