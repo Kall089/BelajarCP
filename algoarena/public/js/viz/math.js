@@ -190,4 +190,111 @@ long long fpbDiperluas(long long a, long long b, long long& x, long long& y) {
         [aIn, bIn].forEach((el) => el.addEventListener("keydown", (e) => e.key === "Enter" && build()));
         build();
     });
+
+    // ════════════════════════════ Saringan Eratosthenes (+ faktor prima terkecil) ════════════════════════════
+    V.register("sieve", (root) => {
+        const sh = V.shell(root, {
+            title: "Saringan Eratosthenes",
+            controls: V.segmented(
+                "n",
+                [
+                    ["60", "N = 60"],
+                    ["100", "N = 100"],
+                    ["120", "N = 120"],
+                ],
+                "100",
+            ),
+            legend: [
+                ["Prima p yang sedang dipakai", "#f59e0b", "rgba(245,158,11,.35)"],
+                ["Baru dicoret (kelipatan p)", "#ef4444", "rgba(239,68,68,.18)"],
+                ["Prima", "#22c55e", "rgba(34,197,94,.2)"],
+                ["Sudah dicoret", "#94a3b8", "rgba(148,163,184,.14)"],
+            ],
+        });
+        const code = V.codePanel(
+            sh.side,
+            `
+vector<bool> prima(n + 1, true);                 //@0
+prima[0] = prima[1] = false;                     //@0
+for (long long p = 2; p * p <= n; p++) {         //@1
+    if (!prima[p]) continue;      // sudah dicoret //@2
+    for (long long k = p * p; k <= n; k += p)    //@3
+        prima[k] = false;         // spf[k] = p  //@3
+}
+// yang masih true adalah bilangan prima         //@4`,
+        );
+        const watch = V.watchPanel(sh.side);
+        let n = 100;
+
+        function build() {
+            const prime = new Array(n + 1).fill(true);
+            prime[0] = prime[1] = false;
+            const spf = new Array(n + 1).fill(0);
+            const frames = [];
+            let crossOps = 0;
+            const render = (st) => {
+                let h = '<div class="sv-grid">';
+                for (let i = 1; i <= n; i++) {
+                    const cls = ["sv-cell"];
+                    if (i === 1) cls.push("one");
+                    else if (st.p === i) cls.push("cur");
+                    else if (st.fresh && st.fresh.has(i)) cls.push("fresh");
+                    else if (!prime[i]) cls.push("out");
+                    else if (st.known && st.known.has(i)) cls.push("prime");
+                    h += `<div class="${cls.join(" ")}"><b>${i}</b>${spf[i] && !prime[i] ? `<small>${spf[i]}</small>` : ""}</div>`;
+                }
+                return `${h}</div><p class="mq-note">angka kecil di pojok = faktor prima terkecil (pencoret pertama)</p>`;
+            };
+            const known = new Set();
+            frames.push({ line: 0, text: `Tandai semua bilangan 2..${n} sebagai calon prima. Kita akan mencoret kelipatan setiap prima; yang tidak pernah tercoret pasti prima.`, html: render({ known }), watch: [["n", n], ["√n", Math.floor(Math.sqrt(n))]] });
+            for (let p = 2; p * p <= n; p++) {
+                if (!prime[p]) {
+                    frames.push({ line: 2, text: `${p} sudah dicoret (kelipatan ${spf[p]}), jadi bukan prima dan kelipatannya sudah dicoret oleh ${spf[p]}. Lewati.`, html: render({ known, p }), watch: [["p", p], ["dicoret oleh", spf[p]]], mark: "skip" });
+                    continue;
+                }
+                known.add(p);
+                const fresh = new Set();
+                for (let k = p * p; k <= n; k += p) {
+                    crossOps++;
+                    if (prime[k]) {
+                        prime[k] = false;
+                        spf[k] = p;
+                        fresh.add(k);
+                    }
+                }
+                frames.push({
+                    line: 3,
+                    text: `${p} belum dicoret, jadi <b>${p} prima</b>. Coret kelipatannya mulai dari <b>${p}² = ${p * p}</b>: ${[...fresh].slice(0, 8).join(", ")}${fresh.size > 8 ? ", …" : ""} (${fresh.size} bilangan baru). Kelipatan yang lebih kecil dari ${p * p}, seperti ${p * 2}, sudah dicoret oleh prima yang lebih kecil.`,
+                    html: render({ known, p, fresh }),
+                    watch: [["p", p], ["mulai dari", p * p], ["baru dicoret", fresh.size]],
+                    ask: p === 3 ? { type: "value", answer: 9, prompt: "Mulai dari bilangan berapa kelipatan 3 dicoret?", hint: "Kelipatan 3 yang lebih kecil sudah dicoret oleh 2." } : undefined,
+                    htmlMasked: p === 3 ? render({ known, p }) : undefined,
+                });
+            }
+            const primes = [];
+            for (let i = 2; i <= n; i++) if (prime[i]) {
+                primes.push(i);
+                known.add(i);
+            }
+            frames.push({
+                line: 4,
+                text: `p sudah melewati √${n} ≈ ${Math.sqrt(n).toFixed(1)}, berhenti. Setiap bilangan komposit ≤ ${n} punya faktor prima ≤ √${n}, jadi pasti sudah tercoret. Ada <b>${primes.length}</b> bilangan prima ≤ ${n}. Total coretan hanya ${crossOps}, sesuai O(N log log N).`,
+                html: render({ known }),
+                watch: [["banyak prima", primes.length], ["coretan", crossOps]],
+                mark: "done",
+            });
+            player.load(frames);
+        }
+
+        const player = new V.Player(sh, (f) => {
+            sh.stage.innerHTML = f.masked && f.htmlMasked ? f.htmlMasked : f.html;
+            code.set(f.line);
+            watch.set(f.watch, f.masked);
+        });
+        V.bindSegmented(sh.head, "n", (v) => {
+            n = +v;
+            build();
+        });
+        build();
+    });
 })();

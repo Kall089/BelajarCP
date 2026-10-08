@@ -1139,3 +1139,66 @@ html[data-theme="light"] .g-node.colored text.label {
     background: var(--amber-soft);
     font-weight: 700;
 }
+
+/* ═══════════════════════════════ Visualisasi saringan ═══════════════════════════════ */
+.sv-grid {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 4px;
+    max-width: 520px;
+    margin: 20px auto 6px;
+}
+
+.sv-cell {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: 34px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    background: var(--panel);
+    font: 600 13px var(--mono);
+    color: var(--text-strong);
+}
+
+.sv-cell small {
+    position: absolute;
+    top: 1px;
+    right: 3px;
+    font-size: 9px;
+    color: var(--faint);
+}
+
+.sv-cell.one {
+    color: var(--faint);
+}
+
+.sv-cell.out {
+    background: rgba(148, 163, 184, 0.14);
+    color: var(--faint);
+}
+
+.sv-cell.out b {
+    text-decoration: line-through;
+}
+
+.sv-cell.fresh {
+    border-color: var(--red);
+    background: var(--red-soft);
+    color: var(--red-text);
+}
+
+.sv-cell.fresh b {
+    text-decoration: line-through;
+}
+
+.sv-cell.cur {
+    border-color: var(--amber);
+    background: rgba(245, 158, 11, 0.35);
+}
+
+.sv-cell.prime {
+    border-color: var(--green);
+    background: var(--green-soft);
+    color: var(--green-text);
+}
