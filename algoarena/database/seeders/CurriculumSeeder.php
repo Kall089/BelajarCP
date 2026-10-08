@@ -18,6 +18,10 @@ class CurriculumSeeder extends Seeder
         // Fondasi
         ['slug' => 'kompleksitas', 'track' => 'fondasi', 'level' => 1, 'title' => 'Kompleksitas & Big-O', 'subtitle' => 'Memperkirakan kecepatan program sebelum menulisnya', 'viz' => 'bigo', 'minutes' => 20,
             'summary' => 'Cara judge bekerja, notasi Big-O, membaca batasan soal, dan memilih algoritma yang cukup cepat.'],
+        ['slug' => 'rekursi', 'track' => 'fondasi', 'level' => 1, 'title' => 'Rekursi & Backtracking', 'subtitle' => 'Mencoba semua kemungkinan dengan rapi', 'viz' => 'nqueen', 'minutes' => 30,
+            'summary' => 'Base case, call stack, pohon rekursi, pola pilih–telusuri–batalkan, pemangkasan, dan jembatan menuju DP.'],
+        ['slug' => 'binary-search', 'track' => 'fondasi', 'level' => 1, 'title' => 'Binary Search & Two Pointers', 'subtitle' => 'Membuang setengah kemungkinan setiap langkah', 'viz' => 'window', 'minutes' => 30,
+            'summary' => 'lower_bound/upper_bound, binary search pada jawaban, two pointers, sliding window, dan invarian.'],
         // Graph
         ['slug' => 'representasi-graph', 'track' => 'graph', 'level' => 1, 'title' => 'Mengenal Graph', 'subtitle' => 'Simpul, sisi, adjacency list & matrix', 'viz' => 'graph-repr', 'minutes' => 20,
             'summary' => 'Apa itu graph, istilah penting, dan dua cara utama menyimpannya di program C++.'],

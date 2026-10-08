@@ -519,3 +519,124 @@ html[data-theme="light"] .dg-node:is(.vis, .cyan, .green, .red) text {
 html[data-theme="light"] .g-node.colored text.label {
     fill: #111318;
 }
+
+/* ═══════════════════════════════ Visualisasi Fondasi ═══════════════════════════════ */
+.nq-board {
+    display: grid;
+    grid-template-columns: repeat(var(--n), 58px);
+    gap: 0;
+    width: max-content;
+    margin: 24px auto;
+    border: 2px solid var(--line-strong);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.nq-cell {
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    background: var(--panel);
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--violet-text);
+    transition: background 0.2s;
+}
+
+.nq-cell.dark {
+    background: var(--panel-3);
+}
+
+.nq-cell.hit {
+    background: var(--red-soft);
+}
+
+.nq-cell.queen {
+    background: var(--primary-soft);
+}
+
+.nq-cell.queen.sol {
+    background: var(--green-soft);
+    color: var(--green);
+}
+
+.nq-cell.try {
+    background: var(--amber);
+    color: var(--on-amber);
+    font-size: 22px;
+}
+
+.nq-cell.try.bad {
+    background: var(--red);
+    color: #fff;
+}
+
+.win-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding: 70px 10px 30px;
+}
+
+.win-cell {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 60px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: var(--panel);
+    font-family: var(--mono);
+}
+
+.win-cell small {
+    position: absolute;
+    top: 3px;
+    font-size: 10px;
+    color: var(--faint);
+}
+
+.win-cell b {
+    font-size: 18px;
+    color: var(--text-strong);
+}
+
+.win-cell.in {
+    border-color: var(--cyan);
+    background: var(--cyan-soft);
+}
+
+.win-cell.best {
+    border-color: var(--green);
+    background: var(--green-soft);
+}
+
+.win-cell.new {
+    border-color: var(--amber);
+    background: var(--amber-soft);
+}
+
+.win-cell.out {
+    border-color: var(--red);
+    background: var(--red-soft);
+}
+
+.win-cell .ptr {
+    position: absolute;
+    bottom: -24px;
+    font: 700 12px var(--mono);
+    font-style: normal;
+}
+
+.win-cell .ptr.l {
+    left: 6px;
+    color: var(--red);
+}
+
+.win-cell .ptr.r {
+    right: 6px;
+    color: var(--amber);
+}

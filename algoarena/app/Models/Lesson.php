@@ -12,7 +12,7 @@ class Lesson extends Model
     public const TRACKS = [
         'fondasi' => [
             'name' => 'Fondasi',
-            'tagline' => 'Kompleksitas waktu & cara berpikir efisien',
+            'tagline' => 'Kompleksitas, rekursi, dan pencarian cepat',
             'icon' => 'fondasi',
         ],
         'graph' => [
