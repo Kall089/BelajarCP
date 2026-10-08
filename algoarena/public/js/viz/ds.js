@@ -215,4 +215,121 @@ for (int i = 1; i <= n; i++) {                             //@1
         arrIn.addEventListener("keydown", (e) => e.key === "Enter" && build());
         build();
     });
+
+    // ════════════════════════════ Fenwick tree: query prefix dan update titik ════════════════════════════
+    V.register("fenwick", (root) => {
+        const N = 8;
+        const sh = V.shell(root, {
+            title: "Fenwick Tree (BIT)",
+            controls: `
+                <label class="viz-input">a[1..8] <input data-arr value="3, 1, 4, 1, 5, 9, 2, 6" style="width:150px"></label>
+                <label class="viz-input">query r <input class="short" data-r value="7"></label>
+                <label class="viz-input">tambah i v <input class="short" data-iv value="3 5" style="width:52px"></label>
+                <button class="btn btn-sm btn-primary" data-apply>Terapkan</button>`,
+            legend: [
+                ["Sedang dikunjungi", "#f59e0b", "rgba(245,158,11,.18)"],
+                ["Sudah dikunjungi", "#22c55e", "rgba(34,197,94,.18)"],
+                ["Elemen yang dicakup", "#22d3ee", "rgba(34,211,238,.16)"],
+            ],
+        });
+        const arrIn = sh.head.querySelector("[data-arr]");
+        const rIn = sh.head.querySelector("[data-r]");
+        const ivIn = sh.head.querySelector("[data-iv]");
+        const code = V.codePanel(
+            sh.side,
+            `
+int lowbit(int i) { return i & (-i); }      // bit 1 terendah  //@0
+void tambah(int i, long long v) {                              //@1
+    for (; i <= n; i += lowbit(i)) t[i] += v;                  //@2
+}
+long long prefix(int i) {                                      //@3
+    long long s = 0;
+    for (; i > 0; i -= lowbit(i)) s += t[i];                   //@4
+    return s;                                                  //@5
+}`,
+        );
+        const watch = V.watchPanel(sh.side);
+        const lowbit = (i) => i & -i;
+        const bin = (i) => i.toString(2).padStart(4, "0");
+
+        function render(a, t, st) {
+            const levels = [8, 4, 2, 1];
+            let h = `<div class="fw-grid" style="grid-template-columns: 64px repeat(${N}, minmax(0, 1fr))">`;
+            levels.forEach((lb, r) => {
+                h += `<div class="fw-lbl" style="grid-row:${r + 1}">panjang ${lb}</div>`;
+                for (let i = lb; i <= N; i += 2 * lb) {
+                    const cls = ["fw-node"];
+                    if (st.cur === i) cls.push("path");
+                    else if (st.done && st.done.includes(i)) cls.push("done");
+                    h += `<div class="${cls.join(" ")}" style="grid-row:${r + 1}; grid-column:${i - lb + 2} / ${i + 2}"><b>${t[i]}</b><small>t[${i}]${lb > 1 ? ` · a[${i - lb + 1}..${i}]` : ""}</small></div>`;
+                }
+            });
+            h += `<div class="fw-lbl" style="grid-row:5">a[i]</div>`;
+            for (let i = 1; i <= N; i++) {
+                const cov = st.cur && i > st.cur - lowbit(st.cur) && i <= st.cur;
+                h += `<div class="fw-cell ${cov ? "hl" : ""} ${st.point === i ? "pt" : ""}" style="grid-row:5; grid-column:${i + 1}">${a[i]}</div>`;
+            }
+            h += `<div class="fw-lbl" style="grid-row:6">i (biner)</div>`;
+            for (let i = 1; i <= N; i++) h += `<div class="fw-idx" style="grid-row:6; grid-column:${i + 1}"><b>${i}</b><small>${bin(i)}</small></div>`;
+            return `${h}</div>`;
+        }
+
+        function build() {
+            const parsed = V.parseList(arrIn.value, { min: -99, max: 99, limit: N });
+            const base = parsed.length === N ? parsed : [3, 1, 4, 1, 5, 9, 2, 6];
+            arrIn.value = base.join(", ");
+            const r = V.clampInt(rIn.value, 1, N, 7);
+            rIn.value = r;
+            const iv = ivIn.value.trim().split(/[\s,]+/).map(Number);
+            const ui = V.clampInt(iv[0], 1, N, 3);
+            const uv = Number.isFinite(iv[1]) ? Math.max(-99, Math.min(99, Math.round(iv[1]))) : 5;
+            ivIn.value = `${ui} ${uv}`;
+            const a = [0, ...base];
+            const t = new Array(N + 1).fill(0);
+            for (let i = 1; i <= N; i++) for (let j = i; j <= N; j += lowbit(j)) t[j] += a[i];
+            const frames = [];
+            const push = (line, text, st = {}, fx = {}) => frames.push({ line, text, html: render(a, t, st), watch: fx.watch || [["n", N]], ...fx });
+            push(0, `Setiap <code>t[i]</code> menyimpan jumlah <b>lowbit(i)</b> elemen yang berakhir di i, dengan lowbit(i) = nilai bit 1 terendah dari i. Contoh: 6 = 0110, bit terendahnya 2, jadi <code>t[6] = a[5] + a[6]</code>. Indeks ganjil hanya menyimpan dirinya sendiri.`);
+            const query = (rr, label) => {
+                let i = rr;
+                let sum = 0;
+                const done = [];
+                push(3, `${label}: hitung <code>prefix(${rr})</code> = a[1] + … + a[${rr}]. Mulai dari i = ${rr}.`, { done }, { watch: [["i", i], ["biner", bin(i)], ["s", sum]] });
+                while (i > 0) {
+                    sum += t[i];
+                    push(4, `Tambahkan <code>t[${i}] = ${t[i]}</code> (mencakup a[${i - lowbit(i) + 1}..${i}]), s = ${sum}. Lalu <code>i −= lowbit(${i}) = ${lowbit(i)}</code>: bit 1 terendah dihapus, ${bin(i)} → ${bin(i - lowbit(i))}.`, { cur: i, done: done.slice() }, {
+                        watch: [["i", i], ["biner", bin(i)], ["lowbit(i)", lowbit(i)], ["s", sum]],
+                    });
+                    done.push(i);
+                    i -= lowbit(i);
+                }
+                const direct = a.slice(1, rr + 1).reduce((x, y) => x + y, 0);
+                push(5, `i = 0, selesai: <code>prefix(${rr}) = ${sum}</code> hanya dengan ${done.length} langkah (paling banyak log₂ N). Cek langsung: ${direct}.`, { done }, { mark: "key", watch: [["s", sum], ["langkah", done.length]] });
+            };
+            query(r, "Pertanyaan");
+            let i = ui;
+            const done = [];
+            push(1, `Sekarang <code>tambah(${ui}, ${uv})</code>: a[${ui}] bertambah ${uv}. Semua t[j] yang rentangnya memuat ${ui} harus ikut diperbarui.`, { point: ui }, { watch: [["i", i], ["v", uv]] });
+            a[ui] += uv;
+            while (i <= N) {
+                t[i] += uv;
+                push(2, `<code>t[${i}] += ${uv}</code> → ${t[i]} (rentang a[${i - lowbit(i) + 1}..${i}] memuat ${ui}). Lalu <code>i += lowbit(${i}) = ${lowbit(i)}</code>: ${bin(i)} → ${bin(i + lowbit(i))}.`, { cur: i, done: done.slice(), point: ui }, { watch: [["i", i], ["biner", bin(i)], ["lowbit(i)", lowbit(i)]] });
+                done.push(i);
+                i += lowbit(i);
+            }
+            push(2, `i = ${i} &gt; ${N}, selesai. Hanya ${done.length} simpul yang berubah: ${done.join(", ")}.`, { done, point: ui }, { mark: "key" });
+            query(r, "Tanya lagi");
+            push(-1, "Update dan query sama-sama O(log N). Jumlah rentang l..r = prefix(r) − prefix(l − 1).", {}, { mark: "done" });
+            player.load(frames);
+        }
+
+        const player = new V.Player(sh, (f) => {
+            sh.stage.innerHTML = f.html;
+            code.set(f.line);
+            watch.set(f.watch, f.masked);
+        });
+        sh.head.querySelector("[data-apply]").onclick = build;
+        [arrIn, rIn, ivIn].forEach((el) => el.addEventListener("keydown", (e) => e.key === "Enter" && build()));
+        build();
+    });
 })();

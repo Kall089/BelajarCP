@@ -959,3 +959,87 @@ html[data-theme="light"] .g-node.colored text.label {
     color: #0e8a7a;
     background: rgba(14, 138, 122, 0.11);
 }
+
+/* ═══════════════════════════════ Visualisasi Fenwick tree ═══════════════════════════════ */
+.fw-grid {
+    display: grid;
+    gap: 6px;
+    padding: 26px 14px 18px;
+}
+
+.fw-lbl {
+    align-self: center;
+    text-align: right;
+    padding-right: 4px;
+    font: 600 11px var(--mono);
+    color: var(--muted);
+}
+
+.fw-node {
+    display: grid;
+    place-items: center;
+    padding: 4px 2px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: var(--panel);
+    font-family: var(--mono);
+    min-width: 0;
+}
+
+.fw-node b {
+    font-size: 14px;
+    color: var(--text-strong);
+    white-space: nowrap;
+}
+
+.fw-node small {
+    font-size: 10px;
+    color: var(--faint);
+}
+
+.fw-node.path {
+    border-color: var(--amber);
+    background: var(--amber-soft);
+}
+
+.fw-node.done {
+    border-color: var(--green);
+    background: var(--green-soft);
+}
+
+.fw-cell {
+    display: grid;
+    place-items: center;
+    height: 36px;
+    margin-top: 8px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: var(--panel);
+    font: 700 14px var(--mono);
+    color: var(--text-strong);
+}
+
+.fw-cell.hl {
+    border-color: var(--cyan);
+    background: var(--cyan-soft);
+}
+
+.fw-cell.pt {
+    box-shadow: inset 0 -4px 0 var(--amber);
+}
+
+.fw-idx {
+    display: grid;
+    justify-items: center;
+    font-family: var(--mono);
+}
+
+.fw-idx b {
+    font-size: 12px;
+    color: var(--text-strong);
+}
+
+.fw-idx small {
+    font-size: 10px;
+    color: var(--faint);
+}
