@@ -928,3 +928,34 @@ html[data-theme="light"] .g-node.colored text.label {
 .pb-col.best .pb-bar i {
     background: var(--green);
 }
+
+/* ═══════════════════════════════ Track tambahan ═══════════════════════════════ */
+.track-struktur-data .track-icon,
+.track-struktur-data .bar i {
+    background: #4f5fd6;
+}
+
+.track-matematika .track-icon,
+.track-matematika .bar i {
+    background: #c2366e;
+}
+
+.track-string .track-icon,
+.track-string .bar i {
+    background: #0e8a7a;
+}
+
+.pill-struktur-data {
+    color: #4f5fd6;
+    background: rgba(79, 95, 214, 0.12);
+}
+
+.pill-matematika {
+    color: #c2366e;
+    background: rgba(194, 54, 110, 0.1);
+}
+
+.pill-string {
+    color: #0e8a7a;
+    background: rgba(14, 138, 122, 0.11);
+}

@@ -25,6 +25,21 @@ class Lesson extends Model
             'tagline' => 'Pecah masalah besar, ingat jawaban kecil',
             'icon' => 'dp',
         ],
+        'struktur-data' => [
+            'name' => 'Struktur Data',
+            'tagline' => 'Menjawab jutaan pertanyaan rentang dengan cepat',
+            'icon' => 'struktur-data',
+        ],
+        'matematika' => [
+            'name' => 'Matematika',
+            'tagline' => 'Bilangan prima, modulo, dan seni menghitung',
+            'icon' => 'matematika',
+        ],
+        'string' => [
+            'name' => 'String',
+            'tagline' => 'Mencari pola di dalam teks',
+            'icon' => 'string',
+        ],
     ];
 
     public const LEVELS = [

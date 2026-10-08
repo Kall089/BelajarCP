@@ -78,6 +78,15 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Mempercepat transisi DP: jumlah rentang dengan prefix sum, minimum jendela dengan deque monoton, memisahkan suku, dan penjadwalan berbobot.'],
         ['slug' => 'dp-peluang', 'track' => 'dp', 'level' => 3, 'title' => 'DP Peluang & Nilai Harapan', 'subtitle' => 'Dadu, harapan, dan pecahan modulo', 'viz' => 'dice', 'minutes' => 35,
             'summary' => 'Distribusi peluang dengan DP, DP nilai harapan dari belakang, self-loop, pecahan P·Q⁻¹ mod p, linearitas, distribusi geometrik, dan jumlah ekor.'],
+        // Struktur Data
+        ['slug' => 'prefix-sum', 'track' => 'struktur-data', 'level' => 1, 'title' => 'Prefix Sum & Array Selisih', 'subtitle' => 'Bertanya dan mengubah rentang dengan cepat', 'viz' => 'diffarray', 'minutes' => 25,
+            'summary' => 'Prefix sum 1D dan 2D, array selisih untuk penambahan rentang, inklusi–eksklusi, dan menghitung subarray dengan tabel frekuensi.'],
+        ['slug' => 'stack-monoton', 'track' => 'struktur-data', 'level' => 1, 'title' => 'Stack & Stack Monoton', 'subtitle' => 'Elemen lebih besar berikutnya dan histogram', 'viz' => 'monostack', 'minutes' => 30,
+            'summary' => 'Stack LIFO, validasi kurung, next greater element, persegi panjang terbesar di histogram, dan teknik kontribusi.'],
+        ['slug' => 'fenwick', 'track' => 'struktur-data', 'level' => 2, 'title' => 'Fenwick Tree (BIT)', 'subtitle' => 'Update titik dan jumlah prefix dalam O(log N)', 'viz' => 'fenwick', 'minutes' => 35,
+            'summary' => 'Bit terendah i & -i, update dan query prefix O(log N), menghitung inversi, update rentang, dan mencari elemen ke-k.'],
+        ['slug' => 'segment-tree', 'track' => 'struktur-data', 'level' => 2, 'title' => 'Segment Tree', 'subtitle' => 'Query rentang apa pun, update kapan pun', 'viz' => 'segtree', 'minutes' => 40,
+            'summary' => 'Membangun, query, dan update segment tree; versi iteratif; informasi kustom di simpul; lazy propagation; dan sparse table.'],
     ];
 
     /** Urutan file soal; soal nantinya diurutkan mengikuti urutan materi. */
