@@ -22,6 +22,8 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Base case, call stack, pohon rekursi, pola pilih–telusuri–batalkan, pemangkasan, dan jembatan menuju DP.'],
         ['slug' => 'binary-search', 'track' => 'fondasi', 'level' => 1, 'title' => 'Binary Search & Two Pointers', 'subtitle' => 'Membuang setengah kemungkinan setiap langkah', 'viz' => 'window', 'minutes' => 30,
             'summary' => 'lower_bound/upper_bound, binary search pada jawaban, two pointers, sliding window, dan invarian.'],
+        ['slug' => 'greedy', 'track' => 'fondasi', 'level' => 1, 'title' => 'Greedy & Argumen Pertukaran', 'subtitle' => 'Kapan pilihan terbaik sesaat itu benar', 'viz' => 'interval', 'minutes' => 30,
+            'summary' => 'Memilih interval terbanyak, mengurutkan pekerjaan, argumen pertukaran, priority queue untuk Huffman dan tenggat, serta contoh saat serakah salah.'],
         // Graph
         ['slug' => 'representasi-graph', 'track' => 'graph', 'level' => 1, 'title' => 'Mengenal Graph', 'subtitle' => 'Simpul, sisi, adjacency list & matrix', 'viz' => 'graph-repr', 'minutes' => 20,
             'summary' => 'Apa itu graph, istilah penting, dan dua cara utama menyimpannya di program C++.'],
@@ -94,10 +96,17 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Uji prima O(√n), saringan Eratosthenes, faktor prima terkecil untuk faktorisasi cepat, banyak pembagi, fungsi phi Euler, dan saringan rentang.'],
         ['slug' => 'kombinatorika', 'track' => 'matematika', 'level' => 2, 'title' => 'Kombinatorika', 'subtitle' => 'Menghitung tanpa mendaftar', 'viz' => 'gridpath', 'minutes' => 40,
             'summary' => 'Faktorial dan invers faktorial modulo prima, permutasi multiset, bintang dan sekat, inklusi–eksklusi, derangement, dan jalur grid dengan rintangan.'],
+        // String
+        ['slug' => 'string-hashing', 'track' => 'string', 'level' => 2, 'title' => 'String Hashing', 'subtitle' => 'Membandingkan potongan dalam O(1)', 'viz' => 'hash', 'minutes' => 35,
+            'summary' => 'Hash polinomial, prefix hash, hash potongan O(1), tabrakan dan double hashing, palindrom dengan hash maju-mundur, dan binary search + hash.'],
+        ['slug' => 'kmp', 'track' => 'string', 'level' => 2, 'title' => 'KMP & Fungsi Prefiks', 'subtitle' => 'Mencari pola tanpa pernah mundur', 'viz' => 'kmp', 'minutes' => 35,
+            'summary' => 'Border dan fungsi prefiks π, pencarian pola O(n + m), periode terpendek, fungsi Z, dan menghitung kemunculan setiap awalan.'],
+        ['slug' => 'trie', 'track' => 'string', 'level' => 2, 'title' => 'Trie', 'subtitle' => 'Pohon awalan untuk kata dan bit', 'viz' => 'trie', 'minutes' => 30,
+            'summary' => 'Menyisipkan dan mencari kata, menghitung kata berawalan sama, saran kata, trie biner untuk XOR maksimum, dan prefix XOR.'],
     ];
 
     /** Urutan file soal; soal nantinya diurutkan mengikuti urutan materi. */
-    private const PROBLEM_FILES = ['fondasi', 'fondasi_more', 'graph', 'graph_more', 'graph_extra', 'graph_extra2', 'graph_extra3', 'graph_euler', 'graph_flow', 'dp', 'dp_more', 'dp_extra', 'dp_extra2', 'dp_optimasi', 'dp_peluang', 'ds_prefix', 'ds_stack', 'ds_fenwick', 'ds_segtree', 'math_fpb', 'math_prima', 'math_kombi'];
+    private const PROBLEM_FILES = ['fondasi', 'fondasi_more', 'fondasi_greedy', 'graph', 'graph_more', 'graph_extra', 'graph_extra2', 'graph_extra3', 'graph_euler', 'graph_flow', 'dp', 'dp_more', 'dp_extra', 'dp_extra2', 'dp_optimasi', 'dp_peluang', 'ds_prefix', 'ds_stack', 'ds_fenwick', 'ds_segtree', 'math_fpb', 'math_prima', 'math_kombi'];
 
     public function run(): void
     {

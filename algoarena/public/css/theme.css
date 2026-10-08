@@ -1242,3 +1242,31 @@ html[data-theme="light"] .g-node.colored text.label {
     background: rgba(239, 68, 68, 0.25);
     color: var(--red-text);
 }
+
+.hs-v {
+    margin-left: 1px;
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--faint);
+}
+
+.mq-wrap {
+    overflow-x: auto;
+}
+
+.mq-wrap {
+    justify-items: safe center;
+}
+
+.mq-wrap.compact .mq-row {
+    gap: 4px;
+}
+
+.mq-wrap.compact .mq-cell {
+    width: 36px;
+    font-size: 13px;
+}
+
+.mq-wrap.compact .mq-lbl {
+    width: 40px;
+}
