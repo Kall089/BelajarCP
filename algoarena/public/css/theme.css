@@ -1066,3 +1066,76 @@ html[data-theme="light"] .g-node.colored text.label {
 .fw-idx.sg-pt {
     border-bottom: 3px solid var(--amber);
 }
+
+/* ═══════════════════════════════ Visualisasi Euclid ═══════════════════════════════ */
+.eu-svg {
+    display: block;
+    width: 100%;
+    max-height: 340px;
+    margin: 18px 0 8px;
+}
+
+.eu-rest {
+    fill: rgba(148, 163, 184, 0.12);
+    stroke: var(--line-strong);
+    stroke-width: 1.5;
+}
+
+.eu-old {
+    fill: var(--cyan-soft);
+    stroke: var(--cyan);
+    stroke-width: 1.5;
+}
+
+.eu-cur {
+    fill: rgba(245, 158, 11, 0.3);
+    stroke: var(--amber);
+    stroke-width: 2;
+}
+
+.eu-grid {
+    stroke: var(--text-soft);
+    stroke-width: 0.8;
+    stroke-dasharray: 3 4;
+    opacity: 0.55;
+}
+
+.eu-lbl {
+    font: 700 13px var(--mono);
+    fill: var(--text-strong);
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+.eu-dim {
+    font: 600 12px var(--mono);
+    fill: var(--muted);
+    text-anchor: middle;
+}
+
+.eu-table {
+    width: 100%;
+    border-collapse: collapse;
+    font: 13px var(--mono);
+}
+
+.eu-table th,
+.eu-table td {
+    padding: 4px 6px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.eu-table th {
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.eu-table td {
+    color: var(--text-strong);
+}
+
+.eu-table tr.cur td {
+    background: var(--amber-soft);
+    font-weight: 700;
+}

@@ -87,6 +87,13 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Bit terendah i & -i, update dan query prefix O(log N), menghitung inversi, update rentang, dan mencari elemen ke-k.'],
         ['slug' => 'segment-tree', 'track' => 'struktur-data', 'level' => 2, 'title' => 'Segment Tree', 'subtitle' => 'Query rentang apa pun, update kapan pun', 'viz' => 'segtree', 'minutes' => 40,
             'summary' => 'Membangun, query, dan update segment tree; versi iteratif; informasi kustom di simpul; lazy propagation; dan sparse table.'],
+        // Matematika
+        ['slug' => 'fpb-modular', 'track' => 'matematika', 'level' => 1, 'title' => 'FPB, KPK & Aritmetika Modular', 'subtitle' => 'Euclid, pangkat cepat, dan invers', 'viz' => 'euclid', 'minutes' => 35,
+            'summary' => 'Algoritma Euclid, KPK tanpa overflow, aturan modulo, pangkat cepat, invers modular (Fermat dan Euclid diperluas), persamaan Diophantine, dan CRT.'],
+        ['slug' => 'bilangan-prima', 'track' => 'matematika', 'level' => 1, 'title' => 'Bilangan Prima & Saringan', 'subtitle' => 'Eratosthenes, faktorisasi, dan phi Euler', 'viz' => 'sieve', 'minutes' => 35,
+            'summary' => 'Uji prima O(√n), saringan Eratosthenes, faktor prima terkecil untuk faktorisasi cepat, banyak pembagi, fungsi phi Euler, dan saringan rentang.'],
+        ['slug' => 'kombinatorika', 'track' => 'matematika', 'level' => 2, 'title' => 'Kombinatorika', 'subtitle' => 'Menghitung tanpa mendaftar', 'viz' => 'gridpath', 'minutes' => 40,
+            'summary' => 'Faktorial dan invers faktorial modulo prima, permutasi multiset, bintang dan sekat, inklusi–eksklusi, derangement, dan jalur grid dengan rintangan.'],
     ];
 
     /** Urutan file soal; soal nantinya diurutkan mengikuti urutan materi. */
