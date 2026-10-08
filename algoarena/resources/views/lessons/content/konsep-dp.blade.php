@@ -172,7 +172,7 @@ CPP;
 @endphp
 
 <div class="lead-box">
-    <h3>🎯 Setelah materi ini kamu bisa:</h3>
+    <h3>Setelah materi ini kamu bisa:</h3>
     <ul>
         <li>Menjelaskan mengapa rekursi biasa bisa sangat lambat: <strong>subsoal yang sama dihitung berulang kali</strong>.</li>
         <li>Mengubah rekursi menjadi cepat dengan <strong>memoization</strong> (top-down) atau <strong>tabulasi</strong> (bottom-up).</li>
@@ -199,7 +199,7 @@ CPP;
             [14, 30, 280, 'green', 'F1'], [15, 80, 280, 'green', 'F0'],
         ],
         'edges' => [[1, 2], [1, 3], [2, 4], [2, 5], [3, 6], [3, 7], [4, 8], [4, 9], [5, 10], [5, 11], [6, 12], [6, 13], [8, 14], [8, 15]],
-        'caption' => 'Pohon pemanggilan F(5): 15 panggilan. Simpul <span style="color:#f87171">merah</span> adalah perhitungan ulang subsoal yang sebenarnya sudah pernah dihitung. Untuk F(40), rekursi biasa melakukan lebih dari 300 juta panggilan!',
+        'caption' => 'Pohon pemanggilan F(5): 15 panggilan. Simpul <span style="color:var(--red)">merah</span> adalah perhitungan ulang subsoal yang sebenarnya sudah pernah dihitung. Untuk F(40), rekursi biasa melakukan lebih dari 300 juta panggilan!',
     ])
     <div class="callout key">
         <span class="callout-icon">🔑</span>

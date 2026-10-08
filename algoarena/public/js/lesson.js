@@ -75,6 +75,30 @@
         });
         select(preferred);
     });
+
+    // ─────────────── Mode baca kode layar penuh ───────────────
+    const closeFull = () => {
+        $$(".is-fullcode").forEach((el) => {
+            el.classList.remove("is-fullcode");
+            const b = $("[data-fullcode]", el);
+            if (b) b.textContent = "Layar penuh";
+        });
+        document.documentElement.classList.remove("has-fullcode");
+    };
+    $$("[data-fullcode]").forEach((btn) =>
+        btn.addEventListener("click", () => {
+            const box = btn.closest("[data-code-tabs], [data-walkthrough]");
+            if (box.classList.contains("is-fullcode")) return closeFull();
+            closeFull();
+            box.classList.add("is-fullcode");
+            document.documentElement.classList.add("has-fullcode");
+            btn.textContent = "Tutup (Esc)";
+        }),
+    );
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeFull();
+    });
+
     if (window.hljs) $$(".code-tabs code, pre.snippet code").forEach((el) => hljs.highlightElement(el));
 
     // ─────────────── Kuis ───────────────

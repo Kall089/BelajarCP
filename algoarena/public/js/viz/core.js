@@ -471,6 +471,48 @@ window.Viz = (() => {
         };
     }
 
+    // Kata kunci C++ untuk pewarnaan cadangan (jika highlight.js tidak termuat)
+    const CPP_KW =
+        /\b(int|long|bool|char|void|double|auto|const|return|for|while|if|else|continue|break|true|false|vector|pair|queue|priority_queue|stack|string|struct|using|namespace|sizeof)\b/g;
+
+    function highlightCpp(line) {
+        if (window.hljs) {
+            try {
+                return hljs.highlight(line, { language: "cpp", ignoreIllegals: true }).value;
+            } catch (e) {}
+        }
+        const [code, comment] = line.split(/(?=\/\/)/);
+        return esc(code).replace(CPP_KW, '<span class="kw">$1</span>') + (comment ? `<span class="hljs-comment">${esc(comment)}</span>` : "");
+    }
+
+    /**
+     * Panel kode C++ yang barisnya ikut menyala sesuai langkah animasi.
+     * Tandai baris dengan komentar penanda di ujung baris: "//@3" artinya baris ini
+     * menyala saat frame.line === 3 ("//@3,4" untuk beberapa langkah). Penanda tidak ditampilkan.
+     */
+    function codePanel(side, code, title = "Kode C++", hint = "baris yang sedang dijalankan menyala") {
+        const box = panel(side, title, hint, '<div class="pseudo cpp hljs"></div>');
+        const pre = box.querySelector(".pseudo");
+        const map = {};
+        const lines = code.replace(/^\n+|\s+$/g, "").split("\n").map((raw, i) =>
+            raw.replace(/\s*\/\/@([\d,]+)\s*$/, (_, ks) => {
+                ks.split(",").forEach((k) => (map[k] = map[k] || []).push(i));
+                return "";
+            }),
+        );
+        pre.innerHTML = lines.map((l) => `<div>${highlightCpp(l) || " "}</div>`).join("");
+        const rows = [...pre.children];
+        return {
+            el: box,
+            set(line) {
+                const on = new Set(map[line] || []);
+                rows.forEach((r, i) => r.classList.toggle("on", on.has(i)));
+                const first = rows[(map[line] || [])[0]];
+                if (first) pre.scrollTop = Math.max(0, first.offsetTop - pre.clientHeight / 3);
+            },
+        };
+    }
+
     function dsPanel(side, title, hint = "", opts = {}) {
         const box = panel(side, title, hint, `<div class="ds-items ${opts.vertical ? "ds-vertical" : ""}"></div>`);
         const items = box.querySelector(".ds-items");
@@ -747,9 +789,9 @@ window.Viz = (() => {
     }
 
     // ═════════════════════════ Graph: renderer SVG interaktif ═════════════════════════
-    const MARKER_COLORS = { default: "#3d4864", active: "#f59e0b", tree: "#8b5cf6", path: "#22c55e", skip: "#ef4444", new: "#22d3ee" };
+    const MARKER_COLORS = { default: "var(--edge)", active: "#f59e0b", tree: "#8b5cf6", path: "#22c55e", skip: "#ef4444", new: "#22d3ee" };
     const NODE_GRADS = {
-        base: ["#2c3753", "#151b29"],
+        base: ["var(--node-a)", "var(--node-b)"],
         queued: ["#1d7189", "#0b2731"],
         current: ["#fff3c4", "#f59e0b"],
         visited: ["#8d72ee", "#382679"],
@@ -768,12 +810,12 @@ window.Viz = (() => {
                 { id: `aa-arrow-${name}`, viewBox: "0 0 10 10", refX: "8.5", refY: "5", markerWidth: "6.5", markerHeight: "6.5", orient: "auto-start-reverse" },
                 defs,
             );
-            svg("path", { d: "M0 0 10 5 0 10z", fill: color }, m);
+            svg("path", { d: "M0 0 10 5 0 10z", style: `fill:${color}` }, m);
         }
         for (const [name, [a, b]] of Object.entries(NODE_GRADS)) {
             const g = svg("radialGradient", { id: `aa-ng-${name}`, cx: "38%", cy: "30%", r: "78%" }, defs);
-            svg("stop", { offset: "0%", "stop-color": a }, g);
-            svg("stop", { offset: "100%", "stop-color": b }, g);
+            svg("stop", { offset: "0%", style: `stop-color:${a}` }, g);
+            svg("stop", { offset: "100%", style: `stop-color:${b}` }, g);
         }
         const glow = svg("filter", { id: "aa-glow", x: "-80%", y: "-80%", width: "260%", height: "260%" }, defs);
         svg("feGaussianBlur", { stdDeviation: "3.5", result: "b" }, glow);
@@ -1194,7 +1236,7 @@ window.Viz = (() => {
             ["aa-dp-g", "#22c55e"],
         ]) {
             const m = svg("marker", { id, viewBox: "0 0 10 10", refX: "8", refY: "5", markerWidth: "6", markerHeight: "6", orient: "auto-start-reverse" }, defs);
-            svg("path", { d: "M0 0 10 5 0 10z", fill: color }, m);
+            svg("path", { d: "M0 0 10 5 0 10z", style: `fill:${color}` }, m);
         }
         const arrowLayer = svg("g", {}, arrows);
         let clickCb = null;
@@ -1336,6 +1378,7 @@ window.Viz = (() => {
         shell,
         Player,
         pseudoPanel,
+        codePanel,
         dsPanel,
         arrayPanel,
         htmlPanel,

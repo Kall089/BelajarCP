@@ -21,5 +21,11 @@
         </nav>
     </div>
     <div></div>
-    <div class="topbar-right">@include('partials.user-menu')</div>
+    <div class="topbar-right">
+        <button type="button" class="theme-toggle" data-theme-toggle title="Ganti tema tampilan">
+            <span class="t-light">Tema gelap</span>
+            <span class="t-dark">Tema terang</span>
+        </button>
+        @include('partials.user-menu')
+    </div>
 </header>

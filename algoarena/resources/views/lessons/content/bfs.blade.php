@@ -264,7 +264,7 @@ CPP;
 @endphp
 
 <div class="lead-box">
-    <h3>🎯 Setelah materi ini kamu bisa:</h3>
+    <h3>Setelah materi ini kamu bisa:</h3>
     <ul>
         <li>Menjelaskan cara BFS menjelajah graph <strong>lapis demi lapis</strong> dan mengapa ia memakai antrian.</li>
         <li>Menghitung <strong>jarak terpendek</strong> (jumlah sisi) dari satu simpul ke semua simpul lain.</li>
@@ -339,7 +339,7 @@ CPP;
     <h2><span class="sec-icon">🎬</span> Visualisasi Interaktif</h2>
     <div class="prose">
         <p>Tekan <strong>▶ Putar</strong> atau maju langkah demi langkah. Perhatikan isi <strong>antrian</strong>, angka <strong>jarak</strong> di atas simpul, dan garis ungu pohon BFS. Klik simpul mana pun untuk mengganti titik awal, atau ubah graph-nya dengan alat edit.</p>
-        <p>Aktifkan <strong>🎯 Mode Tebak</strong> untuk menguji diri: kamu akan diminta menebak simpul mana yang keluar dari antrian berikutnya dan berapa jaraknya.</p>
+        <p>Aktifkan <strong>Mode Tebak</strong> untuk menguji diri: kamu akan diminta menebak simpul mana yang keluar dari antrian berikutnya dan berapa jaraknya.</p>
     </div>
     <div data-viz="bfs"></div>
 </section>

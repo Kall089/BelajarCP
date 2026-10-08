@@ -242,7 +242,7 @@ CPP;
 @endphp
 
 <div class="lead-box">
-    <h3>🎯 Setelah materi ini kamu bisa:</h3>
+    <h3>Setelah materi ini kamu bisa:</h3>
     <ul>
         <li>Menjelaskan apa itu <strong>spanning tree</strong> dan <strong>minimum spanning tree</strong> (MST).</li>
         <li>Menjalankan <strong>algoritma Kruskal</strong>: urutkan sisi, ambil yang termurah selama tidak membentuk siklus.</li>
@@ -301,7 +301,7 @@ CPP;
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi Interaktif">
     <h2><span class="sec-icon">🎬</span> Visualisasi Interaktif</h2>
     <div class="prose">
-        <p>Perhatikan daftar sisi terurut di panel samping dan warna kelompok yang perlahan menyatu. Dengan <strong>🎯 Mode Tebak</strong>, kamu memutuskan sendiri apakah setiap sisi diambil atau dilewati, lalu menebak total biayanya.</p>
+        <p>Perhatikan daftar sisi terurut di panel samping dan warna kelompok yang perlahan menyatu. Dengan <strong>Mode Tebak</strong>, kamu memutuskan sendiri apakah setiap sisi diambil atau dilewati, lalu menebak total biayanya.</p>
     </div>
     <div data-viz="mst"></div>
 </section>

@@ -28,12 +28,12 @@
 <svg viewBox="0 0 {{ $dgW }} {{ $dgH }}" role="img" aria-label="{{ $caption ?? 'Diagram graph' }}">
     <defs>
         <radialGradient id="dg-node" cx="38%" cy="30%" r="78%">
-            <stop offset="0%" stop-color="#2c3753" />
-            <stop offset="100%" stop-color="#151b29" />
+            <stop offset="0%" style="stop-color: var(--node-a)" />
+            <stop offset="100%" style="stop-color: var(--node-b)" />
         </radialGradient>
         @foreach ($dgColors as $cls => $color)
             <marker id="{{ $dgId }}-a{{ $cls }}" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
-                <path d="M0 0 10 5 0 10z" fill="{{ $color }}" />
+                <path d="M0 0 10 5 0 10z" style="fill: {{ $cls === '' ? 'var(--edge)' : $color }}" />
             </marker>
         @endforeach
     </defs>
@@ -71,7 +71,7 @@
             <text>{{ $n[4] ?? $n[0] }}</text>
         </g>
         @isset($badges[$n[0]])
-            <text class="dg-small" x="{{ $n[1] }}" y="{{ $n[2] - $dgR - 8 }}" style="fill: #fde68a; font-family: var(--mono); font-weight: 700">{{ $badges[$n[0]] }}</text>
+            <text class="dg-small" x="{{ $n[1] }}" y="{{ $n[2] - $dgR - 8 }}" style="fill: var(--hl-text); font-family: var(--mono); font-weight: 700">{{ $badges[$n[0]] }}</text>
         @endisset
     @endforeach
     @foreach ($notes ?? [] as $note)

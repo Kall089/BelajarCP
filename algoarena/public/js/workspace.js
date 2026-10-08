@@ -122,6 +122,29 @@
                 "scrollbarSlider.background": "#2b344880",
             },
         });
+        monaco.editor.defineTheme("algoarena-light", {
+            base: "vs",
+            inherit: true,
+            rules: [
+                { token: "comment", foreground: "6e7781", fontStyle: "italic" },
+                { token: "keyword", foreground: "cf222e" },
+                { token: "number", foreground: "0550ae" },
+                { token: "string", foreground: "0a3069" },
+                { token: "type", foreground: "953800" },
+                { token: "keyword.directive", foreground: "116329" },
+            ],
+            colors: {
+                "editor.background": "#fbfaf7",
+                "editor.foreground": "#24292f",
+                "editorLineNumber.foreground": "#a9a597",
+                "editorLineNumber.activeForeground": "#2f5bd3",
+                "editor.lineHighlightBackground": "#f1efe9",
+                "editor.selectionBackground": "#2f5bd333",
+                "editorCursor.foreground": "#2f5bd3",
+            },
+        });
+        const themeName = () => (document.documentElement.dataset.theme === "dark" ? "algoarena" : "algoarena-light");
+        document.addEventListener("aa:theme", () => monaco.editor.setTheme(themeName()));
         for (const lang of langs) {
             const saved = store.get(codeKey(lang), null);
             models[lang] = monaco.editor.createModel(saved ?? P.starter[lang] ?? "", lang);
@@ -132,7 +155,7 @@
         }
         editor = monaco.editor.create($("[data-editor]"), {
             model: models[language],
-            theme: "algoarena",
+            theme: themeName(),
             fontFamily: "JetBrains Mono, Consolas, monospace",
             fontLigatures: false,
             fontSize: 14,

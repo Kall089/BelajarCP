@@ -100,23 +100,33 @@
 
         const pseudoLines = (dir) =>
             dir
-                ? ["adj ← list kosong untuk setiap simpul", "mat ← matrix N×N berisi 0", "untuk setiap sisi (u → v):", "    adj[u].tambahkan(v)", "    mat[u][v] ← 1"]
-                : [
-                      "adj ← list kosong untuk setiap simpul",
-                      "mat ← matrix N×N berisi 0",
-                      "untuk setiap sisi (u, v):",
-                      "    adj[u].tambahkan(v)",
-                      "    adj[v].tambahkan(u)",
-                      "    mat[u][v] ← 1",
-                      "    mat[v][u] ← 1",
-                  ];
+                ? `
+vector<vector<int>> adj(n + 1);                          //@0
+vector<vector<int>> mat(n + 1, vector<int>(n + 1, 0));   //@1
+for (int i = 0; i < m; i++) {                            //@2
+    int u, v;
+    cin >> u >> v;           // sisi berarah u -> v      //@2
+    adj[u].push_back(v);                                 //@3
+    mat[u][v] = 1;                                       //@4
+}`
+                : `
+vector<vector<int>> adj(n + 1);                          //@0
+vector<vector<int>> mat(n + 1, vector<int>(n + 1, 0));   //@1
+for (int i = 0; i < m; i++) {                            //@2
+    int u, v;
+    cin >> u >> v;           // sisi dua arah u - v      //@2
+    adj[u].push_back(v);                                 //@3
+    adj[v].push_back(u);                                 //@4
+    mat[u][v] = 1;                                       //@5
+    mat[v][u] = 1;                                       //@6
+}`;
 
         let pseudo;
         let lp;
         let mp;
         function rebuildSide() {
             sh.side.innerHTML = "";
-            pseudo = V.pseudoPanel(sh.side, "Pseudocode", pseudoLines(directed));
+            pseudo = V.codePanel(sh.side, pseudoLines(directed));
             lp = V.htmlPanel(sh.side, "Adjacency List", "O(N + M) memori");
             mp = V.htmlPanel(sh.side, "Adjacency Matrix", "O(N²) memori");
         }
@@ -264,17 +274,26 @@
                 build();
             },
         });
-        const pseudo = V.pseudoPanel(sh.side, "Pseudocode", [
-            "BFS(s):",
-            "  dist[semua] ← ∞,  dist[s] ← 0",
-            "  antrian.masukkan(s)",
-            "  selama antrian tidak kosong:",
-            "    u ← antrian.ambil_depan()",
-            "    untuk setiap tetangga v dari u:",
-            "      jika dist[v] = ∞:",
-            "        dist[v] ← dist[u] + 1",
-            "        antrian.masukkan(v)",
-        ]);
+        const pseudo = V.codePanel(
+            sh.side,
+            `
+void bfs(int s) {                           //@0
+    dist.assign(n + 1, INF);                //@1
+    dist[s] = 0;                            //@1
+    queue<int> q;
+    q.push(s);                              //@2
+    while (!q.empty()) {                    //@3
+        int u = q.front();                  //@4
+        q.pop();                            //@4
+        for (int v : adj[u]) {              //@5
+            if (dist[v] == INF) {           //@6
+                dist[v] = dist[u] + 1;      //@7
+                q.push(v);                  //@8
+            }
+        }
+    }
+}`,
+        );
         const qPanel = V.dsPanel(sh.side, "Antrian (Queue)", "depan → belakang");
         const dPanel = V.arrayPanel(sh.side, "Array dist", "jarak dari s");
         const watch = V.watchPanel(sh.side);
@@ -480,19 +499,26 @@
         let watch;
 
         const LINES = {
-            single: ["DFS(u):", "  visited[u] ← benar", "  untuk setiap tetangga v dari u:", "    jika tidak visited[v]:", "      DFS(v)", "  // kembali (backtrack) ke pemanggil"],
-            comp: [
-                "komponen ← 0",
-                "untuk setiap simpul s:",
-                "  jika tidak visited[s]:",
-                "    komponen ← komponen + 1",
-                "    DFS(s)",
-                "",
-                "DFS(u):",
-                "  visited[u] ← benar",
-                "  untuk setiap tetangga v dari u:",
-                "    jika tidak visited[v]: DFS(v)",
-            ],
+            single: `
+void dfs(int u) {                   //@0
+    visited[u] = true;              //@1
+    for (int v : adj[u])            //@2
+        if (!visited[v])            //@3
+            dfs(v);                 //@4
+}   // selesai: kembali (backtrack) ke pemanggil   //@5`,
+            comp: `
+void dfs(int u) {                   //@6
+    visited[u] = true;              //@7
+    for (int v : adj[u])            //@8
+        if (!visited[v]) dfs(v);    //@9
+}
+
+int komponen = 0;                   //@0
+for (int s = 1; s <= n; s++)        //@1
+    if (!visited[s]) {              //@2
+        komponen++;                 //@3
+        dfs(s);                     //@4
+    }`,
         };
 
         function refreshStart() {
@@ -502,7 +528,7 @@
 
         function rebuildSide() {
             sh.side.innerHTML = "";
-            pseudo = V.pseudoPanel(sh.side, "Pseudocode", LINES[mode]);
+            pseudo = V.codePanel(sh.side, LINES[mode]);
             stackPanel = V.dsPanel(sh.side, "Call Stack", "puncak di atas", { vertical: true });
             orderPanel = V.dsPanel(sh.side, "Urutan kunjungan");
             compPanel = mode === "comp" ? V.htmlPanel(sh.side, "Komponen ditemukan") : null;
@@ -720,18 +746,33 @@
                 build();
             },
         });
-        const pseudo = V.pseudoPanel(sh.side, "Pseudocode", [
-            "Dijkstra(s):",
-            "  dist[semua] ← ∞,  dist[s] ← 0",
-            "  pq.masukkan((0, s))",
-            "  selama pq tidak kosong:",
-            "    (d, u) ← pq.ambil_terkecil()",
-            "    jika d > dist[u]: lewati",
-            "    untuk setiap (v, w) tetangga u:",
-            "      jika dist[u] + w < dist[v]:",
-            "        dist[v] ← dist[u] + w;  prev[v] ← u",
-            "        pq.masukkan((dist[v], v))",
-        ]);
+        const pseudo = V.codePanel(
+            sh.side,
+            `
+typedef pair<long long, int> pli;   // (jarak, simpul)
+
+void dijkstra(int s) {                                  //@0
+    dist.assign(n + 1, INF);                            //@1
+    dist[s] = 0;                                        //@1
+    priority_queue<pli, vector<pli>, greater<pli>> pq;  // terkecil di atas
+    pq.push({0, s});                                    //@2
+    while (!pq.empty()) {                               //@3
+        long long d = pq.top().first;                   //@4
+        int u = pq.top().second;                        //@4
+        pq.pop();                                       //@4
+        if (d > dist[u]) continue;   // data basi       //@5
+        for (auto& e : adj[u]) {                        //@6
+            int v = e.first;                            //@6
+            long long w = e.second;                     //@6
+            if (dist[u] + w < dist[v]) {                //@7
+                dist[v] = dist[u] + w;                  //@8
+                prev[v] = u;                            //@8
+                pq.push({dist[v], v});                  //@9
+            }
+        }
+    }
+}`,
+        );
         const pqPanel = V.dsPanel(sh.side, "Priority Queue", "terkecil di kiri");
         const dPanel = V.arrayPanel(sh.side, "Array dist");
         const watch = V.watchPanel(sh.side);
@@ -942,16 +983,28 @@
                 build();
             },
         });
-        const pseudo = V.pseudoPanel(sh.side, "Pseudocode", [
-            "hitung indeg[v] untuk setiap simpul",
-            "masukkan semua simpul ber-indeg 0 ke antrian",
-            "selama antrian tidak kosong:",
-            "  u ← antrian.ambil_depan();  hasil.tambahkan(u)",
-            "  untuk setiap sisi u → v:",
-            "    indeg[v] ← indeg[v] − 1",
-            "    jika indeg[v] = 0: antrian.masukkan(v)",
-            "jika |hasil| < N: ada siklus!",
-        ]);
+        const pseudo = V.codePanel(
+            sh.side,
+            `
+vector<int> indeg(n + 1, 0);
+for (int u = 1; u <= n; u++)                  //@0
+    for (int v : adj[u]) indeg[v]++;          //@0
+queue<int> q;
+for (int v = 1; v <= n; v++)                  //@1
+    if (indeg[v] == 0) q.push(v);             //@1
+vector<int> hasil;
+while (!q.empty()) {                          //@2
+    int u = q.front();                        //@3
+    q.pop();                                  //@3
+    hasil.push_back(u);                       //@3
+    for (int v : adj[u]) {                    //@4
+        indeg[v]--;                           //@5
+        if (indeg[v] == 0) q.push(v);         //@6
+    }
+}
+if ((int)hasil.size() < n)                    //@7
+    cout << "ada siklus!\\n";                //@7`,
+        );
         const inPanel = V.arrayPanel(sh.side, "Indegree", "banyak sisi masuk");
         const qPanel = V.dsPanel(sh.side, "Antrian");
         const resPanel = V.dsPanel(sh.side, "Hasil urutan");
@@ -1133,15 +1186,25 @@
                 build();
             },
         });
-        const pseudo = V.pseudoPanel(sh.side, "Pseudocode", [
-            "urutkan semua sisi dari bobot terkecil",
-            "setiap simpul menjadi komponen sendiri (DSU)",
-            "untuk setiap sisi (u, v, w) terurut:",
-            "  jika find(u) ≠ find(v):",
-            "    ambil sisi;  union(u, v);  total += w",
-            "  lain: tolak (akan membentuk siklus)",
-            "  jika sudah N − 1 sisi: selesai",
-        ]);
+        const pseudo = V.codePanel(
+            sh.side,
+            `
+// sisi[i] = {w, u, v}
+sort(sisi.begin(), sisi.end());   // bobot kecil dulu   //@0
+for (int v = 1; v <= n; v++) parent[v] = v;               //@1
+long long total = 0;
+int dipakai = 0;
+for (auto& e : sisi) {                                    //@2
+    if (find(e[1]) != find(e[2])) {                       //@3
+        unite(e[1], e[2]);                                //@4
+        total += e[0];                                    //@4
+        dipakai++;                                        //@4
+    } else {                                              //@5
+        continue;   // ditolak: akan membentuk siklus     //@5
+    }
+    if (dipakai == n - 1) break;   // MST lengkap         //@6
+}`,
+        );
         const edgePanel = V.htmlPanel(sh.side, "Sisi terurut", "bobot kecil → besar");
         const compPanel = V.htmlPanel(sh.side, "Komponen (Union-Find)");
         const watch = V.watchPanel(sh.side);

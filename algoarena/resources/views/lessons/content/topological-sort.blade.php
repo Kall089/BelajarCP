@@ -174,7 +174,7 @@ CPP;
 @endphp
 
 <div class="lead-box">
-    <h3>🎯 Setelah materi ini kamu bisa:</h3>
+    <h3>Setelah materi ini kamu bisa:</h3>
     <ul>
         <li>Memodelkan aturan "a harus sebelum b" sebagai <strong>graph berarah</strong> dan memahami istilah <strong>DAG</strong>.</li>
         <li>Menjalankan <strong>algoritma Kahn</strong> dengan indegree dan antrian, termasuk mendeteksi <strong>siklus</strong>.</li>

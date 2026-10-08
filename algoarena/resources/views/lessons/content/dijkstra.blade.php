@@ -270,7 +270,7 @@ CPP;
 @endphp
 
 <div class="lead-box">
-    <h3>🎯 Setelah materi ini kamu bisa:</h3>
+    <h3>Setelah materi ini kamu bisa:</h3>
     <ul>
         <li>Menjelaskan mengapa BFS gagal pada graph <strong>berbobot</strong> dan bagaimana Dijkstra memperbaikinya.</li>
         <li>Memahami <strong>relaksasi</strong> sisi dan peran <strong>priority queue</strong> (min-heap).</li>
@@ -341,7 +341,7 @@ CPP;
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi Interaktif">
     <h2><span class="sec-icon">🎬</span> Visualisasi Interaktif</h2>
     <div class="prose">
-        <p>Perhatikan panel <strong>priority queue</strong>: elemen terkecil selalu keluar lebih dulu. Simpul ungu tua artinya jaraknya sudah final. Dengan <strong>🎯 Mode Tebak</strong>, tebak simpul yang keluar berikutnya dan hasil relaksasinya.</p>
+        <p>Perhatikan panel <strong>priority queue</strong>: elemen terkecil selalu keluar lebih dulu. Simpul ungu tua artinya jaraknya sudah final. Dengan <strong>Mode Tebak</strong>, tebak simpul yang keluar berikutnya dan hasil relaksasinya.</p>
     </div>
     <div data-viz="dijkstra"></div>
 </section>

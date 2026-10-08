@@ -43,6 +43,7 @@
                 <button type="button" data-wt-mode="all">Baca berurutan</button>
             </div>
             <button type="button" class="btn btn-sm btn-ghost" data-wt-copy>Salin kode</button>
+            <button type="button" class="btn btn-sm btn-ghost fullcode-btn" data-fullcode>Layar penuh</button>
         </div>
     </div>
     @isset($intro)
