@@ -504,3 +504,18 @@ html[data-theme="light"] .dg-node:is(.vis, .cyan, .green, .red) text {
         max-height: none;
     }
 }
+
+.g-edge.bridge .g-line {
+    stroke: var(--red);
+    stroke-width: 5;
+}
+
+.g-edge.back .g-line {
+    stroke: var(--cyan);
+    stroke-width: 3;
+    stroke-dasharray: 6 5;
+}
+
+html[data-theme="light"] .g-node.colored text.label {
+    fill: #111318;
+}

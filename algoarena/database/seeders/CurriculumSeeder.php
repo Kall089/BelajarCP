@@ -39,6 +39,10 @@ class CurriculumSeeder extends Seeder
             'summary' => 'DP di atas graph: jarak antar semua pasangan simpul, sisi berbobot negatif, dan deteksi siklus negatif.'],
         ['slug' => 'lca', 'track' => 'graph', 'level' => 3, 'title' => 'Lowest Common Ancestor', 'subtitle' => 'Binary lifting pada pohon', 'viz' => 'lca', 'minutes' => 35,
             'summary' => 'Leluhur bersama terdekat dua simpul dalam O(log N) per pertanyaan, plus jarak di pohon.'],
+        ['slug' => 'scc', 'track' => 'graph', 'level' => 3, 'title' => 'Strongly Connected Components', 'subtitle' => 'Kosaraju, Tarjan, dan graph kondensasi', 'viz' => 'scc', 'minutes' => 35,
+            'summary' => 'Komponen terhubung kuat pada graph berarah, algoritma Kosaraju dan Tarjan, serta DP di atas graph kondensasi.'],
+        ['slug' => 'jembatan', 'track' => 'graph', 'level' => 3, 'title' => 'Jembatan & Titik Artikulasi', 'subtitle' => 'Titik rawan sebuah jaringan', 'viz' => 'bridges', 'minutes' => 35,
+            'summary' => 'Pohon DFS, sisi balik, nilai tin/low, mencari jembatan dan titik artikulasi dalam O(N + M), serta pohon jembatan.'],
         // Dynamic Programming
         ['slug' => 'konsep-dp', 'track' => 'dp', 'level' => 1, 'title' => 'Konsep Dynamic Programming', 'subtitle' => 'Dari rekursi lambat ke tabel cepat', 'viz' => 'fib', 'minutes' => 25,
             'summary' => 'Overlapping subproblem, memoization, tabulasi, dan resep 4 langkah merancang DP.'],

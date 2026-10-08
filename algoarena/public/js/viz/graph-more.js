@@ -396,4 +396,328 @@ while (!dq.empty()) {                       //@1
         };
         build();
     });
+
+    // ════════════════════════════ SCC: algoritma Kosaraju ════════════════════════════
+    V.register("scc", (root) => {
+        const sh = V.shell(root, {
+            title: "Strongly Connected Components (Kosaraju)",
+            controls: `
+                <button class="btn btn-sm" data-random>Graph acak</button>
+                <button class="btn btn-sm btn-ghost" data-preset>Reset</button>`,
+            legend: [
+                ["Sedang dikunjungi", "#f59e0b", "#f59e0b"],
+                ["Di call stack", "#22d3ee", "rgba(34,211,238,.16)"],
+                ["Selesai (masuk urutan)", "#a78bfa", "#5b3fc4"],
+                ["Warna = komponen kuat", "#22c55e", "rgba(34,197,94,.3)"],
+            ],
+        });
+        const P = (list) => [null, ...list.map(([x, y], i) => ({ id: i + 1, x, y }))];
+        const PRESET = {
+            n: 8,
+            nodes: P([[80, 110], [200, 60], [180, 220], [320, 240], [440, 130], [470, 310], [580, 200], [600, 340]]),
+            edges: [[1, 2], [2, 3], [3, 1], [3, 4], [4, 5], [5, 6], [6, 4], [6, 7], [7, 8], [8, 7]].map(([u, v]) => ({ u, v, w: 1 })),
+            directed: true,
+            weighted: false,
+        };
+        let graph = JSON.parse(JSON.stringify(PRESET));
+        const view = V.graphView(sh.stage, { hint: "Graph berarah · seret simpul untuk merapikan" });
+        const pseudo = V.codePanel(
+            sh.side,
+            `
+// Tahap 1: DFS di graph asli, catat urutan SELESAI
+void dfs1(int u) {                           //@0
+    vis[u] = true;                           //@0
+    for (int v : adj[u])                     //@1
+        if (!vis[v]) dfs1(v);                //@1
+    urutan.push_back(u);   // u selesai      //@2
+}
+// Tahap 2: DFS di graph TERBALIK
+void dfs2(int u, int c) {                    //@3
+    komp[u] = c;                             //@4
+    for (int v : radj[u])                    //@5
+        if (komp[v] == -1) dfs2(v, c);       //@5
+}
+
+for (int v = 1; v <= n; v++)                 //@6
+    if (!vis[v]) dfs1(v);                    //@6
+reverse(urutan.begin(), urutan.end());       //@7
+int c = 0;
+for (int v : urutan)                         //@8
+    if (komp[v] == -1) dfs2(v, c++);         //@8`,
+        );
+        const orderPanel = V.dsPanel(sh.side, "Urutan selesai (tahap 1)");
+        const compPanel = V.htmlPanel(sh.side, "Komponen kuat ditemukan");
+        const watch = V.watchPanel(sh.side);
+
+        function build() {
+            const g = graph;
+            view.draw(g);
+            const n = g.n;
+            const adj = Array.from({ length: n + 1 }, () => []);
+            const radj = Array.from({ length: n + 1 }, () => []);
+            g.edges.forEach((e) => {
+                adj[e.u].push(e.v);
+                radj[e.v].push(e.u);
+            });
+            adj.forEach((l) => l.sort((a, b) => a - b));
+            radj.forEach((l) => l.sort((a, b) => a - b));
+            const rec = recorder();
+            const st = { nodes: {}, badges: {}, edges: {}, extra: {}, colors: {} };
+            const vis = new Array(n + 1).fill(false);
+            const urutan = [];
+            const komp = new Array(n + 1).fill(-1);
+            const groups = [];
+            const stack = [];
+            const compHtml = () =>
+                groups.length
+                    ? groups.map((gr, i) => `<span class="comp-chip" style="--c:${V.COMP_COLORS[i % V.COMP_COLORS.length][1]}">K${i + 1}: {${gr.join(", ")}}</span>`).join(" ")
+                    : '<span class="muted">belum ada</span>';
+            const sync = (w = []) => {
+                st.extra = {
+                    order: urutan.map((x) => ({ label: x })),
+                    comps: compHtml(),
+                    watch: [["call stack", stack.join(" → ") || "kosong"], ...w],
+                };
+            };
+            for (let i = 1; i <= n; i++) st.nodes[i] = "";
+            sync();
+            rec.push(-1, "Dua simpul berada di <b>komponen kuat</b> yang sama jika masing-masing bisa mencapai yang lain. Kosaraju memakai dua kali DFS.", st);
+            const dfs1 = (u) => {
+                vis[u] = true;
+                stack.push(u);
+                st.nodes[u] = "current";
+                sync([["u", u]]);
+                rec.push(0, `Tahap 1: masuk <code>dfs1(${u})</code>.`, st, { pulse: [u] });
+                for (const v of adj[u]) {
+                    const key = ek(u, v, true);
+                    if (!vis[v]) {
+                        st.edges[key] = "tree";
+                        st.nodes[u] = "queued";
+                        sync([["u", u], ["v", v]]);
+                        rec.push(1, `Sisi ${u} → ${v}: ${v} belum dikunjungi, masuk.`, st, { flow: [u, v] });
+                        dfs1(v);
+                        st.nodes[u] = "current";
+                    } else {
+                        sync([["u", u], ["v", v]]);
+                        rec.push(1, `Sisi ${u} → ${v}: ${v} sudah dikunjungi, lewati.`, st, { mark: "skip" });
+                    }
+                }
+                urutan.push(u);
+                stack.pop();
+                st.nodes[u] = "done";
+                sync([["u", u]]);
+                rec.push(2, `<b>${u}</b> selesai, dicatat ke urutan: [${urutan.join(", ")}].`, st, { mark: "key" });
+            };
+            for (let v = 1; v <= n; v++) {
+                if (!vis[v]) {
+                    sync([["mulai dari", v]]);
+                    rec.push(6, `Simpul ${v} belum dikunjungi: mulai DFS baru dari ${v}.`, st);
+                    dfs1(v);
+                }
+            }
+            const order = [...urutan].reverse();
+            st.edges = {};
+            for (let i = 1; i <= n; i++) st.nodes[i] = "";
+            sync([["urutan dibalik", order.join(", ")]]);
+            rec.push(7, `Tahap 1 selesai. Balik urutannya: <b>${order.join(", ")}</b>. Simpul yang selesai paling akhir berada di komponen "hulu".`, st, { mark: "key" });
+            let c = 0;
+            const dfs2 = (u, cc) => {
+                komp[u] = cc;
+                groups[cc].push(u);
+                st.colors[u] = V.COMP_COLORS[cc % V.COMP_COLORS.length];
+                st.nodes[u] = "current";
+                sync([["u", u], ["komponen", `K${cc + 1}`]]);
+                rec.push(4, `Tahap 2: <code>komp[${u}] = K${cc + 1}</code>.`, st, { pulse: [u] });
+                for (const v of radj[u]) {
+                    const key = ek(v, u, true);
+                    if (komp[v] === -1) {
+                        st.edges[key] = "back";
+                        sync([["u", u], ["v (lewat sisi terbalik)", v]]);
+                        rec.push(5, `Di graph terbalik, ${u} → ${v} (sisi asli ${v} → ${u}). ${v} belum punya komponen: masuk.`, st, { flow: [u, v] });
+                        dfs2(v, cc);
+                    }
+                }
+                st.nodes[u] = "";
+            };
+            for (const v of order) {
+                if (komp[v] !== -1) continue;
+                groups.push([]);
+                sync([["mulai dari", v]]);
+                rec.push(8, `Simpul <b>${v}</b> belum punya komponen: semua yang ditemukan dari sini di graph terbalik adalah komponen baru <b>K${c + 1}</b>.`, st, { mark: "discover" });
+                dfs2(v, c);
+                groups[c].sort((a, b) => a - b);
+                c++;
+            }
+            sync();
+            rec.push(-1, `Selesai: <b>${c}</b> komponen kuat. Setiap simpul dan sisi diproses dua kali: <b>O(N + M)</b>.`, st, { mark: "done" });
+            player.load(rec.frames);
+        }
+
+        const player = new V.Player(sh, (f) => {
+            view.update(f);
+            pseudo.set(f.line);
+            orderPanel.set(f.order);
+            compPanel.set(f.comps);
+            watch.set(f.watch, f.masked);
+        });
+        sh.head.querySelector("[data-random]").onclick = () => {
+            graph = V.randomGraph({ n: V.rand(6, 8), m: V.rand(8, 11), directed: true, connected: false });
+            build();
+        };
+        sh.head.querySelector("[data-preset]").onclick = () => {
+            graph = JSON.parse(JSON.stringify(PRESET));
+            build();
+        };
+        build();
+    });
+
+    // ════════════════════════════ Jembatan & titik artikulasi (Tarjan) ════════════════════════════
+    V.register("bridges", (root) => {
+        const sh = V.shell(root, {
+            title: "Jembatan & Titik Artikulasi (tin / low)",
+            controls: `
+                <button class="btn btn-sm" data-random>Graph acak</button>
+                <button class="btn btn-sm btn-ghost" data-preset>Reset</button>`,
+            legend: [
+                ["Sedang dikunjungi", "#f59e0b", "#f59e0b"],
+                ["Sisi pohon DFS", "#8b5cf6"],
+                ["Sisi balik", "#22d3ee"],
+                ["Jembatan", "#ef4444"],
+                ["Titik artikulasi", "#ef4444", "rgba(239,68,68,.25)"],
+            ],
+        });
+        const P = (list) => [null, ...list.map(([x, y], i) => ({ id: i + 1, x, y }))];
+        const PRESET = {
+            n: 8,
+            nodes: P([[70, 110], [70, 300], [190, 200], [320, 200], [430, 90], [430, 310], [550, 200], [600, 340]]),
+            edges: [[1, 2], [2, 3], [3, 1], [3, 4], [4, 5], [5, 6], [6, 4], [6, 7], [7, 8]].map(([u, v]) => ({ u, v, w: 1 })),
+            directed: false,
+            weighted: false,
+        };
+        let graph = JSON.parse(JSON.stringify(PRESET));
+        const view = V.graphView(sh.stage, { hint: "Label = tin / low · seret simpul untuk merapikan" });
+        const pseudo = V.codePanel(
+            sh.side,
+            `
+void dfs(int u, int p) {                       //@0
+    tin[u] = low[u] = timer++;                 //@1
+    int anak = 0;
+    for (int v : adj[u]) {                     //@2
+        if (v == p) continue;                  //@2
+        if (tin[v] != -1) {   // sisi balik    //@3
+            low[u] = min(low[u], tin[v]);      //@3
+        } else {
+            dfs(v, u);                         //@4
+            low[u] = min(low[u], low[v]);      //@5
+            if (low[v] > tin[u])               //@6
+                jembatan.push_back({u, v});    //@6
+            if (p != 0 && low[v] >= tin[u])    //@7
+                artikulasi[u] = true;          //@7
+            anak++;
+        }
+    }
+    if (p == 0 && anak > 1)                    //@8
+        artikulasi[u] = true;                  //@8
+}`,
+        );
+        const listPanel = V.htmlPanel(sh.side, "Hasil");
+        const watch = V.watchPanel(sh.side);
+
+        function build() {
+            const g = graph;
+            view.draw(g);
+            const n = g.n;
+            const adj = V.adjacency(g);
+            const rec = recorder();
+            const st = { nodes: {}, badges: {}, edges: {}, extra: {}, colors: {} };
+            const tin = new Array(n + 1).fill(-1);
+            const low = new Array(n + 1).fill(-1);
+            const art = new Array(n + 1).fill(false);
+            const bridges = [];
+            let timer = 0;
+            const sync = (w = []) => {
+                st.extra = {
+                    res: `<div class="watch"><div class="watch-row"><span>jembatan</span><b>${bridges.map((b) => b.join("–")).join(", ") || "–"}</b></div><div class="watch-row"><span>titik artikulasi</span><b>${art.map((a, i) => (a ? i : null)).filter((x) => x).join(", ") || "–"}</b></div></div>`,
+                    watch: w,
+                };
+                for (let i = 1; i <= n; i++) st.badges[i] = tin[i] === -1 ? "" : `${tin[i]}/${low[i]}`;
+            };
+            for (let i = 1; i <= n; i++) st.nodes[i] = "";
+            sync();
+            rec.push(-1, "<b>Jembatan</b>: sisi yang jika dihapus memutus graph. <b>Titik artikulasi</b>: simpul yang jika dihapus memutus graph. Keduanya ditemukan dengan satu DFS yang mencatat <code>tin</code> (waktu masuk) dan <code>low</code>.", st);
+            const dfs = (u, p) => {
+                tin[u] = low[u] = timer++;
+                st.nodes[u] = "current";
+                sync([["u", u], ["tin[u]", tin[u]]]);
+                rec.push(1, `Masuk ${u}: <code>tin[${u}] = low[${u}] = ${tin[u]}</code>. <code>low</code> = tin terkecil yang bisa dicapai dari subtree ${u} lewat paling banyak satu sisi balik.`, st, { pulse: [u] });
+                let anak = 0;
+                for (const { v } of adj[u]) {
+                    if (v === p) continue;
+                    const key = ek(u, v, false);
+                    if (tin[v] !== -1) {
+                        if (st.edges[key] !== "tree") {
+                            st.edges[key] = "back";
+                            const old = low[u];
+                            low[u] = Math.min(low[u], tin[v]);
+                            sync([["u", u], ["v", v], ["tin[v]", tin[v]], ["low[u]", low[u]]]);
+                            rec.push(3, `${u}–${v} adalah <b>sisi balik</b> ke leluhur yang sudah dikunjungi: <code>low[${u}] = min(${old}, ${tin[v]}) = ${low[u]}</code>.`, st, { mark: "skip" });
+                        }
+                        continue;
+                    }
+                    st.edges[key] = "tree";
+                    st.nodes[u] = "queued";
+                    sync([["u", u], ["v", v]]);
+                    rec.push(4, `Turun ke ${v} lewat sisi pohon ${u}–${v}.`, st, { flow: [u, v] });
+                    dfs(v, u);
+                    st.nodes[u] = "current";
+                    const old = low[u];
+                    low[u] = Math.min(low[u], low[v]);
+                    anak++;
+                    sync([["u", u], ["v", v], ["low[v]", low[v]], ["tin[u]", tin[u]]]);
+                    rec.push(5, `Kembali dari ${v}: <code>low[${u}] = min(${old}, low[${v}] = ${low[v]}) = ${low[u]}</code>.`, st);
+                    if (low[v] > tin[u]) {
+                        bridges.push([u, v]);
+                        st.edges[key] = "bridge";
+                        sync([["low[v]", low[v]], ["tin[u]", tin[u]]]);
+                        rec.push(6, `<code>low[${v}] = ${low[v]} &gt; tin[${u}] = ${tin[u]}</code>: subtree ${v} tidak punya jalan lain naik ke ${u} atau di atasnya. Sisi <b>${u}–${v} adalah jembatan</b>.`, st, { mark: "discover" });
+                    }
+                    if (p !== 0 && low[v] >= tin[u] && !art[u]) {
+                        art[u] = true;
+                        st.colors[u] = ["rgba(239,68,68,.30)", "#ef4444"];
+                        sync([["low[v]", low[v]], ["tin[u]", tin[u]]]);
+                        rec.push(7, `<code>low[${v}] = ${low[v]} ≥ tin[${u}] = ${tin[u]}</code>: tanpa ${u}, subtree ${v} terputus. <b>${u} titik artikulasi</b>.`, st, { mark: "discover" });
+                    }
+                }
+                if (p === 0 && anak > 1) {
+                    art[u] = true;
+                    st.colors[u] = ["rgba(239,68,68,.30)", "#ef4444"];
+                    sync([["anak akar", anak]]);
+                    rec.push(8, `${u} adalah akar DFS dengan ${anak} anak di pohon DFS, jadi ${u} titik artikulasi.`, st, { mark: "discover" });
+                }
+                st.nodes[u] = "done";
+                sync([["u", u], ["low[u]", low[u]]]);
+                rec.push(5, `${u} selesai dengan <code>low[${u}] = ${low[u]}</code>.`, st);
+            };
+            for (let v = 1; v <= n; v++) if (tin[v] === -1) dfs(v, 0);
+            sync();
+            rec.push(-1, `Selesai dalam satu DFS, <b>O(N + M)</b>. Jembatan: ${bridges.map((b) => b.join("–")).join(", ") || "tidak ada"}. Titik artikulasi: ${art.map((a, i) => (a ? i : null)).filter((x) => x).join(", ") || "tidak ada"}.`, st, { mark: "done" });
+            player.load(rec.frames);
+        }
+
+        const player = new V.Player(sh, (f) => {
+            view.update(f);
+            pseudo.set(f.line);
+            listPanel.set(f.res);
+            watch.set(f.watch, f.masked);
+        });
+        sh.head.querySelector("[data-random]").onclick = () => {
+            graph = V.randomGraph({ n: V.rand(7, 9), m: V.rand(8, 10), connected: true });
+            build();
+        };
+        sh.head.querySelector("[data-preset]").onclick = () => {
+            graph = JSON.parse(JSON.stringify(PRESET));
+            build();
+        };
+        build();
+    });
 })();
