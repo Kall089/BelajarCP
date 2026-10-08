@@ -146,6 +146,11 @@
             const g = L.slice(1, r + 1).map(ints);
             cells(body, r, c, (i, j) => ["", String(g[i]?.[j] ?? "")], "Angka di setiap petak.");
         },
+        board(body, L) {
+            const n = ints(L[0])[0];
+            const g = L.slice(1, n + 1);
+            cells(body, n, n, (i, j) => (g[i]?.[j] === "#" ? ["wall", ""] : ["", ""]), "Kotak gelap = petak rusak (#), tidak boleh ditempati.");
+        },
         chess(body, L) {
             const [n, sr, sc, tr, tc] = ints(L[0]);
             cells(

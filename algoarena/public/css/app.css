@@ -6199,7 +6199,8 @@ svg.bars .lis-dp-label {
     display: grid;
     place-items: center;
     font: 700 11px var(--mono);
-    background: #1a2030;
+    background: var(--panel-2);
+    box-shadow: inset 0 0 0 1px var(--border-soft);
     color: var(--muted);
 }
 

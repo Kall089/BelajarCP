@@ -379,6 +379,27 @@ html.has-fullcode {
     display: none;
 }
 
+/* Grid mini pada visual contoh soal */
+:where(html[data-theme="light"]) .mini-grid span {
+    background: #ffffff;
+    box-shadow: inset 0 0 0 1px var(--border);
+}
+
+:where(html[data-theme="light"]) .mini-grid span.wall {
+    background: #8d93a0;
+    box-shadow: none;
+}
+
+:where(html[data-theme="light"]) .mini-grid span.land {
+    background: #8cc47a;
+    box-shadow: none;
+}
+
+:where(html[data-theme="light"]) .mini-grid span.water {
+    background: #d3e8f6;
+    box-shadow: inset 0 0 0 1px #b8d6ec;
+}
+
 /* Label simpul berwarna tetap terbaca di tema terang */
 html[data-theme="light"] .g-node:is(.queued, .visited, .done, .path) text.label,
 html[data-theme="light"] .dg-node:is(.vis, .cyan, .green, .red) text {
