@@ -76,10 +76,12 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Menyusun bilangan digit demi digit, flag ketat, memo keadaan bebas, F(B) − F(A − 1), nol di depan, dan sisa bagi.'],
         ['slug' => 'dp-optimasi', 'track' => 'dp', 'level' => 3, 'title' => 'Optimasi Transisi DP', 'subtitle' => 'Prefix sum, deque monoton, binary search', 'viz' => 'monoqueue', 'minutes' => 35,
             'summary' => 'Mempercepat transisi DP: jumlah rentang dengan prefix sum, minimum jendela dengan deque monoton, memisahkan suku, dan penjadwalan berbobot.'],
+        ['slug' => 'dp-peluang', 'track' => 'dp', 'level' => 3, 'title' => 'DP Peluang & Nilai Harapan', 'subtitle' => 'Dadu, harapan, dan pecahan modulo', 'viz' => 'dice', 'minutes' => 35,
+            'summary' => 'Distribusi peluang dengan DP, DP nilai harapan dari belakang, self-loop, pecahan P·Q⁻¹ mod p, linearitas, distribusi geometrik, dan jumlah ekor.'],
     ];
 
     /** Urutan file soal; soal nantinya diurutkan mengikuti urutan materi. */
-    private const PROBLEM_FILES = ['fondasi', 'fondasi_more', 'graph', 'graph_more', 'graph_extra', 'graph_extra2', 'graph_extra3', 'graph_euler', 'graph_flow', 'dp', 'dp_more', 'dp_extra', 'dp_extra2', 'dp_optimasi'];
+    private const PROBLEM_FILES = ['fondasi', 'fondasi_more', 'graph', 'graph_more', 'graph_extra', 'graph_extra2', 'graph_extra3', 'graph_euler', 'graph_flow', 'dp', 'dp_more', 'dp_extra', 'dp_extra2', 'dp_optimasi', 'dp_peluang'];
 
     public function run(): void
     {

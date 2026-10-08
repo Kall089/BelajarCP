@@ -130,4 +130,116 @@ cout << dp[n];                                       //@6`,
         [arrIn, kIn].forEach((el) => el.addEventListener("keydown", (e) => e.key === "Enter" && build()));
         build();
     });
+
+    // ════════════════════════════ DP peluang: distribusi jumlah dadu ════════════════════════════
+    V.register("dice", (root) => {
+        const sh = V.shell(root, {
+            title: "DP Peluang: Jumlah Beberapa Dadu",
+            controls: V.segmented(
+                "dadu",
+                [
+                    ["2", "2 dadu"],
+                    ["3", "3 dadu"],
+                    ["4", "4 dadu"],
+                ],
+                "2",
+            ),
+            legend: [
+                ["Sedang dihitung", "#f59e0b", "rgba(245,158,11,.25)"],
+                ["Sumber (k − 1 dadu)", "#22d3ee", "rgba(34,211,238,.25)"],
+                ["Paling mungkin", "#22c55e", "rgba(34,197,94,.25)"],
+            ],
+        });
+        const code = V.codePanel(
+            sh.side,
+            `
+// cara[k][s] = banyak hasil k dadu yang jumlahnya s
+cara[0][0] = 1;                                         //@0
+for (int k = 1; k <= n; k++)                            //@1
+    for (int s = k; s <= 6 * k; s++)                    //@2
+        for (int d = 1; d <= 6; d++)   // dadu ke-k = d //@3
+            if (s - d >= 0)                             //@3
+                cara[k][s] += cara[k - 1][s - d];       //@3
+// P(jumlah = s) = cara[n][s] / 6^n                     //@4`,
+        );
+        const watch = V.watchPanel(sh.side);
+        let n = 2;
+
+        function bars(row, maxS, opts = {}) {
+            const max = Math.max(1, ...row);
+            let h = "";
+            for (let s = 0; s <= maxS; s++) {
+                const v = row[s] || 0;
+                const cls = ["pb-col"];
+                if (opts.cur === s) cls.push("cur");
+                if (opts.src && opts.src.includes(s)) cls.push("src");
+                if (opts.best && opts.best.includes(s)) cls.push("best");
+                const pct = `${((v / opts.total) * 100).toFixed(1)}%`;
+                const label = opts.mask === s ? "?" : opts.pct ? (maxS <= 12 || opts.best.includes(s) ? pct : "") : v;
+                h += `<div class="${cls.join(" ")}"><span class="pb-bar"><i style="height:${(v / max) * 100}%"></i></span><b>${v || opts.cur === s ? label : ""}</b><small>${s}</small></div>`;
+            }
+            return `<div class="pb-row">${h}</div>`;
+        }
+
+        function build() {
+            const maxS = 6 * n;
+            const cara = Array.from({ length: n + 1 }, () => new Array(maxS + 1).fill(0));
+            cara[0][0] = 1;
+            const frames = [];
+            const view = (k, opts, top = true) =>
+                `<div class="pb-wrap">${top && k > 1 ? `<p class="pb-title">${k - 1} dadu</p>${bars(cara[k - 1], maxS, { src: opts.src })}` : ""}<p class="pb-title">${k} dadu</p>${bars(cara[k], maxS, opts)}</div>`;
+            for (let s = 1; s <= 6; s++) cara[1][s] = 1;
+            frames.push({
+                line: 1,
+                text: "Satu dadu: setiap angka 1 sampai 6 muncul dengan <b>1 cara</b> dari 6, jadi peluangnya masing-masing 1/6. Kita hitung <b>banyak cara</b> dulu (bilangan bulat), lalu bagi dengan 6<sup>k</sup> di akhir.",
+                html: view(1, {}),
+                watch: [["k", 1], ["total hasil", 6]],
+            });
+            for (let k = 2; k <= n; k++) {
+                for (let s = k; s <= 6 * k; s++) {
+                    const src = [];
+                    let sum = 0;
+                    for (let d = 1; d <= 6; d++)
+                        if (s - d >= 0 && cara[k - 1][s - d]) {
+                            src.push(s - d);
+                            sum += cara[k - 1][s - d];
+                        }
+                    cara[k][s] = sum;
+                    const parts = src.map((x) => cara[k - 1][x]).join(" + ");
+                    const html = view(k, { cur: s, src });
+                    const htmlMasked = view(k, { cur: s, src, mask: s });
+                    frames.push({
+                        line: 3,
+                        text: `Jumlah <b>${s}</b> dengan ${k} dadu: dadu terakhir bernilai d = 1..6, sisanya ${k - 1} dadu harus berjumlah ${s} − d. <code>cara[${k}][${s}] = ${parts} = ${sum}</code>.`,
+                        html,
+                        htmlMasked,
+                        watch: [["k", k], ["s", s], [`cara[${k}][${s}]`, sum], ["total hasil", 6 ** k]],
+                        ask: s === k + 2 || s === Math.floor(7 * k / 2) ? { type: "value", answer: sum, prompt: `Berapa <code>cara[${k}][${s}]</code>?`, hint: `Jumlahkan cara[${k - 1}][${s} − d] untuk d = 1..6 (sel biru).` } : undefined,
+                    });
+                }
+            }
+            const total = 6 ** n;
+            const top = Math.max(...cara[n]);
+            const best = cara[n].map((v, s) => (v === top ? s : -1)).filter((s) => s >= 0);
+            frames.push({
+                line: 4,
+                text: `Selesai. Bagi dengan 6<sup>${n}</sup> = ${total} untuk mendapat peluang. Jumlah paling mungkin: <b>${best.join(" dan ")}</b> dengan peluang ${top}/${total} ≈ ${((top / total) * 100).toFixed(1)}%. Semakin banyak dadu, bentuknya semakin mirip lonceng.`,
+                html: `<div class="pb-wrap"><p class="pb-title">${n} dadu: peluang setiap jumlah</p>${bars(cara[n], maxS, { best, pct: true, total })}</div>`,
+                watch: [["k", n], ["total hasil", total], ["Σ cara", cara[n].reduce((a, b) => a + b, 0)]],
+                mark: "done",
+            });
+            player.load(frames);
+        }
+
+        const player = new V.Player(sh, (f) => {
+            sh.stage.innerHTML = f.masked && f.htmlMasked ? f.htmlMasked : f.html;
+            code.set(f.line);
+            watch.set(f.watch, f.masked);
+        });
+        V.bindSegmented(sh.head, "dadu", (v) => {
+            n = +v;
+            build();
+        });
+        build();
+    });
 })();
