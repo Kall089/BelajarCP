@@ -181,4 +181,187 @@ reverse(rute.begin(), rute.end());                        //@5`,
         });
         build();
     });
+
+    // ════════════════════════════ Aliran maksimum: Edmonds-Karp ════════════════════════════
+    V.register("flow", (root) => {
+        const PRESETS = {
+            undo: mkGraph(
+                [[60, 190], [210, 70], [340, 250], [190, 320], [460, 70], [580, 190]],
+                [[1, 2, 3], [2, 3, 2], [3, 6, 2], [1, 4, 2], [4, 3, 2], [2, 5, 2], [5, 6, 3]],
+                { directed: true, weighted: true },
+            ),
+            clrs: mkGraph(
+                [[50, 190], [190, 70], [190, 310], [400, 70], [400, 310], [560, 190]],
+                [[1, 2, 16], [1, 3, 13], [2, 3, 10], [3, 2, 4], [2, 4, 12], [4, 3, 9], [3, 5, 14], [5, 4, 7], [4, 6, 20], [5, 6, 4]],
+                { directed: true, weighted: true },
+            ),
+        };
+        const sh = V.shell(root, {
+            title: "Aliran Maksimum (Edmonds-Karp)",
+            controls: V.segmented(
+                "preset",
+                [
+                    ["undo", "Butuh sisi balik"],
+                    ["clrs", "Jaringan klasik"],
+                ],
+                "undo",
+            ),
+            legend: [
+                ["Jalur augmentasi", "#f59e0b"],
+                ["Dilewati terbalik (undo)", "#22d3ee"],
+                ["Membawa aliran", "#8b5cf6"],
+                ["Potongan minimum", "#ef4444"],
+            ],
+        });
+        let graph = JSON.parse(JSON.stringify(PRESETS.undo));
+        const view = V.graphView(sh.stage, { hint: "Label sisi = aliran / kapasitas · s = simpul 1, t = simpul terakhir" });
+        const code = V.codePanel(
+            sh.side,
+            `
+long long total = 0;                                     //@0
+while (true) {
+    // BFS di graph residual: hanya sisi dengan sisa > 0  //@1
+    bfs(s);                                              //@1
+    if (!dikunjungi[t]) break;     // tidak ada jalur    //@4
+    long long tambah = LLONG_MAX;                        //@2
+    for (int v = t; v != s; v = asal(v))                 //@2
+        tambah = min(tambah, sisi[dariSisi[v]].sisa);    //@2
+    for (int v = t; v != s; v = asal(v)) {               //@3
+        sisi[dariSisi[v]].sisa -= tambah;      // maju   //@3
+        sisi[dariSisi[v] ^ 1].sisa += tambah;  // balik  //@3
+    }
+    total += tambah;                                     //@3
+}`,
+        );
+        const paths = V.htmlPanel(sh.side, "Jalur augmentasi");
+        const watch = V.watchPanel(sh.side);
+
+        function build() {
+            const g = graph;
+            view.draw(g);
+            const n = g.n;
+            const s = 1;
+            const t = n;
+            // sisi[e] dan sisi[e ^ 1]: pasangan maju / balik
+            const E = [];
+            const adj = Array.from({ length: n + 1 }, () => []);
+            g.edges.forEach((e) => {
+                adj[e.u].push(E.length);
+                E.push({ to: e.v, cap: e.w, res: e.w, key: ek(e.u, e.v, true), fwd: true });
+                adj[e.v].push(E.length);
+                E.push({ to: e.u, cap: 0, res: 0, key: ek(e.u, e.v, true), fwd: false });
+            });
+            adj.forEach((l) => l.sort((a, b) => E[a].to - E[b].to));
+            const flowOf = (i) => E[i].cap - E[i].res;
+            const labels = () => {
+                const o = {};
+                for (let i = 0; i < E.length; i += 2) o[E[i].key] = `${flowOf(i)}/${E[i].cap}`;
+                return o;
+            };
+            const baseEdges = () => {
+                const o = {};
+                for (let i = 0; i < E.length; i += 2) if (flowOf(i) > 0) o[E[i].key] = "tree";
+                return o;
+            };
+            const frames = [];
+            const log = [];
+            let total = 0;
+            const snap = (line, text, fx = {}) =>
+                frames.push({
+                    line,
+                    text,
+                    wlabels: labels(),
+                    edges: fx.edges || baseEdges(),
+                    nodes: fx.nodes || { [s]: "start", [t]: "target" },
+                    badges: fx.badges || { [s]: "s", [t]: "t" },
+                    colors: fx.colors || {},
+                    html: `<div class="watch">${log.map((r) => `<div class="watch-row"><span>${r[0]}</span><b>${r[1]}</b></div>`).join("") || '<div class="watch-row"><span>belum ada</span><b>–</b></div>'}</div>`,
+                    watch: [["total aliran", total], ["iterasi", log.length]],
+                    ...fx,
+                });
+            snap(0, `Kirim aliran sebanyak mungkin dari <b>s = ${s}</b> ke <b>t = ${t}</b>. Label setiap sisi <code>aliran/kapasitas</code>. Awalnya semua aliran 0.`);
+            for (;;) {
+                const from = new Array(n + 1).fill(-1);
+                const seen = new Array(n + 1).fill(false);
+                const q = [s];
+                seen[s] = true;
+                while (q.length && !seen[t]) {
+                    const u = q.shift();
+                    for (const e of adj[u]) {
+                        const v = E[e].to;
+                        if (!seen[v] && E[e].res > 0) {
+                            seen[v] = true;
+                            from[v] = e;
+                            q.push(v);
+                        }
+                    }
+                }
+                if (!seen[t]) {
+                    const nodes = {};
+                    const colors = {};
+                    for (let v = 1; v <= n; v++) if (seen[v]) colors[v] = ["rgba(34,197,94,.25)", "#22c55e"];
+                    const edges = baseEdges();
+                    let cut = 0;
+                    const cutList = [];
+                    for (let i = 0; i < E.length; i += 2) {
+                        const u = E[i + 1].to;
+                        const v = E[i].to;
+                        if (seen[u] && !seen[v]) {
+                            edges[E[i].key] = "bridge";
+                            cut += E[i].cap;
+                            cutList.push(`${u}→${v} (${E[i].cap})`);
+                        }
+                    }
+                    snap(4, `BFS tidak bisa mencapai t lagi: aliran sudah <b>maksimum = ${total}</b>. Simpul hijau masih terjangkau dari s di graph residual. Sisi merah keluar dari daerah hijau membentuk <b>potongan minimum</b>: ${cutList.join(" + ")} = <b>${cut}</b>. Aliran maksimum = potongan minimum.`, {
+                        edges,
+                        colors,
+                        nodes,
+                        mark: "done",
+                    });
+                    break;
+                }
+                const pathE = [];
+                for (let v = t; v !== s; v = E[from[v] ^ 1].to) pathE.unshift(from[v]);
+                const pathNodes = [s, ...pathE.map((e) => E[e].to)];
+                const edges = baseEdges();
+                let usesBack = false;
+                for (const e of pathE) {
+                    edges[E[e].key] = E[e].fwd ? "active" : "back";
+                    if (!E[e].fwd) usesBack = true;
+                }
+                const nodes = { [s]: "start", [t]: "target" };
+                pathNodes.slice(1, -1).forEach((v) => (nodes[v] = "queued"));
+                snap(1, `BFS di graph residual menemukan jalur terpendek <b>${pathNodes.join(" → ")}</b>.${usesBack ? ' Perhatikan sisi <b>biru putus-putus</b>: jalur ini berjalan <b>melawan arah</b> sisi yang sudah membawa aliran, artinya membatalkan sebagian aliran lama dan mengalihkannya.' : ""}`, {
+                    edges,
+                    nodes,
+                    ask: { type: "node", answer: pathNodes[1], prompt: "BFS mencari jalur terpendek di graph residual. Simpul mana yang dituju jalur ini setelah s?", hint: "Sisi yang penuh (aliran = kapasitas) tidak bisa dilewati maju; sisi yang membawa aliran bisa dilewati mundur." },
+                });
+                let add = Infinity;
+                for (const e of pathE) add = Math.min(add, E[e].res);
+                const resList = pathE.map((e) => `${E[e].res}`).join(", ");
+                snap(2, `Sisa kapasitas di sepanjang jalur: ${resList}. Yang terkecil (<b>bottleneck</b>) = <b>${add}</b>: sebanyak itulah aliran yang bisa ditambahkan.`, { edges, nodes, mark: "key" });
+                for (const e of pathE) {
+                    E[e].res -= add;
+                    E[e ^ 1].res += add;
+                }
+                total += add;
+                log.push([pathNodes.join("→"), `+${add}`]);
+                snap(3, `Kirim ${add} unit: sisa sisi maju berkurang ${add}, sisa sisi balik bertambah ${add} (agar bisa dibatalkan nanti). Total aliran sekarang <b>${total}</b>.`, { nodes });
+            }
+            player.load(frames);
+        }
+
+        const player = new V.Player(sh, (f) => {
+            view.update(f);
+            code.set(f.line);
+            paths.set(f.html);
+            watch.set(f.watch, f.masked);
+        });
+        view.onNodeClick((id) => player.answerNode(id));
+        V.bindSegmented(sh.head, "preset", (k) => {
+            graph = JSON.parse(JSON.stringify(PRESETS[k]));
+            build();
+        });
+        build();
+    });
 })();

@@ -401,8 +401,28 @@ html.has-fullcode {
 }
 
 /* Label simpul berwarna tetap terbaca di tema terang */
-html[data-theme="light"] .g-node:is(.queued, .visited, .done, .path) text.label {
-    fill: #ffffff;
+/* Simpul visualisasi di tema terang: isian lembut, label berwarna gelap */
+html[data-theme="light"] {
+    --ng-queued-a: #e3f6fb;
+    --ng-queued-b: #a9e1ef;
+    --ng-visited-a: #ece7ff;
+    --ng-visited-b: #c9bcfb;
+    --ng-done-a: #ddd3ff;
+    --ng-done-b: #ad97f7;
+    --ng-path-a: #e3fbea;
+    --ng-path-b: #95e6b0;
+}
+
+html[data-theme="light"] .g-node.queued text.label {
+    fill: #0b4f60;
+}
+
+html[data-theme="light"] .g-node:is(.visited, .done) text.label {
+    fill: #33228a;
+}
+
+html[data-theme="light"] .g-node.path text.label {
+    fill: #14532d;
 }
 
 /* Simpul diagram yang disorot: warna lembut, bukan isian gelap */

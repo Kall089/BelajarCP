@@ -49,6 +49,8 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Pohon DFS, sisi balik, nilai tin/low, mencari jembatan dan titik artikulasi dalam O(N + M), serta pohon jembatan.'],
         ['slug' => 'euler', 'track' => 'graph', 'level' => 3, 'title' => 'Jalur & Sirkuit Euler', 'subtitle' => 'Melewati setiap sisi tepat sekali', 'viz' => 'euler', 'minutes' => 35,
             'summary' => 'Syarat derajat, algoritma Hierholzer tanpa rekursi, graph berarah, urutan leksikografis terkecil, dan soal yang menyamar (rangkaian kata, De Bruijn).'],
+        ['slug' => 'max-flow', 'track' => 'graph', 'level' => 3, 'title' => 'Aliran Maksimum & Pencocokan', 'subtitle' => 'Edmonds-Karp, potongan minimum, dan Kuhn', 'viz' => 'flow', 'minutes' => 40,
+            'summary' => 'Jaringan aliran, graph residual dan sisi balik, Edmonds-Karp, teorema max-flow min-cut, pencocokan bipartit, dan teknik pemodelan.'],
         // Dynamic Programming
         ['slug' => 'konsep-dp', 'track' => 'dp', 'level' => 1, 'title' => 'Konsep Dynamic Programming', 'subtitle' => 'Dari rekursi lambat ke tabel cepat', 'viz' => 'fib', 'minutes' => 25,
             'summary' => 'Overlapping subproblem, memoization, tabulasi, dan resep 4 langkah merancang DP.'],
@@ -75,7 +77,7 @@ class CurriculumSeeder extends Seeder
     ];
 
     /** Urutan file soal; soal nantinya diurutkan mengikuti urutan materi. */
-    private const PROBLEM_FILES = ['fondasi', 'fondasi_more', 'graph', 'graph_more', 'graph_extra', 'graph_extra2', 'graph_extra3', 'graph_euler', 'dp', 'dp_more', 'dp_extra', 'dp_extra2'];
+    private const PROBLEM_FILES = ['fondasi', 'fondasi_more', 'graph', 'graph_more', 'graph_extra', 'graph_extra2', 'graph_extra3', 'graph_euler', 'graph_flow', 'dp', 'dp_more', 'dp_extra', 'dp_extra2'];
 
     public function run(): void
     {

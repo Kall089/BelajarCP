@@ -792,11 +792,12 @@ window.Viz = (() => {
     const MARKER_COLORS = { default: "var(--edge)", active: "#f59e0b", tree: "#8b5cf6", path: "#22c55e", skip: "#ef4444", new: "#22d3ee" };
     const NODE_GRADS = {
         base: ["var(--node-a)", "var(--node-b)"],
-        queued: ["#1d7189", "#0b2731"],
+        // warna diambil dari token tema (lihat --ng-* di app.css / theme.css)
+        queued: ["var(--ng-queued-a, #1d7189)", "var(--ng-queued-b, #0b2731)"],
         current: ["#fff3c4", "#f59e0b"],
-        visited: ["#8d72ee", "#382679"],
-        done: ["#a184ff", "#4e30b6"],
-        path: ["#86efac", "#15803d"],
+        visited: ["var(--ng-visited-a, #8d72ee)", "var(--ng-visited-b, #382679)"],
+        done: ["var(--ng-done-a, #a184ff)", "var(--ng-done-b, #4e30b6)"],
+        path: ["var(--ng-path-a, #86efac)", "var(--ng-path-b, #15803d)"],
     };
 
     function graphView(stage, opts = {}) {
