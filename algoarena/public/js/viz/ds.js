@@ -332,4 +332,172 @@ long long prefix(int i) {                                      //@3
         [arrIn, rIn, ivIn].forEach((el) => el.addEventListener("keydown", (e) => e.key === "Enter" && build()));
         build();
     });
+
+    // ════════════════════════════ Segment tree: minimum rentang ════════════════════════════
+    V.register("segtree", (root) => {
+        const N = 8;
+        const sh = V.shell(root, {
+            title: "Segment Tree (Minimum Rentang)",
+            controls: `
+                <label class="viz-input">a[1..8] <input data-arr value="5, 8, 6, 3, 9, 2, 7, 4" style="width:150px"></label>
+                <label class="viz-input">min l r <input class="short" data-lr value="2 6" style="width:52px"></label>
+                <label class="viz-input">ubah i x <input class="short" data-ix value="4 7" style="width:52px"></label>
+                <button class="btn btn-sm btn-primary" data-apply>Terapkan</button>`,
+            legend: [
+                ["Sedang dikunjungi", "#f59e0b", "rgba(245,158,11,.18)"],
+                ["Di dalam [l, r]: diambil utuh", "#22c55e", "rgba(34,197,94,.18)"],
+                ["Sebagian: dipecah", "#22d3ee", "rgba(34,211,238,.16)"],
+                ["Di luar: diabaikan", "#94a3b8", "rgba(148,163,184,.15)"],
+            ],
+        });
+        const arrIn = sh.head.querySelector("[data-arr]");
+        const lrIn = sh.head.querySelector("[data-lr]");
+        const ixIn = sh.head.querySelector("[data-ix]");
+        const code = V.codePanel(
+            sh.side,
+            `
+long long query(int v, int tl, int tr, int l, int r) {    //@0
+    if (r < tl || tr < l) return INF;       // di luar    //@1
+    if (l <= tl && tr <= r) return t[v];    // di dalam   //@2
+    int tm = (tl + tr) / 2;                 // sebagian   //@3
+    return min(query(2 * v, tl, tm, l, r),                //@3
+               query(2 * v + 1, tm + 1, tr, l, r));       //@4
+}
+void ubah(int v, int tl, int tr, int pos, long long x) {  //@5
+    if (tl == tr) { t[v] = x; return; }                   //@6
+    int tm = (tl + tr) / 2;
+    if (pos <= tm) ubah(2 * v, tl, tm, pos, x);           //@5
+    else ubah(2 * v + 1, tm + 1, tr, pos, x);             //@5
+    t[v] = min(t[2 * v], t[2 * v + 1]);                   //@7
+}`,
+        );
+        const watch = V.watchPanel(sh.side);
+
+        function build() {
+            const parsed = V.parseList(arrIn.value, { min: -99, max: 99, limit: N });
+            const base = parsed.length === N ? parsed : [5, 8, 6, 3, 9, 2, 7, 4];
+            arrIn.value = base.join(", ");
+            const lr = lrIn.value.trim().split(/[\s,]+/).map(Number);
+            let L = V.clampInt(lr[0], 1, N, 2);
+            let R = V.clampInt(lr[1], 1, N, 6);
+            if (L > R) [L, R] = [R, L];
+            lrIn.value = `${L} ${R}`;
+            const ix = ixIn.value.trim().split(/[\s,]+/).map(Number);
+            const ui = V.clampInt(ix[0], 1, N, 4);
+            const ux = Number.isFinite(ix[1]) ? Math.max(-99, Math.min(99, Math.round(ix[1]))) : 7;
+            ixIn.value = `${ui} ${ux}`;
+
+            const a = [0, ...base];
+            const t = new Array(2 * N).fill(0);
+            const range = {};
+            const mk = (v, tl, tr) => {
+                range[v] = [tl, tr];
+                if (tl === tr) return (t[v] = a[tl]);
+                const tm = (tl + tr) >> 1;
+                return (t[v] = Math.min(mk(2 * v, tl, tm), mk(2 * v + 1, tm + 1, tr)));
+            };
+            mk(1, 1, N);
+            const frames = [];
+            const render = (st) => {
+                let h = `<div class="fw-grid" style="grid-template-columns: 64px repeat(${N}, minmax(0, 1fr))">`;
+                for (let lvl = 0; lvl < 4; lvl++) {
+                    h += `<div class="fw-lbl" style="grid-row:${lvl + 1}">${lvl === 0 ? "akar" : lvl === 3 ? "daun" : `level ${lvl}`}</div>`;
+                    for (let v = 1 << lvl; v < 1 << (lvl + 1); v++) {
+                        const [tl, tr] = range[v];
+                        const cls = ["fw-node", "sg-node"];
+                        const m = st.marks && st.marks[v];
+                        if (st.cur === v) cls.push("path");
+                        else if (m) cls.push(m);
+                        h += `<div class="${cls.join(" ")}" style="grid-row:${lvl + 1}; grid-column:${tl + 1} / ${tr + 2}"><b>${t[v]}</b><small>${tl === tr ? `a[${tl}]` : `[${tl}..${tr}]`}</small></div>`;
+                    }
+                }
+                h += `<div class="fw-lbl" style="grid-row:5">i</div>`;
+                for (let i = 1; i <= N; i++) {
+                    const inQ = st.q && i >= st.q[0] && i <= st.q[1];
+                    h += `<div class="fw-idx ${inQ ? "sg-in" : ""} ${st.point === i ? "sg-pt" : ""}" style="grid-row:5; grid-column:${i + 1}"><b>${i}</b></div>`;
+                }
+                return `${h}</div>`;
+            };
+            const push = (line, text, st = {}, fx = {}) => {
+                let htmlMasked;
+                if (fx.ask && st.cur) {
+                    const keep = t[st.cur];
+                    t[st.cur] = "?";
+                    htmlMasked = render(st);
+                    t[st.cur] = keep;
+                }
+                frames.push({ line, text, html: render(st), htmlMasked, watch: fx.watch || [["n", N]], ...fx });
+            };
+
+            push(-1, `Setiap simpul menyimpan <b>minimum</b> dari rentangnya; akar mencakup 1..${N}, setiap simpul membelah rentangnya menjadi dua anak, dan daun adalah elemen array. Tingginya log₂ N.`);
+
+            const runQuery = (label) => {
+                const marks = {};
+                let visits = 0;
+                const q = (v, tl, tr) => {
+                    visits++;
+                    if (R < tl || tr < L) {
+                        marks[v] = "sg-skip";
+                        push(1, `Simpul [${tl}..${tr}] sama sekali di luar [${L}..${R}]: kembalikan +∞ tanpa turun lagi.`, { cur: v, marks: { ...marks }, q: [L, R] }, { watch: [["v", v], ["[tl..tr]", `${tl}..${tr}`]] });
+                        return Infinity;
+                    }
+                    if (L <= tl && tr <= R) {
+                        marks[v] = "done";
+                        push(2, `Simpul [${tl}..${tr}] seluruhnya di dalam [${L}..${R}]: ambil nilainya langsung, <b>${t[v]}</b>. Tidak perlu melihat anak-anaknya.`, { cur: v, marks: { ...marks }, q: [L, R] }, {
+                            watch: [["v", v], ["[tl..tr]", `${tl}..${tr}`], ["t[v]", t[v]]],
+                        });
+                        return t[v];
+                    }
+                    marks[v] = "sg-split";
+                    const tm = (tl + tr) >> 1;
+                    push(3, `Simpul [${tl}..${tr}] hanya sebagian beririsan dengan [${L}..${R}]: pecah ke anak kiri [${tl}..${tm}] dan anak kanan [${tm + 1}..${tr}].`, { cur: v, marks: { ...marks }, q: [L, R] }, { watch: [["v", v], ["[tl..tr]", `${tl}..${tr}`]] });
+                    const x = q(2 * v, tl, tm);
+                    const y = q(2 * v + 1, tm + 1, tr);
+                    const res = Math.min(x, y);
+                    push(4, `Kembali ke [${tl}..${tr}]: min(${x === Infinity ? "∞" : x}, ${y === Infinity ? "∞" : y}) = <b>${res}</b>.`, { cur: v, marks: { ...marks }, q: [L, R] }, { watch: [["v", v], ["hasil", res]] });
+                    return res;
+                };
+                push(0, `${label}: <code>query(1, 1, ${N}, ${L}, ${R})</code>, minimum a[${L}..${R}].`, { q: [L, R] });
+                const res = q(1, 1, N);
+                const direct = Math.min(...a.slice(L, R + 1));
+                push(0, `Hasil <b>${res}</b> (cek langsung: ${direct}). Hanya ${visits} simpul dikunjungi; simpul hijau adalah potongan-potongan yang tepat menyusun [${L}..${R}]. Paling banyak sekitar 4 log₂ N simpul.`, { marks: { ...marks }, q: [L, R] }, { mark: "key", watch: [["hasil", res], ["dikunjungi", visits]] });
+            };
+            runQuery("Pertanyaan");
+
+            const path = [];
+            const up = (v, tl, tr) => {
+                path.push(v);
+                const marks = Object.fromEntries(path.map((p) => [p, "sg-split"]));
+                if (tl === tr) {
+                    t[v] = ux;
+                    a[tl] = ux;
+                    push(6, `Sampai di daun a[${ui}]: ganti menjadi <b>${ux}</b>.`, { cur: v, marks, point: ui }, { watch: [["v", v], ["t[v]", t[v]]] });
+                    return;
+                }
+                const tm = (tl + tr) >> 1;
+                push(5, `<code>ubah</code>: posisi ${ui} ada di ${ui <= tm ? `anak kiri [${tl}..${tm}]` : `anak kanan [${tm + 1}..${tr}]`}, turun ke sana.`, { cur: v, marks, point: ui }, { watch: [["v", v], ["[tl..tr]", `${tl}..${tr}`]] });
+                if (ui <= tm) up(2 * v, tl, tm);
+                else up(2 * v + 1, tm + 1, tr);
+                const old = t[v];
+                t[v] = Math.min(t[2 * v], t[2 * v + 1]);
+                push(7, `Kembali ke [${tl}..${tr}]: hitung ulang <code>t = min(${t[2 * v]}, ${t[2 * v + 1]}) = ${t[v]}</code>${old !== t[v] ? ` (sebelumnya ${old})` : " (tidak berubah)"}.`, { cur: v, marks, point: ui }, {
+                    watch: [["v", v], ["t[v]", t[v]]],
+                    ask: v === 1 ? { type: "value", answer: t[v], prompt: "Berapa nilai akar setelah perubahan ini?", hint: "min dari kedua anaknya." } : undefined,
+                });
+            };
+            up(1, 1, N);
+            push(-1, `Update hanya menyentuh satu jalur akar–daun: O(log N) simpul.`, { point: ui }, { mark: "key" });
+            runQuery("Tanya lagi");
+            player.load(frames);
+        }
+
+        const player = new V.Player(sh, (f) => {
+            sh.stage.innerHTML = f.masked && f.htmlMasked ? f.htmlMasked : f.html;
+            code.set(f.line);
+            watch.set(f.watch, f.masked);
+        });
+        sh.head.querySelector("[data-apply]").onclick = build;
+        [arrIn, lrIn, ixIn].forEach((el) => el.addEventListener("keydown", (e) => e.key === "Enter" && build()));
+        build();
+    });
 })();

@@ -1043,3 +1043,26 @@ html[data-theme="light"] .g-node.colored text.label {
     font-size: 10px;
     color: var(--faint);
 }
+
+/* Segment tree memakai gaya simpul Fenwick + status tambahan */
+.fw-node.sg-split {
+    border-color: var(--cyan);
+    background: var(--cyan-soft);
+}
+
+.fw-node.sg-skip {
+    opacity: 0.45;
+    border-style: dashed;
+}
+
+.fw-idx.sg-in b {
+    color: var(--cyan);
+}
+
+.fw-idx.sg-in {
+    border-bottom: 3px solid var(--cyan);
+}
+
+.fw-idx.sg-pt {
+    border-bottom: 3px solid var(--amber);
+}
