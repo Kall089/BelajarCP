@@ -34,6 +34,9 @@ class CppJudge
 
     private const MAX_OUTPUT = 4_000_000;
 
+    /** Flag paling sederhana yang didukung g++ dan clang++ di semua sistem operasi. */
+    private const SAFE_FLAGS = '-std=c++14 -O2';
+
     /** Pesan dari Windows ketika file .exe hilang atau dikunci (biasanya oleh antivirus). */
     private const SYSTEM_FAILURE = '/cannot execute the specified program|is not recognized as an internal or external command|Access is denied|being used by another process|cannot find the file specified/i';
 
@@ -87,9 +90,20 @@ class CppJudge
             mkdir($this->dir, 0777, true);
         }
 
-        foreach (array_unique(array_filter([$this->flags, $this->fallbackFlags])) as $flags) {
+        $chain = array_values(array_unique(array_filter([$this->flags, $this->fallbackFlags, self::SAFE_FLAGS])));
+        foreach ($chain as $i => $flags) {
             $result = $this->build($code, $flags);
-            if (! $result['ok'] || ! empty($result['cached'])) {
+            if (! $result['ok']) {
+                // Kesalahan di kode siswa: flag lain tidak akan membantu, tampilkan langsung.
+                // Selain itu flag/linker tidak didukung compiler ini (misalnya -static di macOS):
+                // coba flag berikutnya.
+                if (! empty($result['source_error']) || $i === count($chain) - 1) {
+                    return $result;
+                }
+
+                continue;
+            }
+            if (! empty($result['cached'])) {
                 return $result;
             }
             // Pemanasan: run pertama .exe baru di Windows lambat karena dipindai antivirus.
@@ -128,7 +142,14 @@ class CppJudge
         @unlink($src);
 
         if (! $process->isSuccessful() || ! is_file($exe)) {
-            return ['ok' => false, 'error' => $this->cleanCompilerError($process->getErrorOutput()."\n".$process->getOutput(), $hash)];
+            $raw = $process->getErrorOutput()."\n".$process->getOutput();
+
+            return [
+                'ok' => false,
+                // Ada pesan "file.cpp:baris:kolom: error" → kesalahan ada di kode, bukan di flag/linker.
+                'source_error' => (bool) preg_match('/'.preg_quote($hash, '/').'\.cpp:\d+(:\d+)?:\s*(fatal )?error/i', $raw),
+                'error' => $this->cleanCompilerError($raw, $hash),
+            ];
         }
 
         return ['ok' => true, 'exe' => $exe];
@@ -150,7 +171,7 @@ class CppJudge
         $base = "{$this->dir}/run-".bin2hex(random_bytes(6));
         file_put_contents("$base.in", $input);
         $spec = [0 => ['file', "$base.in", 'r'], 1 => ['file', "$base.out", 'w'], 2 => ['file', "$base.err", 'w']];
-        $proc = @proc_open([$exe], $spec, $pipes, $this->dir, $this->env(true), ['bypass_shell' => true]);
+        $proc = @proc_open($this->command($exe), $spec, $pipes, $this->dir, $this->env(true), ['bypass_shell' => true]);
         if (! is_resource($proc)) {
             $this->cleanup($base);
 
@@ -176,8 +197,12 @@ class CppJudge
             usleep(1000);
         }
         $code = $status['running'] ? null : $status['exitcode'];
-        if ($code !== null && $code < 0) {
+        $signal = ! $status['running'] && ! empty($status['signaled']) ? (int) $status['termsig'] : null;
+        if (PHP_OS_FAMILY === 'Windows' && $code !== null && $code < 0) {
             $code += 4294967296; // kode NTSTATUS Windows (mis. 0xC0000005) dibaca sebagai int bertanda
+        }
+        if (PHP_OS_FAMILY !== 'Windows' && $code !== null && $code > 128 && $code < 160) {
+            $signal = $code - 128; // dijalankan lewat sh: sinyal dilaporkan sebagai 128 + nomor sinyal
         }
         proc_close($proc);
         $time = (int) round((microtime(true) - $start) * 1000);
@@ -191,6 +216,9 @@ class CppJudge
         if ($verdict === 'big') {
             return ['status' => 're', 'output' => '', 'time' => $time, 'error' => 'Output terlalu besar (lebih dari 4 MB). Mungkin ada perulangan yang tidak berhenti.'];
         }
+        if ($signal !== null) {
+            return ['status' => 're', 'output' => $output, 'time' => $time, 'error' => $this->signalMessage($signal, $stderr)];
+        }
         if ($code !== 0) {
             if (! is_file($exe) || preg_match(self::SYSTEM_FAILURE, $stderr)) {
                 return ['status' => 'sys', 'output' => '', 'time' => $time, 'error' => self::BLOCKED_MESSAGE];
@@ -203,6 +231,36 @@ class CppJudge
         }
 
         return ['status' => 'ok', 'output' => $output, 'time' => $time];
+    }
+
+    /**
+     * Di Linux/macOS program dijalankan lewat sh agar batas stack bisa dinaikkan dulu
+     * (bawaan 8 MB terlalu kecil untuk DFS rekursif sedalam 10^5). Di Windows stack
+     * sudah diatur oleh linker, jadi program dijalankan langsung.
+     *
+     * @return list<string>
+     */
+    private function command(string $exe): array
+    {
+        if (PHP_OS_FAMILY === 'Windows' || ! is_executable('/bin/sh')) {
+            return [$exe];
+        }
+
+        return ['/bin/sh', '-c', 'ulimit -s unlimited 2>/dev/null || ulimit -s "$(ulimit -H -s)" 2>/dev/null; exec "$0"', $exe];
+    }
+
+    private function signalMessage(int $signal, string $stderr): string
+    {
+        $message = match ($signal) {
+            11, 10 => 'Segmentation fault: mengakses memori di luar batas (cek indeks array dan ukuran array), atau rekursi terlalu dalam.',
+            8 => 'Pembagian dengan nol (atau operasi aritmetika terlarang).',
+            6 => 'Program berhenti lewat abort(): biasanya assert gagal, exception yang tidak ditangkap, atau memori habis.',
+            9 => 'Program dihentikan paksa (kemungkinan memakai memori terlalu banyak).',
+            default => "Program berhenti karena sinyal {$signal}.",
+        };
+        $stderr = trim($stderr);
+
+        return $stderr !== '' ? $message."\n".mb_substr($stderr, 0, 800) : $message;
     }
 
     private function cleanup(string $base): void
@@ -247,7 +305,7 @@ class CppJudge
     private function cleanCompilerError(string $raw, string $hash): string
     {
         $text = str_replace(["{$this->dir}/{$hash}.cpp", "{$this->dir}\\{$hash}.cpp", "{$hash}.cpp"], 'solusi.cpp', $raw);
-        $text = preg_replace('/^.*(collect2|ld\.exe|ld returned).*$/m', '', $text);
+        $text = preg_replace('/^.*(collect2|ld\.exe|ld returned|argument unused during compilation|ld: warning|is obsolete).*$/m', '', $text);
         $lines = array_values(array_filter(array_map('rtrim', explode("\n", $text)), fn ($l) => $l !== ''));
 
         return mb_substr(implode("\n", array_slice($lines, 0, 30)), 0, 4000) ?: 'Kompilasi gagal.';
