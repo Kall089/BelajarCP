@@ -235,7 +235,7 @@ CODE,
 
     [
         'slug' => 'siram-kebun',
-        'lesson' => 'prefix-sum',
+        'lesson' => 'difference-array',
         'title' => 'Penyiram Otomatis',
         'difficulty' => 'Mudah',
         'tags' => ['array selisih', 'prefix sum', 'penambahan rentang'],
@@ -393,134 +393,8 @@ CODE,
     ],
 
     [
-        'slug' => 'subarray-habis-dibagi',
-        'lesson' => 'prefix-sum',
-        'title' => 'Deret Kartu Kelipatan',
-        'difficulty' => 'Sedang',
-        'tags' => ['prefix sum', 'sisa bagi', 'menghitung pasangan', 'map'],
-        'statement' => '<p>Dalam sebuah permainan, Nadia menjejerkan <strong>N</strong> kartu dari kiri ke kanan. Kartu ke-i bertuliskan bilangan bulat <code>a<sub>i</sub></code>, yang bisa saja negatif. Sebuah <em>potongan</em> adalah satu kartu atau lebih yang letaknya berurutan, yaitu kartu ke-l sampai ke-r untuk suatu 1 ≤ l ≤ r ≤ N.</p>
-<p>Potongan disebut <strong>kompak</strong> jika jumlah angka pada kartu-kartunya habis dibagi <strong>K</strong>. Jumlah 0 dan jumlah negatif seperti −2K juga dianggap habis dibagi K. Ada berapa potongan kompak?</p>',
-        'input_format' => '<p>Baris pertama berisi <code>N K</code>. Baris kedua berisi <code>a<sub>1</sub> … a<sub>N</sub></code>.</p>',
-        'output_format' => '<p>Banyak potongan kompak.</p>',
-        'constraints' => '<ul><li>1 ≤ N ≤ 200 000</li><li>1 ≤ K ≤ 10<sup>9</sup></li><li>−10<sup>9</sup> ≤ a<sub>i</sub> ≤ 10<sup>9</sup></li></ul>',
-        'samples' => [
-            ['input' => "5 3\n1 -4 2 3 -2\n", 'explanation' => 'Potongan kompak: [1, −4] berjumlah −3, [3] berjumlah 3, [2, 3, −2] berjumlah 3, dan kelima kartu berjumlah 0. Totalnya 4.'],
-            ['input' => "4 2\n2 4 6 8\n", 'explanation' => 'Semua kartu genap, jadi setiap potongan kompak. Ada 4 · 5 / 2 = 10 potongan.'],
-        ],
-        'tests' => function () {
-            $mk = function (int $n, int $k, int $lo, int $hi, int $kali = 1): string {
-                $a = [];
-                for ($i = 0; $i < $n; $i++) {
-                    $a[] = mt_rand($lo, $hi) * $kali;
-                }
-
-                return "$n $k\n".implode(' ', $a)."\n";
-            };
-
-            return [
-                "1 1\n-5\n", "1 7\n3\n", "3 5\n-5 0 5\n", $mk(10, 3, -10, 10), $mk(1000, 7, -1000000000, 1000000000),
-                $mk(200000, 1, -1000000000, 1000000000), $mk(200000, 2, -1000000000, 1000000000),
-                $mk(200000, 1000000000, -1000000000, 1000000000), $mk(200000, 999983, -1000000000, 1000000000),
-                $mk(200000, 100, -1000000000, -1), $mk(200000, 1000000000, -2, 2, 500000000), $mk(200000, 37, -5, 5),
-                $mk(200000, 1000000000, -3, 3),
-            ];
-        },
-        'solve' => function (string $input) {
-            $lines = T::lines($input);
-            [$n, $k] = T::ints($lines[0]);
-            $frek = [0 => 1];
-            $sisa = 0;
-            $jawab = 0;
-            foreach (T::ints($lines[1]) as $x) {
-                $sisa = (($sisa + $x) % $k + $k) % $k;
-                $f = $frek[$sisa] ?? 0;
-                $jawab += $f;
-                $frek[$sisa] = $f + 1;
-            }
-
-            return (string) $jawab;
-        },
-        'starter' => $st("    int n;\n    long long k;\n    cin >> n >> k;\n    vector<long long> a(n);\n    for (auto& x : a) cin >> x;", "const [n, k] = readInts();\nconst a = readInts();", "n, k = map(int, input().split())\na = list(map(int, input().split()))"),
-        'solutions' => [
-            'cpp' => <<<'CODE'
-#include <bits/stdc++.h>
-using namespace std;
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    int n;
-    long long k;
-    cin >> n >> k;
-
-    // frek[s] = banyak prefix sebelumnya yang sisa baginya s (map biasa juga boleh)
-    unordered_map<long long, long long> frek;
-    frek.reserve(2 * n + 2);
-    frek[0] = 1;                 // prefix kosong p0 = 0
-    long long sisa = 0, jawab = 0;
-    for (int i = 0; i < n; i++) {
-        long long x;
-        cin >> x;
-        // % di C++ bisa negatif (-7 % 3 = -1), jadi dinormalkan ke 0..k-1
-        sisa = ((sisa + x) % k + k) % k;
-        jawab += frek[sisa];     // pasangkan dengan prefix sebelumnya yang bersisa sama
-        frek[sisa]++;
-    }
-    cout << jawab << '\n';
-    return 0;
-}
-CODE,
-            'javascript' => <<<'CODE'
-const [n, k] = readInts();
-const a = readInts();
-// frek: sisa bagi prefix -> banyaknya; mulai dengan prefix kosong (sisa 0)
-const frek = new Map([[0, 1]]);
-let sisa = 0;
-let jawab = 0; // ≤ 2 · 10^10, aman untuk Number
-for (let i = 0; i < n; i++) {
-  // % di JavaScript bisa negatif, jadi dinormalkan ke 0..k-1
-  sisa = (((sisa + a[i]) % k) + k) % k;
-  const f = frek.get(sisa) || 0;
-  jawab += f;
-  frek.set(sisa, f + 1);
-}
-console.log(jawab);
-CODE,
-            'python' => <<<'CODE'
-import sys
-input = sys.stdin.readline
-
-n, k = map(int, input().split())
-a = list(map(int, input().split()))
-
-frek = {0: 1}          # prefix kosong p0 = 0
-sisa = 0
-jawab = 0
-for x in a:
-    sisa = (sisa + x) % k        # % di Python selalu 0..k-1, juga untuk bilangan negatif
-    f = frek.get(sisa, 0)
-    jawab += f                   # pasangkan dengan prefix sebelumnya yang bersisa sama
-    frek[sisa] = f + 1
-print(jawab)
-CODE,
-        ],
-        'editorial' => '<p>Ada N(N + 1)/2 ≈ 2 · 10<sup>10</sup> potongan, terlalu banyak untuk dicoba satu per satu. Pakai prefix sum <code>p<sub>0</sub> = 0</code>, <code>p<sub>i</sub> = a<sub>1</sub> + … + a<sub>i</sub></code>. Jumlah kartu l..r adalah <code>p<sub>r</sub> − p<sub>l−1</sub></code>, dan selisih itu habis dibagi K <strong>tepat ketika</strong> p<sub>r</sub> dan p<sub>l−1</sub> punya sisa bagi K yang sama.</p>
-<p>Jadi soalnya berubah menjadi: ada berapa pasangan indeks i &lt; j di antara p<sub>0</sub>, …, p<sub>N</sub> yang sisa baginya sama? Telusuri dari kiri sambil menyimpan <code>frek[s]</code> = banyak prefix sebelumnya yang bersisa s. Saat tiba di p<sub>j</sub> dengan sisa s, tambahkan frek[s] ke jawaban, lalu naikkan frek[s]. Jangan lupa memasukkan p<sub>0</sub> = 0 (frek[0] = 1 di awal), karena potongan yang dimulai dari kartu pertama memakai p<sub>0</sub>.</p>
-<p>K bisa sampai 10<sup>9</sup>, sehingga array sebesar K tidak muat. Simpan frek di <code>unordered_map</code>/<code>map</code> (C++), <code>Map</code> (JavaScript), atau <code>dict</code> (Python); paling banyak N + 1 sisa berbeda yang benar-benar muncul. Total O(N) rata-rata (O(N log N) dengan <code>map</code>).</p>
-<p><strong>Jebakan:</strong></p>
-<ul><li>Di C++ dan JavaScript, <code>-7 % 3</code> bernilai <code>-1</code>, bukan 2. Tanpa normalisasi <code>((x % K) + K) % K</code>, prefix −1 dan 2 dianggap bersisa berbeda padahal selisihnya 3. Pada contoh pertama, ini membuat potongan [3] (p<sub>3</sub> = −1, p<sub>4</sub> = 2) terlewat. Operator % di Python sudah selalu menghasilkan 0..K−1.</li><li>Jawaban bisa mencapai 200 000 · 200 001 / 2 ≈ 2 · 10<sup>10</sup> (misalnya saat K = 1), jadi gunakan <code>long long</code>.</li><li>Prefix sum-nya sendiri bisa mencapai 2 · 10<sup>14</sup>; cukup simpan sisanya saja seperti pada kode.</li></ul>',
-        'hints' => [
-            'Tulis jumlah kartu l..r memakai prefix sum. Kapan selisih dua bilangan habis dibagi K?',
-            'p_r − p_(l−1) habis dibagi K jika dan hanya jika p_r dan p_(l−1) punya sisa bagi K yang sama. Hitung pasangan prefix yang sisanya sama.',
-            'Simpan frekuensi sisa di map, mulai dengan frek[0] = 1. Di C++/JS sisa bagi bilangan negatif bisa negatif: normalkan dengan ((x % K) + K) % K. Jawaban perlu long long.',
-        ],
-        'sample_visual' => 'bars',
-    ],
-
-    [
         'slug' => 'salju-kota',
-        'lesson' => 'prefix-sum',
+        'lesson' => 'difference-array',
         'title' => 'Salju Menutup Kota',
         'difficulty' => 'Sulit',
         'tags' => ['array selisih 2d', 'prefix sum 2d', 'kueri rentang'],

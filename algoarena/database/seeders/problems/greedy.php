@@ -1815,7 +1815,7 @@ CODE,
     ],
 
     [
-        'slug' => 'jual-beli-saham',
+        'slug' => 'jual-beli-saham-harian',
         'lesson' => 'greedy-pq',
         'title' => 'Jual Beli Saham Harian',
         'difficulty' => 'Sulit',

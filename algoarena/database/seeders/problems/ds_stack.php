@@ -63,7 +63,7 @@ $gantiTutup = function (string $s, int $lo): string {
 return [
     [
         'slug' => 'kurung-seimbang-tiga',
-        'lesson' => 'stack-monoton',
+        'lesson' => 'stack-queue',
         'title' => 'Pemeriksa Kurung',
         'difficulty' => 'Mudah',
         'tags' => ['stack', 'kurung', 'simulasi'],
@@ -221,7 +221,7 @@ CODE,
 
     [
         'slug' => 'hari-lebih-hangat',
-        'lesson' => 'stack-monoton',
+        'lesson' => 'monotonic-stack',
         'title' => 'Menunggu Hari Lebih Hangat',
         'difficulty' => 'Mudah',
         'tags' => ['stack monoton', 'elemen lebih besar berikutnya'],
@@ -374,7 +374,7 @@ CODE,
 
     [
         'slug' => 'persegi-histogram',
-        'lesson' => 'stack-monoton',
+        'lesson' => 'monotonic-stack',
         'title' => 'Spanduk Terbesar',
         'difficulty' => 'Sedang',
         'tags' => ['stack monoton', 'histogram', 'elemen lebih kecil terdekat'],
@@ -530,200 +530,4 @@ CODE,
         'sample_visual' => 'bars',
     ],
 
-    [
-        'slug' => 'jumlah-minimum-subarray',
-        'lesson' => 'stack-monoton',
-        'title' => 'Kekuatan Potongan Rantai',
-        'difficulty' => 'Sulit',
-        'tags' => ['stack monoton', 'teknik kontribusi', 'modulo'],
-        'statement' => '<p>Pak Darmo, seorang pandai besi, menempa rantai panjang yang terdiri dari <strong>N</strong> mata rantai berurutan. Mata rantai ke-i punya kekuatan <code>a<sub>i</sub></code>. Pembeli boleh meminta potongan berupa beberapa mata rantai yang <strong>berurutan</strong>, dan sebuah potongan hanya sekuat mata rantai <strong>terlemahnya</strong>.</p>
-<p>Untuk laporan mutu, Pak Darmo ingin menjumlahkan kekuatan semua potongan yang mungkin, yaitu untuk semua pasangan <code>1 ≤ l ≤ r ≤ N</code>:</p>
-<p style="text-align:center"><code>Σ<sub>l ≤ r</sub> min(a<sub>l</sub>, a<sub>l+1</sub>, …, a<sub>r</sub>)</code></p>
-<p>Karena hasilnya bisa sangat besar, cetak modulo 10<sup>9</sup> + 7.</p>',
-        'input_format' => '<p>Baris pertama berisi <code>N</code>. Baris kedua berisi <code>a<sub>1</sub> … a<sub>N</sub></code>.</p>',
-        'output_format' => '<p>Jumlah kekuatan semua potongan, modulo 10<sup>9</sup> + 7.</p>',
-        'constraints' => '<ul><li>1 ≤ N ≤ 200 000</li><li>1 ≤ a<sub>i</sub> ≤ 10<sup>9</sup></li></ul>',
-        'samples' => [
-            ['input' => "3\n3 1 2\n", 'explanation' => 'Potongan [3], [1], [2], [3, 1], [1, 2], dan [3, 1, 2] berkekuatan 3, 1, 2, 1, 1, 1. Jumlahnya 9.'],
-            ['input' => "3\n2 2 2\n", 'explanation' => 'Keenam potongan berkekuatan 2, jadi jumlahnya 12. Potongan [2, 2, 2] punya tiga mata terlemah, tetapi tetap hanya dihitung sekali.'],
-            ['input' => "2\n1000000000 1000000000\n", 'explanation' => 'Ada tiga potongan berkekuatan 10<sup>9</sup>, jumlahnya 3 · 10<sup>9</sup>. Modulo 10<sup>9</sup> + 7 hasilnya 3 · 10<sup>9</sup> − 2 · (10<sup>9</sup> + 7) = 999999986.'],
-        ],
-        'tests' => function () use ($arr) {
-            $n = 200000;
-            $turun = [];
-            $v = 1000000000;
-            for ($i = 0; $i < $n; $i++) {
-                $turun[] = $v;
-                $v -= mt_rand(1, 4000);
-            }
-            $zigzag = [];
-            for ($i = 0; $i < $n; $i++) {
-                $zigzag[] = $i % 2 ? 1000000000 : 1;
-            }
-            // satu mata terlemah di tengah dengan nilai besar: a_i · L · R ≈ 10^19
-            $lembah = explode(' ', $arr($n, 999999001, 1000000000));
-            $lembah[$n / 2] = 999999000;
-
-            return [
-                "1\n5\n", "1\n1000000000\n", "4\n2 2 2 2\n", "10\n".$arr(10, 1, 3)."\n", "1000\n".$arr(1000, 1, 1000)."\n",
-                "$n\n".implode(' ', array_fill(0, $n, 1000000000))."\n", "$n\n".implode(' ', range(1, $n))."\n",
-                "$n\n".implode(' ', $turun)."\n", "$n\n".$arr($n, 1, 1000000000)."\n", "$n\n".$arr($n, 1, 3)."\n",
-                "$n\n".$arr($n, 1, 100)."\n", "$n\n".implode(' ', $zigzag)."\n", "$n\n".implode(' ', $lembah)."\n",
-            ];
-        },
-        'solve' => function (string $input) use ($MOD) {
-            $lines = T::lines($input);
-            $n = (int) $lines[0];
-            $a = T::ints($lines[1]);
-            $kiri = array_fill(0, $n, -1);
-            $kanan = array_fill(0, $n, $n);
-            $tumpukan = [];
-            $atas = -1;
-            for ($i = 0; $i < $n; $i++) {
-                while ($atas >= 0 && $a[$tumpukan[$atas]] >= $a[$i]) {
-                    $atas--;
-                }
-                if ($atas >= 0) {
-                    $kiri[$i] = $tumpukan[$atas];
-                }
-                $tumpukan[++$atas] = $i;
-            }
-            $atas = -1;
-            for ($i = $n - 1; $i >= 0; $i--) {
-                while ($atas >= 0 && $a[$tumpukan[$atas]] > $a[$i]) {
-                    $atas--;
-                }
-                if ($atas >= 0) {
-                    $kanan[$i] = $tumpukan[$atas];
-                }
-                $tumpukan[++$atas] = $i;
-            }
-            $total = 0;
-            for ($i = 0; $i < $n; $i++) {
-                $banyak = (($i - $kiri[$i]) * ($kanan[$i] - $i)) % $MOD;
-                $total = ($total + ($a[$i] % $MOD) * $banyak) % $MOD;
-            }
-
-            return (string) $total;
-        },
-        'starter' => $st("    const long long MOD = 1e9 + 7;\n    int n;\n    cin >> n;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];", "const n = Number(readLine());\nconst a = readInts();\nconst MOD = 1000000007;\n// x · y mod MOD tanpa melewati batas presisi Number (2^53)\nconst mul = (x, y) => (((x * (y >>> 16)) % MOD) * 65536 + x * (y & 65535)) % MOD;", "MOD = 10**9 + 7\nn = int(input())\na = list(map(int, input().split()))"),
-        'solutions' => [
-            'cpp' => <<<'CODE'
-#include <bits/stdc++.h>
-using namespace std;
-
-const long long MOD = 1e9 + 7;
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    int n;
-    cin >> n;
-    vector<long long> a(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-
-    // Setiap potongan diwakili oleh mata terlemahnya yang PALING KANAN.
-    // kiri[i]  = indeks terdekat di kiri dengan a < a[i]  (berhenti hanya di yang lebih kecil tegas)
-    // kanan[i] = indeks terdekat di kanan dengan a <= a[i] (berhenti juga di nilai kembar)
-    vector<int> kiri(n), kanan(n), tumpukan;
-    tumpukan.reserve(n);
-    for (int i = 0; i < n; i++) {
-        while (!tumpukan.empty() && a[tumpukan.back()] >= a[i]) tumpukan.pop_back();
-        kiri[i] = tumpukan.empty() ? -1 : tumpukan.back();
-        tumpukan.push_back(i);
-    }
-    tumpukan.clear();
-    for (int i = n - 1; i >= 0; i--) {
-        while (!tumpukan.empty() && a[tumpukan.back()] > a[i]) tumpukan.pop_back();
-        kanan[i] = tumpukan.empty() ? n : tumpukan.back();
-        tumpukan.push_back(i);
-    }
-
-    long long total = 0;
-    for (int i = 0; i < n; i++) {
-        // banyak potongan yang diwakili i = L · R, bisa sampai 10^10;
-        // a[i] · L · R bisa 10^19 (melewati long long), jadi modulo dulu
-        long long banyak = (long long)(i - kiri[i]) * (kanan[i] - i) % MOD;
-        total = (total + a[i] % MOD * banyak) % MOD;
-    }
-    cout << total << '\n';
-    return 0;
-}
-CODE,
-            'javascript' => <<<'CODE'
-const n = Number(readLine());
-const a = readInts();
-const MOD = 1000000007;
-// x · y mod MOD tanpa melewati batas presisi Number (2^53)
-const mul = (x, y) => (((x * (y >>> 16)) % MOD) * 65536 + x * (y & 65535)) % MOD;
-
-const kiri = new Int32Array(n), kanan = new Int32Array(n);
-const tumpukan = new Int32Array(n);
-let atas = 0;
-for (let i = 0; i < n; i++) {
-  while (atas > 0 && a[tumpukan[atas - 1]] >= a[i]) atas--;  // berhenti di a < a[i]
-  kiri[i] = atas > 0 ? tumpukan[atas - 1] : -1;
-  tumpukan[atas++] = i;
-}
-atas = 0;
-for (let i = n - 1; i >= 0; i--) {
-  while (atas > 0 && a[tumpukan[atas - 1]] > a[i]) atas--;   // berhenti di a <= a[i]
-  kanan[i] = atas > 0 ? tumpukan[atas - 1] : n;
-  tumpukan[atas++] = i;
-}
-let total = 0;
-for (let i = 0; i < n; i++) {
-  const banyak = ((i - kiri[i]) * (kanan[i] - i)) % MOD; // L · R ≤ 10^10, masih tepat
-  total = (total + mul(a[i], banyak)) % MOD;
-}
-console.log(total);
-CODE,
-            'python' => <<<'CODE'
-import sys
-input = sys.stdin.readline
-
-MOD = 10**9 + 7
-n = int(input())
-a = list(map(int, input().split()))
-
-kiri = [-1] * n     # indeks terdekat di kiri dengan a < a[i]
-tumpukan = []
-for i in range(n):
-    x = a[i]
-    while tumpukan and a[tumpukan[-1]] >= x:
-        tumpukan.pop()
-    if tumpukan:
-        kiri[i] = tumpukan[-1]
-    tumpukan.append(i)
-
-kanan = [n] * n     # indeks terdekat di kanan dengan a <= a[i]
-tumpukan = []
-for i in range(n - 1, -1, -1):
-    x = a[i]
-    while tumpukan and a[tumpukan[-1]] > x:
-        tumpukan.pop()
-    if tumpukan:
-        kanan[i] = tumpukan[-1]
-    tumpukan.append(i)
-
-total = 0
-for i in range(n):
-    total += a[i] * (i - kiri[i]) * (kanan[i] - i)
-print(total % MOD)
-CODE,
-        ],
-        'editorial' => '<p>Ada N(N + 1)/2 ≈ 2 · 10<sup>10</sup> potongan, terlalu banyak untuk dihitung satu per satu. Balik sudut pandangnya dengan <strong>teknik kontribusi</strong>: setiap potongan menyumbangkan nilai mata terlemahnya, jadi</p>
-<p style="text-align:center"><code>jawaban = Σ<sub>i</sub> a<sub>i</sub> · (banyak potongan yang diwakili oleh mata i sebagai minimumnya)</code></p>
-<p>Potongan [l, r] yang diwakili i harus memuat i dan tidak boleh memuat mata yang lebih lemah dari a<sub>i</sub>. Jika <code>kiri[i]</code> dan <code>kanan[i]</code> adalah batas terdekat yang tidak boleh dilewati, ada <code>L = i − kiri[i]</code> pilihan ujung kiri dan <code>R = kanan[i] − i</code> pilihan ujung kanan, sehingga i menyumbang <code>a<sub>i</sub> · L · R</code>.</p>
-<p><strong>Nilai kembar.</strong> Potongan [2, 2] punya dua mata terlemah. Jika kedua sisi berhenti di nilai yang lebih kecil tegas (&lt;), potongan itu dihitung dua kali. Jika kedua sisi berhenti di nilai ≤, potongan itu tidak terhitung sama sekali. Solusinya, buat aturannya tidak simetris: <code>kiri[i]</code> adalah indeks terdekat di kiri dengan <code>a &lt; a<sub>i</sub></code>, sedangkan <code>kanan[i]</code> adalah indeks terdekat di kanan dengan <code>a ≤ a<sub>i</sub></code>. Dengan begitu setiap potongan diwakili tepat satu kali, yaitu oleh mata terlemahnya yang <em>paling kanan</em>.</p>
-<p>Kedua batas dihitung dengan stack monoton seperti pada soal elemen lebih kecil terdekat, total O(N).</p>
-<p><strong>Awas overflow:</strong> L · R bisa sekitar 10<sup>10</sup> (misalnya mata terlemah berada di tengah), sehingga a<sub>i</sub> · L · R bisa mencapai 10<sup>19</sup>, melebihi batas <code>long long</code> (sekitar 9,2 · 10<sup>18</sup>). Modulo-kan L · R terlebih dahulu sebelum dikalikan dengan a<sub>i</sub>. Di JavaScript, L · R masih tepat sebagai Number, tetapi perkalian dengan a<sub>i</sub> harus memakai helper <code>mul</code>.</p>',
-        'hints' => [
-            'Daripada mencari minimum setiap potongan, balik pertanyaannya: untuk setiap mata i, di berapa potongan ia menjadi yang terlemah?',
-            'Potongan dengan i sebagai minimum bisa melebar ke kiri dan ke kanan sampai bertemu mata yang lebih lemah. Jika ada L pilihan ujung kiri dan R pilihan ujung kanan, kontribusinya a_i · L · R.',
-            'Untuk nilai kembar, pakai < di satu sisi dan ≤ di sisi lain (kiri berhenti di a_j < a_i, kanan berhenti di a_j ≤ a_i) agar setiap potongan dihitung tepat sekali. Hitung batasnya dengan stack monoton dan kerjakan modulo.',
-        ],
-        'sample_visual' => 'bars',
-    ],
 ];
