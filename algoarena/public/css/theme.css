@@ -1441,6 +1441,194 @@ html[data-theme="light"] .g-node.colored text.label {
     fill: var(--green-text);
 }
 
+/* ═══════════════════════════════ Visualisasi DSU ═══════════════════════════════ */
+.dsu-svg {
+    display: block;
+    width: 100%;
+    max-height: 300px;
+    margin: 10px 0 8px;
+}
+
+.dsu-edge {
+    stroke: var(--line-strong);
+    stroke-width: 2;
+}
+
+.dsu-edge.on {
+    stroke: var(--cyan);
+    stroke-width: 3;
+}
+
+.dsu-edge.fresh {
+    stroke: #8b5cf6;
+    stroke-width: 3;
+    stroke-dasharray: 6 4;
+}
+
+.dsu-ah {
+    fill: var(--muted);
+}
+
+.dsu-node circle {
+    fill: var(--panel);
+    stroke: var(--line-strong);
+    stroke-width: 2;
+}
+
+.dsu-node text {
+    font: 700 13px var(--mono);
+    fill: var(--text-strong);
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+.dsu-node.on circle {
+    fill: var(--cyan-soft);
+    stroke: var(--cyan);
+}
+
+.dsu-node.root circle {
+    fill: var(--green-soft);
+    stroke: var(--green);
+    stroke-width: 3;
+}
+
+.dsu-node.cur circle {
+    fill: rgba(245, 158, 11, 0.3);
+    stroke: var(--amber);
+    stroke-width: 3;
+}
+
+/* ═══════════════════════════════ Visualisasi algoritma Mo ═══════════════════════════════ */
+.mo-wrap {
+    display: grid;
+    gap: 12px;
+    padding: 18px 8px 4px;
+    overflow-x: auto;
+}
+
+.mo-row {
+    display: flex;
+    gap: 4px;
+    justify-content: safe center;
+    padding-bottom: 20px;
+}
+
+.mo-cell {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 46px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--panel);
+    font-family: var(--mono);
+}
+
+.mo-cell.blk {
+    margin-left: 8px;
+    box-shadow: -7px 0 0 -5px var(--line-strong);
+}
+
+.mo-cell small {
+    font-size: 10px;
+    color: var(--faint);
+}
+
+.mo-cell b {
+    font-size: 15px;
+    color: var(--text-strong);
+}
+
+.mo-cell.q {
+    border-color: var(--amber);
+}
+
+.mo-cell.in {
+    background: var(--cyan-soft);
+    border-color: var(--cyan);
+}
+
+.mo-cell.add {
+    background: rgba(34, 197, 94, 0.3);
+    border-color: var(--green);
+}
+
+.mo-cell.del {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: var(--red);
+}
+
+.mo-cell .ptr {
+    position: absolute;
+    bottom: -19px;
+    font: 700 11px var(--mono);
+    font-style: normal;
+    color: var(--primary);
+}
+
+.mo-cell .ptr.l {
+    left: 4px;
+}
+
+.mo-cell .ptr.r {
+    right: 4px;
+}
+
+.mo-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.mo-cnt {
+    display: grid;
+    place-items: center;
+    min-width: 34px;
+    padding: 3px 6px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-family: var(--mono);
+    background: var(--panel);
+}
+
+.mo-cnt small {
+    font-size: 10px;
+    color: var(--faint);
+}
+
+.mo-cnt.on {
+    border-color: var(--green);
+    background: var(--green-soft);
+}
+
+.mo-qs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.mo-q {
+    padding: 4px 8px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font: 600 12px var(--mono);
+    color: var(--muted);
+    background: var(--panel);
+}
+
+.mo-q.cur {
+    border-color: var(--amber);
+    background: rgba(245, 158, 11, 0.18);
+    color: var(--text-strong);
+}
+
+.mo-q.done {
+    color: var(--green-text);
+}
+
 /* Editor cadangan saat Monaco tidak dapat dimuat (tanpa internet) */
 .plain-editor {
     display: block;

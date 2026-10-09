@@ -18,12 +18,16 @@ class CurriculumSeeder extends Seeder
         // Fondasi
         ['slug' => 'kompleksitas', 'track' => 'fondasi', 'level' => 1, 'title' => 'Kompleksitas & Big-O', 'subtitle' => 'Memperkirakan kecepatan program sebelum menulisnya', 'viz' => 'bigo', 'minutes' => 20,
             'summary' => 'Cara judge bekerja, notasi Big-O, membaca batasan soal, dan memilih algoritma yang cukup cepat.'],
+        ['slug' => 'stl', 'track' => 'fondasi', 'level' => 1, 'title' => 'STL, Sorting & Kompresi Koordinat', 'subtitle' => 'Perkakas C++ yang dipakai di hampir setiap soal', 'viz' => 'kompresi', 'minutes' => 35,
+            'summary' => 'vector, pair, sort dengan pembanding, set/multiset/map, lower_bound dan upper_bound, priority_queue, kompresi koordinat, dan jebakan unordered_map.'],
         ['slug' => 'rekursi', 'track' => 'fondasi', 'level' => 1, 'title' => 'Rekursi & Backtracking', 'subtitle' => 'Mencoba semua kemungkinan dengan rapi', 'viz' => 'nqueen', 'minutes' => 30,
             'summary' => 'Base case, call stack, pohon rekursi, pola pilih–telusuri–batalkan, pemangkasan, dan jembatan menuju DP.'],
         ['slug' => 'binary-search', 'track' => 'fondasi', 'level' => 1, 'title' => 'Binary Search & Two Pointers', 'subtitle' => 'Membuang setengah kemungkinan setiap langkah', 'viz' => 'window', 'minutes' => 30,
             'summary' => 'lower_bound/upper_bound, binary search pada jawaban, two pointers, sliding window, dan invarian.'],
         ['slug' => 'greedy', 'track' => 'fondasi', 'level' => 1, 'title' => 'Greedy & Argumen Pertukaran', 'subtitle' => 'Kapan pilihan terbaik sesaat itu benar', 'viz' => 'jadwal', 'minutes' => 30,
             'summary' => 'Memilih interval terbanyak, mengurutkan pekerjaan, argumen pertukaran, priority queue untuk Huffman dan tenggat, serta contoh saat serakah salah.'],
+        ['slug' => 'bit', 'track' => 'fondasi', 'level' => 2, 'title' => 'Manipulasi Bit & Meet in the Middle', 'subtitle' => 'Bilangan sebagai deretan saklar', 'viz' => 'bits', 'minutes' => 35,
+            'summary' => 'Operator bit, cek/nyalakan/matikan bit, popcount dan lowbit, enumerasi subset dan submask, kontribusi per bit, serta meet in the middle untuk N sampai 40.'],
         // Graph
         ['slug' => 'representasi-graph', 'track' => 'graph', 'level' => 1, 'title' => 'Mengenal Graph', 'subtitle' => 'Simpul, sisi, adjacency list & matrix', 'viz' => 'graph-repr', 'minutes' => 20,
             'summary' => 'Apa itu graph, istilah penting, dan dua cara utama menyimpannya di program C++.'],
@@ -85,10 +89,14 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Prefix sum 1D dan 2D, array selisih untuk penambahan rentang, inklusi–eksklusi, dan menghitung subarray dengan tabel frekuensi.'],
         ['slug' => 'stack-monoton', 'track' => 'struktur-data', 'level' => 1, 'title' => 'Stack & Stack Monoton', 'subtitle' => 'Elemen lebih besar berikutnya dan histogram', 'viz' => 'monostack', 'minutes' => 30,
             'summary' => 'Stack LIFO, validasi kurung, next greater element, persegi panjang terbesar di histogram, dan teknik kontribusi.'],
+        ['slug' => 'dsu', 'track' => 'struktur-data', 'level' => 2, 'title' => 'Disjoint Set Union', 'subtitle' => 'Menggabungkan kelompok dan bertanya "satu kelompok?"', 'viz' => 'dsu', 'minutes' => 35,
+            'summary' => 'find dengan path compression, union by size, ukuran komponen, pemrosesan offline terbalik untuk penghapusan, dan DSU berbobot/paritas.'],
         ['slug' => 'fenwick', 'track' => 'struktur-data', 'level' => 2, 'title' => 'Fenwick Tree (BIT)', 'subtitle' => 'Update titik dan jumlah prefix dalam O(log N)', 'viz' => 'fenwick', 'minutes' => 35,
             'summary' => 'Bit terendah i & -i, update dan query prefix O(log N), menghitung inversi, update rentang, dan mencari elemen ke-k.'],
         ['slug' => 'segment-tree', 'track' => 'struktur-data', 'level' => 2, 'title' => 'Segment Tree', 'subtitle' => 'Query rentang apa pun, update kapan pun', 'viz' => 'segtree', 'minutes' => 40,
             'summary' => 'Membangun, query, dan update segment tree; versi iteratif; informasi kustom di simpul; lazy propagation; dan sparse table.'],
+        ['slug' => 'sqrt', 'track' => 'struktur-data', 'level' => 3, 'title' => 'Dekomposisi Akar & Algoritma Mo', 'subtitle' => 'Membagi menjadi √N blok', 'viz' => 'mo', 'minutes' => 40,
+            'summary' => 'Blok berukuran √N untuk query dan update rentang, tag per blok, algoritma Mo untuk query rentang offline, dan memilih ukuran blok.'],
         // Matematika
         ['slug' => 'fpb-modular', 'track' => 'matematika', 'level' => 1, 'title' => 'FPB, KPK & Aritmetika Modular', 'subtitle' => 'Euclid, pangkat cepat, dan invers', 'viz' => 'euclid', 'minutes' => 35,
             'summary' => 'Algoritma Euclid, KPK tanpa overflow, aturan modulo, pangkat cepat, invers modular (Fermat dan Euclid diperluas), persamaan Diophantine, dan CRT.'],
@@ -96,6 +104,12 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Uji prima O(√n), saringan Eratosthenes, faktor prima terkecil untuk faktorisasi cepat, banyak pembagi, fungsi phi Euler, dan saringan rentang.'],
         ['slug' => 'kombinatorika', 'track' => 'matematika', 'level' => 2, 'title' => 'Kombinatorika', 'subtitle' => 'Menghitung tanpa mendaftar', 'viz' => 'gridpath', 'minutes' => 40,
             'summary' => 'Faktorial dan invers faktorial modulo prima, permutasi multiset, bintang dan sekat, inklusi–eksklusi, derangement, dan jalur grid dengan rintangan.'],
+        ['slug' => 'matriks', 'track' => 'matematika', 'level' => 2, 'title' => 'Eksponensiasi Matriks', 'subtitle' => 'Rekurens linear sampai suku ke-10^18', 'viz' => 'matpow', 'minutes' => 35,
+            'summary' => 'Perkalian matriks modulo, pangkat cepat matriks, menyusun matriks transisi dari rekurens, suku konstan, dan menghitung jalan sepanjang k langkah.'],
+        ['slug' => 'permainan', 'track' => 'matematika', 'level' => 2, 'title' => 'Teori Permainan: Nim & Sprague–Grundy', 'subtitle' => 'Siapa menang jika keduanya bermain sempurna?', 'viz' => 'nim', 'minutes' => 35,
+            'summary' => 'Posisi menang dan kalah, DP permainan, pola periodik, Nim dan XOR, nilai Grundy dengan mex, dan menggabungkan banyak permainan.'],
+        ['slug' => 'geometri', 'track' => 'matematika', 'level' => 2, 'title' => 'Geometri Dasar', 'subtitle' => 'Hasil kali silang sebagai pisau serbaguna', 'viz' => 'hull', 'minutes' => 40,
+            'summary' => 'Vektor dengan koordinat bulat, cross product dan orientasi, perpotongan ruas garis, luas poligon (shoelace), titik dalam poligon, dan convex hull monotone chain.'],
         // String
         ['slug' => 'string-hashing', 'track' => 'string', 'level' => 2, 'title' => 'String Hashing', 'subtitle' => 'Membandingkan potongan dalam O(1)', 'viz' => 'hash', 'minutes' => 35,
             'summary' => 'Hash polinomial, prefix hash, hash potongan O(1), tabrakan dan double hashing, palindrom dengan hash maju-mundur, dan binary search + hash.'],
@@ -103,6 +117,8 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Border dan fungsi prefiks π, pencarian pola O(n + m), periode terpendek, fungsi Z, dan menghitung kemunculan setiap awalan.'],
         ['slug' => 'trie', 'track' => 'string', 'level' => 2, 'title' => 'Trie', 'subtitle' => 'Pohon awalan untuk kata dan bit', 'viz' => 'trie', 'minutes' => 30,
             'summary' => 'Menyisipkan dan mencari kata, menghitung kata berawalan sama, saran kata, trie biner untuk XOR maksimum, dan prefix XOR.'],
+        ['slug' => 'palindrom', 'track' => 'string', 'level' => 3, 'title' => 'Palindrom & Algoritma Manacher', 'subtitle' => 'Semua palindrom dalam waktu linear', 'viz' => 'manacher', 'minutes' => 35,
+            'summary' => 'Ekspansi dari pusat, algoritma Manacher dengan jari-jari ganjil dan genap, menghitung substring palindrom, cek s[l..r] dalam O(1), dan partisi palindrom.'],
     ];
 
     /** Urutan file soal; soal nantinya diurutkan mengikuti urutan materi. */
