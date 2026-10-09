@@ -2234,3 +2234,12 @@ html[data-theme="dark"] :is(.pill-array, .pill-sorting, .pill-rekursi, .pill-gre
 .kx-tl .kx-axis text { font: 500 10px var(--mono); fill: var(--muted); text-anchor: middle; }
 .kx-tl .kx-tmark line { stroke: var(--primary); stroke-width: 2; stroke-dasharray: 5 4; }
 .kx-tl .kx-tmark text { font: 700 11px var(--mono); fill: var(--primary); }
+
+/* Kit: kolom grid & matriks */
+.kx-col { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.kx-mats { display: flex; gap: 22px; align-items: flex-start; flex-wrap: wrap; justify-content: center; }
+.kx-mat small { display: block; text-align: center; font: 700 11px var(--mono); color: var(--muted); margin-bottom: 4px; }
+.kx-mat .kx-table td { min-width: 64px; text-align: center; font-family: var(--mono); }
+.kx-mat.on .kx-tablewrap { outline: 2px solid var(--amber); border-radius: 8px; }
+.kx-mat.ok .kx-tablewrap { outline: 2px solid var(--green); border-radius: 8px; }
+.kx-mat.in .kx-tablewrap { outline: 2px solid var(--cyan); border-radius: 8px; }
