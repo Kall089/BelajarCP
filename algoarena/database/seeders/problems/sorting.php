@@ -2929,7 +2929,7 @@ CODE,
     ],
 
     [
-        'slug' => 'bagi-dua-adil',
+        'slug' => 'bagi-dua-mitm',
         'lesson' => 'meet-in-the-middle',
         'title' => 'Bagi Dua Seadil Mungkin',
         'difficulty' => 'Sulit',
