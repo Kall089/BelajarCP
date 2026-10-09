@@ -374,4 +374,97 @@ int hitungAwalan(const string& p) {                   //@6
         [wIn, pIn].forEach((el) => el.addEventListener("keydown", (e) => e.key === "Enter" && build()));
         build();
     });
+
+    // ════════════════════════════ Manacher ════════════════════════════
+    V.register("manacher", (root) => {
+        const sh = V.shell(root, {
+            title: "Manacher: Jari-jari Palindrom di Setiap Pusat",
+            controls: `<label class="viz-input">String <input data-s value="abacabax" style="width:120px"></label>
+                <button class="btn btn-sm btn-primary" data-apply>Terapkan</button>`,
+            legend: [
+                ["Pusat i", "#f59e0b", "rgba(245,158,11,.35)"],
+                ["Kotak [l, r] terkanan", "#22d3ee", "rgba(34,211,238,.16)"],
+                ["Cermin j = l + r − i", "#8b5cf6", "rgba(139,92,246,.22)"],
+                ["Dibandingkan saat memperluas", "#22c55e", "rgba(34,197,94,.3)"],
+            ],
+        });
+        const sIn = sh.head.querySelector("[data-s]");
+        const code = V.codePanel(
+            sh.side,
+            `
+// t = "#s0#s1#...#";  p[i] = jari-jari palindrom terpanjang berpusat di t[i]
+for (int i = 0, l = 0, r = -1; i < n; i++) {
+    int k = (i > r) ? 0 : min(p[l + r - i], r - i);    // pinjam dari cermin //@1
+    while (i - k - 1 >= 0 && i + k + 1 < n &&                               //@2
+           t[i - k - 1] == t[i + k + 1]) k++;           // perluas manual     //@2
+    p[i] = k;                                                                //@3
+    if (i + k > r) { l = i - k; r = i + k; }            // geser kotak        //@4
+}
+// panjang palindrom di s = p[i];  mulai di s = (i - p[i]) / 2               //@5`,
+        );
+        const watch = V.watchPanel(sh.side);
+
+        function build() {
+            let s = (sIn.value.replace(/[^a-z]/gi, "").toLowerCase() || "abacabax").slice(0, 11);
+            sIn.value = s;
+            const t = "#" + s.split("").join("#") + "#";
+            const n = t.length;
+            const p = new Array(n).fill(null);
+            let l = 0;
+            let r = -1;
+            let cmp = 0;
+            let best = 0;
+            let bestI = 0;
+            const frames = [];
+            const render = (st = {}) => {
+                const cells = t
+                    .split("")
+                    .map((c, i) => {
+                        const cl = ["mn-cell"];
+                        if (c === "#") cl.push("sep");
+                        if (i >= l && i <= r) cl.push("box");
+                        if (st.j === i) cl.push("mirror");
+                        if (st.cmp && st.cmp.includes(i)) cl.push(st.ok === false ? "bad" : "cmp");
+                        if (st.pal && i >= st.pal[0] && i <= st.pal[1] && !(st.cmp && st.cmp.includes(i))) cl.push("pal");
+                        if (st.i === i) cl.push("cur");
+                        return `<div class="${cl.join(" ")}"><small>${i}</small><b>${c}</b><i>${p[i] === null ? "" : p[i]}</i></div>`;
+                    })
+                    .join("");
+                return `<div class="mn-wrap"><div class="mn-row">${cells}</div><p class="mq-note">baris bawah = p[i]; huruf asli di posisi ganjil, '#' di posisi genap; palindrom terpanjang sejauh ini: "${s.substr((bestI - best) / 2, best)}"</p></div>`;
+            };
+            const push = (line, text, st, mark) => frames.push({ line, text, mark, html: render(st), watch: [["i", st.i ?? "–"], ["k", st.k ?? "–"], ["[l, r]", r >= 0 ? `[${l}, ${r}]` : "–"], ["perbandingan", cmp]] });
+            push(0, `Sisipkan '#' di antara huruf: "${t}". Kini setiap palindrom, ganjil maupun genap, punya pusat di satu posisi t, dan jari-jari di t sama dengan panjangnya di s.`, {});
+            for (let i = 0; i < n; i++) {
+                let k = 0;
+                if (i <= r) {
+                    const j = l + r - i;
+                    k = Math.min(p[j], r - i);
+                    push(1, `i = ${i} ada di dalam kotak [${l}, ${r}]. Cerminnya j = ${j} punya p = ${p[j]}, dan sisa kotak r − i = ${r - i}. Mulai dengan k = min = <b>${k}</b> tanpa membandingkan apa pun.`, { i, j, k, pal: [i - k, i + k] }, k > 0 ? "key" : undefined);
+                } else push(1, `i = ${i} di luar kotak: mulai dari k = 0.`, { i, k });
+                while (i - k - 1 >= 0 && i + k + 1 < n) {
+                    cmp++;
+                    const ok = t[i - k - 1] === t[i + k + 1];
+                    push(2, `Bandingkan t[${i - k - 1}] = '${t[i - k - 1]}' dan t[${i + k + 1}] = '${t[i + k + 1]}': ${ok ? "sama, k bertambah." : "berbeda, berhenti."}`, { i, k, cmp: [i - k - 1, i + k + 1], ok, pal: [i - k, i + k] });
+                    if (!ok) break;
+                    k++;
+                }
+                p[i] = k;
+                if (k > best) (best = k), (bestI = i);
+                const grow = i + k > r;
+                if (grow) (l = i - k), (r = i + k);
+                push(grow ? 4 : 3, `p[${i}] = ${k}${k ? ` ("${s.substr((i - k) / 2, k)}")` : ""}.${grow ? ` Ujung kanannya melewati r: kotak menjadi [${l}, ${r}].` : ""}`, { i, k, pal: [i - k, i + k] }, grow ? "take" : undefined);
+            }
+            push(5, `Selesai dengan <b>${cmp}</b> perbandingan untuk t sepanjang ${n}. Setiap perbandingan yang berhasil menggeser r ke kanan, jadi totalnya O(n). Palindrom terpanjang: <b>"${s.substr((bestI - best) / 2, best)}"</b> (panjang ${best}).`, { pal: [bestI - best, bestI + best] }, "done");
+            player.load(frames);
+        }
+
+        const player = new V.Player(sh, (f) => {
+            sh.stage.innerHTML = f.html;
+            code.set(f.line);
+            watch.set(f.watch);
+        });
+        sh.head.querySelector("[data-apply]").onclick = build;
+        sIn.addEventListener("keydown", (e) => e.key === "Enter" && build());
+        build();
+    });
 })();

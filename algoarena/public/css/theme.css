@@ -1941,6 +1941,85 @@ html[data-theme="light"] .g-node.colored text.label {
     color: var(--text-strong);
 }
 
+/* ═══════════════════════════════ Visualisasi Manacher ═══════════════════════════════ */
+.mn-wrap {
+    display: grid;
+    gap: 10px;
+    padding: 22px 6px 6px;
+    overflow-x: auto;
+}
+
+.mn-row {
+    display: flex;
+    gap: 2px;
+    justify-content: safe center;
+}
+
+.mn-cell {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    place-items: center;
+    flex: none;
+    width: 27px;
+    padding: 3px 0;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    background: var(--panel);
+    font-family: var(--mono);
+}
+
+.mn-cell small {
+    font-size: 9px;
+    color: var(--faint);
+}
+
+.mn-cell b {
+    font-size: 16px;
+    color: var(--text-strong);
+}
+
+.mn-cell i {
+    min-height: 16px;
+    font-style: normal;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.mn-cell.sep b {
+    color: var(--faint);
+    font-size: 13px;
+}
+
+.mn-cell.box {
+    background: var(--cyan-soft);
+    border-color: var(--cyan);
+}
+
+.mn-cell.pal {
+    box-shadow: inset 0 -4px 0 var(--green);
+}
+
+.mn-cell.mirror {
+    border-color: #8b5cf6;
+    background: rgba(139, 92, 246, 0.22);
+}
+
+.mn-cell.cmp {
+    border-color: var(--green);
+    background: rgba(34, 197, 94, 0.3);
+}
+
+.mn-cell.bad {
+    border-color: var(--red);
+    background: rgba(239, 68, 68, 0.2);
+}
+
+.mn-cell.cur {
+    border-color: var(--amber);
+    background: rgba(245, 158, 11, 0.35);
+}
+
 /* Editor cadangan saat Monaco tidak dapat dimuat (tanpa internet) */
 .plain-editor {
     display: block;
