@@ -220,7 +220,7 @@ SH;
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi">
     <h2>Visualisasi</h2>
     <div class="prose"><p>Lajur paling atas adalah ruangan; rapat yang diambil masuk ke sana. Jalankan dengan strategi <strong>Selesai awal</strong>, lalu ganti ke <strong>Mulai awal</strong> dan <strong>Terpendek</strong> dengan data yang sama dan bandingkan hasil akhirnya. Nyalakan Mode Tebak untuk menebak setiap keputusan ambil atau lewati.</p></div>
-    <div data-viz="interval"></div>
+    <div data-viz="jadwal"></div>
 </section>
 
 <section class="lesson-section" id="bukti" data-toc="Argumen Pertukaran">

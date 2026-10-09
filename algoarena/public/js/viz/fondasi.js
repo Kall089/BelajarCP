@@ -221,7 +221,7 @@ for (int r = 0; r < n; r++) {                //@1
     });
 
     // ════════════════════════════ Greedy: jadwal rapat ════════════════════════════
-    V.register("interval", (root) => {
+    V.register("jadwal", (root) => {
         const KEYS = {
             selesai: { label: "selesai paling awal", key: (r) => r.e, tag: (r) => `selesai ${r.e}` },
             mulai: { label: "mulai paling awal", key: (r) => r.s, tag: (r) => `mulai ${r.s}` },

@@ -22,7 +22,7 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Base case, call stack, pohon rekursi, pola pilih–telusuri–batalkan, pemangkasan, dan jembatan menuju DP.'],
         ['slug' => 'binary-search', 'track' => 'fondasi', 'level' => 1, 'title' => 'Binary Search & Two Pointers', 'subtitle' => 'Membuang setengah kemungkinan setiap langkah', 'viz' => 'window', 'minutes' => 30,
             'summary' => 'lower_bound/upper_bound, binary search pada jawaban, two pointers, sliding window, dan invarian.'],
-        ['slug' => 'greedy', 'track' => 'fondasi', 'level' => 1, 'title' => 'Greedy & Argumen Pertukaran', 'subtitle' => 'Kapan pilihan terbaik sesaat itu benar', 'viz' => 'interval', 'minutes' => 30,
+        ['slug' => 'greedy', 'track' => 'fondasi', 'level' => 1, 'title' => 'Greedy & Argumen Pertukaran', 'subtitle' => 'Kapan pilihan terbaik sesaat itu benar', 'viz' => 'jadwal', 'minutes' => 30,
             'summary' => 'Memilih interval terbanyak, mengurutkan pekerjaan, argumen pertukaran, priority queue untuk Huffman dan tenggat, serta contoh saat serakah salah.'],
         // Graph
         ['slug' => 'representasi-graph', 'track' => 'graph', 'level' => 1, 'title' => 'Mengenal Graph', 'subtitle' => 'Simpul, sisi, adjacency list & matrix', 'viz' => 'graph-repr', 'minutes' => 20,
