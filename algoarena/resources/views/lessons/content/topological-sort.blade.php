@@ -186,7 +186,7 @@ CPP;
 @include('lessons.level', ['n' => 1, 'title' => 'memahami urutan topologis', 'desc' => 'Dari daftar tugas sehari-hari ke algoritma Kahn yang dijalankan dengan tangan.'])
 
 <section class="lesson-section" id="intuisi" data-toc="Intuisi: Urutan Tugas">
-    <h2><span class="sec-icon">💡</span> Intuisi: Urutan Mengerjakan Tugas</h2>
+    <h2>Intuisi: Urutan Mengerjakan Tugas</h2>
     <div class="prose">
         <p>Tim kalian membuat aplikasi. Ada aturan: kebutuhan harus dikumpulkan sebelum mendesain UI maupun merancang database; desain dan database harus jadi sebelum menulis kode; kode harus jadi sebelum diuji; dan aplikasi diuji sebelum dirilis.</p>
         <p>Setiap aturan "a sebelum b" adalah <strong>panah a → b</strong>. Mencari urutan yang mematuhi semua panah disebut <strong>topological sort</strong>. Urutan seperti itu hanya ada jika graph-nya <strong>DAG</strong> (<em>Directed Acyclic Graph</em>): berarah dan tanpa siklus.</p>
@@ -205,7 +205,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="contoh" data-toc="Coba dengan Tangan">
-    <h2><span class="sec-icon">✍️</span> Coba dengan Tangan: Algoritma Kahn</h2>
+    <h2>Coba dengan Tangan: Algoritma Kahn</h2>
     <div class="prose">
         <p>Hitung dulu <strong>indegree</strong> (banyak panah masuk) setiap simpul. Masukkan semua simpul ber-indegree 0 ke antrian. Setiap kali mengambil u, "hapus" panah-panah keluar dari u dengan mengurangi indegree tujuannya.</p>
     </div>
@@ -228,15 +228,15 @@ CPP;
 </section>
 
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi Interaktif">
-    <h2><span class="sec-icon">🎬</span> Visualisasi Interaktif</h2>
+    <h2>Visualisasi Interaktif</h2>
     <div class="prose">
-        <p>Perhatikan angka indegree yang turun setiap kali sebuah simpul diproses. Tekan <strong>🔁 Tambah siklus</strong> untuk melihat apa yang terjadi jika ada ketergantungan melingkar: algoritma berhenti sebelum semua simpul terambil.</p>
+        <p>Perhatikan angka indegree yang turun setiap kali sebuah simpul diproses. Tekan <strong>Tambah siklus</strong> untuk melihat apa yang terjadi jika ada ketergantungan melingkar: algoritma berhenti sebelum semua simpul terambil.</p>
     </div>
     <div data-viz="toposort"></div>
 </section>
 
 <section class="lesson-section" id="cara" data-toc="Cara Pengerjaan">
-    <h2><span class="sec-icon">🧭</span> Cara Pengerjaan</h2>
+    <h2>Cara Pengerjaan</h2>
     <div class="steps">
         <div class="step-card"><b>Kenali ciri soalnya</b><span>"Prasyarat", "harus sebelum", "ketergantungan", "urutan yang valid", "apakah mungkin menyelesaikan semua".</span></div>
         <div class="step-card"><b>Bangun graph berarah + indegree</b><span>Untuk aturan "a sebelum b": <code>adj[a].push_back(b)</code> dan <code>indeg[b]++</code>.</span></div>
@@ -249,7 +249,7 @@ CPP;
 @include('lessons.level', ['n' => 2, 'title' => 'menulis algoritma Kahn di C++', 'desc' => 'Program lengkap dengan indegree, antrian, dan deteksi siklus.'])
 
 <section class="lesson-section" id="kode" data-toc="Kode C++ Lengkap">
-    <h2><span class="sec-icon">💻</span> Kode C++ Lengkap</h2>
+    <h2>Kode C++ Lengkap</h2>
     <div class="prose">
         <p><strong>Soal contoh:</strong> ada <code>n</code> tugas dan <code>m</code> aturan "a sebelum b". Cetak satu urutan pengerjaan yang valid, atau <code>MUSTAHIL</code> jika aturannya melingkar.</p>
     </div>
@@ -263,19 +263,19 @@ CPP;
 </section>
 
 <section class="lesson-section" id="pola" data-toc="Pola Soal">
-    <h2><span class="sec-icon">🧠</span> Pola Soal yang Sering Muncul</h2>
+    <h2>Pola Soal yang Sering Muncul</h2>
     <div class="pattern-grid">
-        <div class="pattern"><h4>📋 Cetak urutan</h4><p>Algoritma Kahn langsung. Baca soal baik-baik: apakah urutan harus <b>terkecil</b> jika ada pilihan?</p></div>
-        <div class="pattern"><h4>🔁 Mungkinkah?</h4><p>"Bisakah semua mapel diambil?" Sama dengan "apakah tidak ada siklus?".</p></div>
+        <div class="pattern"><h4>Cetak urutan</h4><p>Algoritma Kahn langsung. Baca soal baik-baik: apakah urutan harus <b>terkecil</b> jika ada pilihan?</p></div>
+        <div class="pattern"><h4>Mungkinkah?</h4><p>"Bisakah semua mapel diambil?" Sama dengan "apakah tidak ada siklus?".</p></div>
         <div class="pattern"><h4>⏳ Waktu proyek</h4><p>Tugas berdurasi, boleh dikerjakan paralel. DP: <code>mulai[v] = max(selesai[prasyarat])</code>.</p></div>
-        <div class="pattern"><h4>🎓 Semester minimum</h4><p>Berapa "lapis" Kahn yang dibutuhkan? Sama dengan jalur terpanjang (dalam simpul).</p></div>
-        <div class="pattern"><h4>🧮 Hitung jalur</h4><p>Banyaknya jalur di DAG: <code>cnt[v] += cnt[u]</code> mengikuti urutan topologis.</p></div>
-        <div class="pattern"><h4>🔤 Urutan huruf</h4><p>"Kamus alien": bandingkan kata bertetangga untuk membangun panah antar huruf.</p></div>
+        <div class="pattern"><h4>Semester minimum</h4><p>Berapa "lapis" Kahn yang dibutuhkan? Sama dengan jalur terpanjang (dalam simpul).</p></div>
+        <div class="pattern"><h4>Hitung jalur</h4><p>Banyaknya jalur di DAG: <code>cnt[v] += cnt[u]</code> mengikuti urutan topologis.</p></div>
+        <div class="pattern"><h4>Urutan huruf</h4><p>"Kamus alien": bandingkan kata bertetangga untuk membangun panah antar huruf.</p></div>
     </div>
 </section>
 
 <section class="lesson-section" id="kompleksitas" data-toc="Kompleksitas & Jebakan">
-    <h2><span class="sec-icon">⏱️</span> Kompleksitas & Jebakan</h2>
+    <h2>Kompleksitas & Jebakan</h2>
     <table class="cx-table">
         <tr><th>Versi</th><th>Waktu</th><th>Keterangan</th></tr>
         <tr><td>Kahn (queue)</td><td><code>O(N + M)</code></td><td>Setiap simpul dan sisi diproses sekali.</td></tr>
@@ -294,7 +294,7 @@ CPP;
 @include('lessons.level', ['n' => 3, 'title' => 'topological sort untuk soal sulit', 'desc' => 'Urutan terkecil, versi DFS, dan DP di atas DAG.'])
 
 <section class="lesson-section" id="bukti" data-toc="Mengapa Kahn Benar?">
-    <h2><span class="sec-icon">🔬</span> Mengapa Kahn Benar?</h2>
+    <h2>Mengapa Kahn Benar?</h2>
     <div class="proof">
         <p><strong>Urutannya valid.</strong> Simpul v baru masuk antrian setelah indegree-nya 0, yaitu setelah <em>semua</em> simpul dengan panah ke v sudah dicatat. Jadi setiap panah a → b dipatuhi.</p>
         <p><strong>Siklus pasti terdeteksi.</strong> Pada sebuah siklus, setiap simpul punya panah masuk dari simpul lain di siklus itu. Simpul pertama siklus yang akan masuk antrian harus menunggu simpul siklus sebelumnya, yang juga menunggu, dan seterusnya. Tidak ada yang bisa mulai, jadi semuanya tertinggal.</p>
@@ -303,7 +303,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="teknik" data-toc="Teknik Lanjutan">
-    <h2><span class="sec-icon">🚀</span> Teknik Lanjutan</h2>
+    <h2>Teknik Lanjutan</h2>
     <div class="prose">
         <h3>1. Urutan leksikografis terkecil</h3>
         <p>Jika ada beberapa tugas bebas sekaligus dan soal meminta yang bernomor terkecil dikerjakan lebih dulu, ganti <code>queue</code> dengan <strong>min-heap</strong>:</p>
@@ -323,7 +323,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="kuis" data-toc="Cek Pemahaman">
-    <h2><span class="sec-icon">✅</span> Cek Pemahaman</h2>
+    <h2>Cek Pemahaman</h2>
     <div class="quiz" data-quiz data-answer="1" data-explain="Indegree 0 berarti tidak ada prasyarat yang tersisa, sehingga tugas itu boleh dikerjakan sekarang.">
         <p class="quiz-q">Simpul mana yang boleh masuk antrian Kahn?</p>
         <div class="quiz-options">

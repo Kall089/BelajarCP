@@ -303,7 +303,7 @@ CPP;
 @include('lessons.level', ['n' => 1, 'title' => 'jarak semua pasangan', 'desc' => 'Ide "perantara" Floyd-Warshall dan relaksasi berulang Bellman-Ford.'])
 
 <section class="lesson-section" id="intuisi" data-toc="Intuisi: Tabel Jarak">
-    <h2><span class="sec-icon">💡</span> Intuisi: Tabel Jarak Antar Kota</h2>
+    <h2>Intuisi: Tabel Jarak Antar Kota</h2>
     <div class="prose">
         <p>Di buku atlas sering ada <strong>tabel jarak antar kota</strong>: baris dan kolomnya nama kota, isinya jarak terpendek. Dijkstra hanya menghitung satu baris (dari satu sumber). Bagaimana mengisi <strong>seluruh tabel</strong> sekaligus?</p>
         <p>Ide Floyd-Warshall: mulai dari tabel yang hanya berisi jalan langsung. Lalu izinkan simpul 1 sebagai tempat transit, perbarui tabel. Izinkan simpul 2, perbarui lagi. Begitu seterusnya sampai semua simpul pernah menjadi perantara.</p>
@@ -321,7 +321,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="contoh" data-toc="Coba dengan Tangan">
-    <h2><span class="sec-icon">✍️</span> Coba dengan Tangan</h2>
+    <h2>Coba dengan Tangan</h2>
     <div class="prose">
         <p>Matriks awal (kiri) hanya berisi jalan langsung. Berikut semua perubahan yang terjadi saat k = 1, 2, 3, 4, sampai menghasilkan matriks akhir (kanan).</p>
     </div>
@@ -363,7 +363,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="negatif" data-toc="Bobot Negatif">
-    <h2><span class="sec-icon">➖</span> Bagaimana Jika Ada Bobot Negatif?</h2>
+    <h2>Bagaimana Jika Ada Bobot Negatif?</h2>
     <div class="prose">
         <p>Bobot negatif bisa berarti "dapat uang/bonus" saat melewati jalan itu. Dijkstra tidak bisa dipakai karena ia memfinalkan simpul terlalu cepat. <strong>Bellman-Ford</strong> mengatasinya dengan cara yang lebih sabar: relaksasi <strong>semua sisi</strong>, ulangi <strong>N − 1 kali</strong>.</p>
         <p>Bahaya terbesarnya adalah <strong>siklus negatif</strong>: siklus yang total bobotnya negatif. Berputar di sana terus mengurangi jarak tanpa akhir. Bellman-Ford bisa <strong>mendeteksinya</strong> dengan satu ronde tambahan.</p>
@@ -378,15 +378,15 @@ CPP;
 </section>
 
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi Interaktif">
-    <h2><span class="sec-icon">🎬</span> Visualisasi Interaktif</h2>
+    <h2>Visualisasi Interaktif</h2>
     <div class="prose">
-        <p>Mode <strong>Floyd-Warshall</strong>: perhatikan sel biru <code>dist[i][k]</code> dan pink <code>dist[k][j]</code> yang dijumlahkan untuk mengisi sel kuning <code>dist[i][j]</code>. Mode <strong>Bellman-Ford</strong>: lihat bagaimana jarak "merambat" satu sisi per ronde, lalu tekan <strong>🔁 Tambah siklus negatif</strong> untuk melihat deteksinya.</p>
+        <p>Mode <strong>Floyd-Warshall</strong>: perhatikan sel biru <code>dist[i][k]</code> dan pink <code>dist[k][j]</code> yang dijumlahkan untuk mengisi sel kuning <code>dist[i][j]</code>. Mode <strong>Bellman-Ford</strong>: lihat bagaimana jarak "merambat" satu sisi per ronde, lalu tekan <strong>Tambah siklus negatif</strong> untuk melihat deteksinya.</p>
     </div>
     <div data-viz="floyd"></div>
 </section>
 
 <section class="lesson-section" id="cara" data-toc="Cara Pengerjaan">
-    <h2><span class="sec-icon">🧭</span> Cara Pengerjaan</h2>
+    <h2>Cara Pengerjaan</h2>
     <div class="steps">
         <div class="step-card"><b>Cek ukuran N</b><span>N ≤ ±500 dan banyak pertanyaan jarak antar pasangan: <strong>Floyd-Warshall</strong> (O(N³)).</span></div>
         <div class="step-card"><b>Cek bobot negatif</b><span>Ada bobot negatif dan satu sumber: <strong>Bellman-Ford</strong> (O(N·M)). Diminta mendeteksi siklus negatif: juga Bellman-Ford.</span></div>
@@ -399,7 +399,7 @@ CPP;
 @include('lessons.level', ['n' => 2, 'title' => 'menulis Floyd-Warshall & Bellman-Ford di C++', 'desc' => 'Dua program lengkap, masing-masing dibahas baris demi baris.'])
 
 <section class="lesson-section" id="kode" data-toc="Kode C++: Floyd-Warshall">
-    <h2><span class="sec-icon">💻</span> Kode C++ Lengkap: Floyd-Warshall</h2>
+    <h2>Kode C++ Lengkap: Floyd-Warshall</h2>
     <div class="prose">
         <p><strong>Soal contoh:</strong> graph berarah berbobot. Cetak matriks jarak terpendek antar semua pasangan, tulis <code>INF</code> jika tidak ada jalur.</p>
     </div>
@@ -413,7 +413,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="kode-bf" data-toc="Kode C++: Bellman-Ford">
-    <h2><span class="sec-icon">💻</span> Kode C++ Lengkap: Bellman-Ford</h2>
+    <h2>Kode C++ Lengkap: Bellman-Ford</h2>
     <div class="prose">
         <p><strong>Soal contoh:</strong> graph berarah, bobot boleh negatif. Cetak jarak dari simpul 1 ke semua simpul, atau <code>SIKLUS NEGATIF</code> jika ada siklus negatif yang terjangkau dari simpul 1.</p>
     </div>
@@ -427,7 +427,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="pilih" data-toc="Memilih Algoritma">
-    <h2><span class="sec-icon">🧠</span> Memilih Algoritma Jalur Terpendek</h2>
+    <h2>Memilih Algoritma Jalur Terpendek</h2>
     <table class="cx-table" style="max-width: 860px">
         <tr><th>Situasi</th><th>Algoritma</th><th>Waktu</th></tr>
         <tr><td>Semua bobot sama (atau tak berbobot)</td><td>BFS</td><td><code>O(N + M)</code></td></tr>
@@ -449,7 +449,7 @@ CPP;
 @include('lessons.level', ['n' => 3, 'title' => 'memahami lebih dalam', 'desc' => 'Bukti DP Floyd, alasan N − 1 ronde, rekonstruksi rute, dan transitive closure.'])
 
 <section class="lesson-section" id="bukti" data-toc="Mengapa Benar?">
-    <h2><span class="sec-icon">🔬</span> Mengapa Keduanya Benar?</h2>
+    <h2>Mengapa Keduanya Benar?</h2>
     <div class="proof">
         <p><strong>Floyd-Warshall sebagai DP.</strong> Definisikan <code>D<sub>k</sub>[i][j]</code> = jarak terpendek dari i ke j yang <em>hanya</em> boleh transit di simpul 1..k. Jalur terbaik itu entah tidak melewati k (nilainya <code>D<sub>k−1</sub>[i][j]</code>), entah melewati k tepat sekali (nilainya <code>D<sub>k−1</sub>[i][k] + D<sub>k−1</sub>[k][j]</code>). Ambil minimumnya. <code>D<sub>N</sub></code> adalah jawabannya.</p>
         <p><strong>Mengapa satu matriks cukup?</strong> Selama putaran k, nilai <code>dist[i][k]</code> dan <code>dist[k][j]</code> tidak berubah (lewat k untuk menuju k sendiri tidak membantu, karena <code>dist[k][k] = 0</code>). Jadi memperbarui di tempat aman.</p>
@@ -458,7 +458,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="teknik" data-toc="Teknik Lanjutan">
-    <h2><span class="sec-icon">🚀</span> Teknik Lanjutan</h2>
+    <h2>Teknik Lanjutan</h2>
     <div class="prose">
         <h3>1. Rekonstruksi rute pada Floyd</h3>
         <p>Simpan <code>nxt[i][j]</code> = simpul pertama yang dikunjungi setelah i pada rute terpendek i → j. Saat relaksasi lewat k, langkah pertama menuju j sama dengan langkah pertama menuju k.</p>
@@ -478,7 +478,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="kuis" data-toc="Cek Pemahaman">
-    <h2><span class="sec-icon">✅</span> Cek Pemahaman</h2>
+    <h2>Cek Pemahaman</h2>
     <div class="quiz" data-quiz data-answer="0" data-explain="Loop k harus di paling luar. Arti putaran k: semua jalur yang hanya transit di 1..k sudah dihitung lengkap sebelum k + 1 diizinkan.">
         <p class="quiz-q">Urutan tiga loop Floyd-Warshall yang benar adalah…</p>
         <div class="quiz-options">

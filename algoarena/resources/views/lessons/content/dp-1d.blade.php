@@ -180,7 +180,7 @@ CPP;
 @include('lessons.level', ['n' => 1, 'title' => 'DP pada satu baris angka', 'desc' => 'Dua soal klasik: menghitung cara naik tangga dan kembalian dengan koin paling sedikit.'])
 
 <section class="lesson-section" id="intuisi" data-toc="Intuisi: Kembalian Koin">
-    <h2><span class="sec-icon">💡</span> Intuisi: Kembalian dengan Koin Aneh</h2>
+    <h2>Intuisi: Kembalian dengan Koin Aneh</h2>
     <div class="prose">
         <p>Sebuah kantin hanya punya koin bernilai <strong>1, 3, dan 4</strong>. Kasir ingin memberi kembalian <strong>6</strong> dengan koin sesedikit mungkin.</p>
         <p>Cara "serakah": ambil koin terbesar dulu. 4, sisa 2, lalu 1 + 1. Total <strong>3 koin</strong>. Padahal <strong>3 + 3 = 6</strong> hanya butuh <strong>2 koin</strong>! Serakah tidak selalu benar, jadi kita perlu memeriksa semua kemungkinan secara cerdas: DP.</p>
@@ -211,7 +211,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="contoh" data-toc="Coba dengan Tangan">
-    <h2><span class="sec-icon">✍️</span> Coba dengan Tangan</h2>
+    <h2>Coba dengan Tangan</h2>
     <div class="prose"><p>Isi <code>dp[v]</code> untuk koin {1, 3, 4} dari v = 1 sampai 6. Setiap baris mencoba ketiga koin sebagai koin terakhir.</p></div>
     <div class="trace-wrap">
         <table class="trace-table">
@@ -227,7 +227,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi Interaktif">
-    <h2><span class="sec-icon">🎬</span> Visualisasi Interaktif</h2>
+    <h2>Visualisasi Interaktif</h2>
     <div class="prose">
         <p>Mode <strong>Banyak cara</strong> mengisi tabel tangga, mode <strong>Koin minimum</strong> mengisi tabel kembalian. Ubah daftar langkah/koin dan target, lalu tekan <strong>Terapkan</strong>. Panah menunjukkan sel-sel yang dipakai untuk menghitung sel kuning. Di akhir mode koin, jejak hijau menunjukkan koin yang dipakai.</p>
     </div>
@@ -235,7 +235,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="cara" data-toc="Cara Pengerjaan">
-    <h2><span class="sec-icon">🧭</span> Cara Pengerjaan</h2>
+    <h2>Cara Pengerjaan</h2>
     <div class="steps">
         <div class="step-card"><b>State</b><span><code>dp[v]</code> = jawaban untuk "ukuran" v (nominal, anak tangga, posisi ke-v).</span></div>
         <div class="step-card"><b>Transisi dari langkah terakhir</b><span>Daftar semua pilihan langkah terakhir; jumlahkan (hitung cara) atau ambil min/max (optimasi).</span></div>
@@ -247,7 +247,7 @@ CPP;
 @include('lessons.level', ['n' => 2, 'title' => 'menulis DP 1D di C++', 'desc' => 'Koin minimum lengkap dengan rekonstruksi, lalu pola-pola soal 1D.'])
 
 <section class="lesson-section" id="kode" data-toc="Kode C++ Lengkap">
-    <h2><span class="sec-icon">💻</span> Kode C++ Lengkap: Kembalian Minimum</h2>
+    <h2>Kode C++ Lengkap: Kembalian Minimum</h2>
     <div class="prose">
         <p><strong>Soal contoh:</strong> ada k jenis koin (masing-masing tak terbatas) dan target X. Cetak banyak koin minimum dan koin-koin yang dipakai, atau <code>-1</code> jika mustahil.</p>
     </div>
@@ -261,14 +261,14 @@ CPP;
 </section>
 
 <section class="lesson-section" id="pola" data-toc="Pola Soal DP 1D">
-    <h2><span class="sec-icon">🧠</span> Pola Soal DP 1 Dimensi</h2>
+    <h2>Pola Soal DP 1 Dimensi</h2>
     <div class="pattern-grid">
-        <div class="pattern"><h4>🐸 Lompatan</h4><p>Dari posisi i−1 atau i−2 (atau sampai i−K), dengan biaya. <code>dp[i] = min(dp[j] + biaya(j, i))</code>.</p></div>
-        <div class="pattern"><h4>🪙 Koin</h4><p>Minimum koin, banyak cara membentuk nominal, atau "bisakah dibentuk?".</p></div>
-        <div class="pattern"><h4>🥭 Ambil atau lewati</h4><p>"Tidak boleh dua yang bersebelahan": <code>dp[i] = max(dp[i−1], dp[i−2] + a[i])</code>.</p></div>
-        <div class="pattern"><h4>📈 Subarray terbaik</h4><p>Jumlah bagian berurutan terbesar: algoritma Kadane.</p></div>
-        <div class="pattern"><h4>🔤 Memecah string</h4><p>"Berapa cara membaca kode 1226 sebagai huruf?" Langkah terakhir: 1 atau 2 digit.</p></div>
-        <div class="pattern"><h4>🚫 Ada larangan</h4><p>Anak tangga rusak, petak terlarang: paksa <code>dp[i] = 0</code> (cara) atau INF (minimum).</p></div>
+        <div class="pattern"><h4>Lompatan</h4><p>Dari posisi i−1 atau i−2 (atau sampai i−K), dengan biaya. <code>dp[i] = min(dp[j] + biaya(j, i))</code>.</p></div>
+        <div class="pattern"><h4>Koin</h4><p>Minimum koin, banyak cara membentuk nominal, atau "bisakah dibentuk?".</p></div>
+        <div class="pattern"><h4>Ambil atau lewati</h4><p>"Tidak boleh dua yang bersebelahan": <code>dp[i] = max(dp[i−1], dp[i−2] + a[i])</code>.</p></div>
+        <div class="pattern"><h4>Subarray terbaik</h4><p>Jumlah bagian berurutan terbesar: algoritma Kadane.</p></div>
+        <div class="pattern"><h4>Memecah string</h4><p>"Berapa cara membaca kode 1226 sebagai huruf?" Langkah terakhir: 1 atau 2 digit.</p></div>
+        <div class="pattern"><h4>Ada larangan</h4><p>Anak tangga rusak, petak terlarang: paksa <code>dp[i] = 0</code> (cara) atau INF (minimum).</p></div>
     </div>
     <div class="prose">
         <h3>Kombinasi atau permutasi? Urutan loop menentukan!</h3>
@@ -282,7 +282,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="kompleksitas" data-toc="Kompleksitas & Jebakan">
-    <h2><span class="sec-icon">⏱️</span> Kompleksitas & Jebakan</h2>
+    <h2>Kompleksitas & Jebakan</h2>
     <table class="cx-table">
         <tr><th>Soal</th><th>Waktu</th><th>Memori</th></tr>
         <tr><td>Koin (k jenis, target X)</td><td><code>O(k · X)</code></td><td><code>O(X)</code></td></tr>
@@ -302,7 +302,7 @@ CPP;
 @include('lessons.level', ['n' => 3, 'title' => 'pola 1D tingkat lanjut', 'desc' => 'Bukti transisi, "ambil atau lewati", dan algoritma Kadane.'])
 
 <section class="lesson-section" id="bukti" data-toc="Mengapa Transisinya Benar?">
-    <h2><span class="sec-icon">🔬</span> Mengapa Transisinya Benar?</h2>
+    <h2>Mengapa Transisinya Benar?</h2>
     <div class="proof">
         <p><strong>Optimal substructure.</strong> Ambil solusi optimal untuk nominal v dan misalkan koin terakhirnya c. Koin-koin sisanya membentuk v − c. Jika ada cara membentuk v − c dengan koin <em>lebih sedikit</em>, kita bisa menggantinya dan mendapat solusi v yang lebih baik, padahal solusi awal sudah optimal. Kontradiksi. Jadi sisanya pasti juga optimal: <code>dp[v] = dp[v − c] + 1</code> untuk c yang tepat.</p>
         <p>Karena kita tidak tahu c mana yang tepat, kita coba <strong>semuanya</strong> dan ambil minimum. Tidak ada kemungkinan yang terlewat.</p>
@@ -310,7 +310,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="teknik" data-toc="Teknik Lanjutan">
-    <h2><span class="sec-icon">🚀</span> Teknik Lanjutan</h2>
+    <h2>Teknik Lanjutan</h2>
     <div class="prose">
         <h3>1. Ambil atau lewati</h3>
         <p>Soal: deretan pohon mangga dengan banyak buah <code>a[i]</code>. Kamu tidak boleh memanen dua pohon yang bersebelahan. Berapa buah terbanyak? Setiap pohon i hanya punya dua pilihan:</p>
@@ -328,7 +328,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="kuis" data-toc="Cek Pemahaman">
-    <h2><span class="sec-icon">✅</span> Cek Pemahaman</h2>
+    <h2>Cek Pemahaman</h2>
     <div class="quiz" data-quiz data-answer="2" data-explain="Serakah: 4 + 1 + 1 = 3 koin. Optimal: 3 + 3 = 2 koin.">
         <p class="quiz-q">Koin {1, 3, 4}, kembalian 6. Berapa koin minimum?</p>
         <div class="quiz-options">

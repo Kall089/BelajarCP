@@ -12,12 +12,12 @@
 
     <main class="container">
         @if (session('welcome'))
-            <div class="flash">🎉 Akun <strong>{{ auth()->user()->username }}</strong> berhasil dibuat. Mulai dari materi pertama, ya!</div>
+            <div class="flash">Akun <strong>{{ auth()->user()->username }}</strong> berhasil dibuat. Mulai dari materi pertama, ya!</div>
         @endif
 
         <section class="hero">
             <div>
-                <p class="eyebrow">Halo, {{ auth()->user()->username }} 👋</p>
+                <p class="eyebrow">Halo, {{ auth()->user()->username }}</p>
                 <h1>Pahami algoritmanya,<br><span class="grad-text">lalu taklukkan soalnya.</span></h1>
                 <p class="lead">
                     Setiap materi dimulai dengan teori dan <strong>visualisasi interaktif</strong> yang bisa kamu putar langkah demi langkah.

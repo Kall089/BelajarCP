@@ -282,7 +282,7 @@ CPP;
 @include('lessons.level', ['n' => 1, 'title' => 'memahami cara kerja Dijkstra', 'desc' => 'Mengapa BFS tidak cukup, ide serakah Dijkstra, dan jejaknya dengan tangan.'])
 
 <section class="lesson-section" id="intuisi" data-toc="Mengapa BFS Tidak Cukup?">
-    <h2><span class="sec-icon">💡</span> Mengapa BFS Tidak Cukup?</h2>
+    <h2>Mengapa BFS Tidak Cukup?</h2>
     <div class="prose">
         <p>BFS menghitung jarak dalam <strong>jumlah sisi</strong>. Tapi di dunia nyata, setiap jalan punya panjang berbeda. Rute dengan sedikit belokan belum tentu paling cepat!</p>
         <p>Pada gambar di bawah, dari kota 1 ke kota 2 ada jalan langsung sepanjang 4. Namun lewat kota 3 hanya 2 + 1 = 3. BFS akan memilih jalan langsung (1 sisi), padahal lebih jauh.</p>
@@ -302,7 +302,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="relaksasi" data-toc="Relaksasi">
-    <h2><span class="sec-icon">🪢</span> Konsep Kunci: Relaksasi</h2>
+    <h2>Konsep Kunci: Relaksasi</h2>
     <div class="prose">
         <p>Bayangkan <code>dist[v]</code> sebagai "rekor jarak terbaik ke v sejauh ini". Saat kita memproses kota u, kita cek setiap jalan u → v berbobot w:</p>
         <pre class="snippet"><code class="language-cpp">if (dist[u] + w < dist[v]) {   // lewat u lebih cepat?
@@ -313,7 +313,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="contoh" data-toc="Coba dengan Tangan">
-    <h2><span class="sec-icon">✍️</span> Coba dengan Tangan</h2>
+    <h2>Coba dengan Tangan</h2>
     <div class="prose">
         <p>Jalankan Dijkstra dari kota 1 pada graph di atas. PQ ditulis sebagai pasangan <code>(jarak, simpul)</code>, terurut dari yang terkecil.</p>
     </div>
@@ -339,7 +339,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi Interaktif">
-    <h2><span class="sec-icon">🎬</span> Visualisasi Interaktif</h2>
+    <h2>Visualisasi Interaktif</h2>
     <div class="prose">
         <p>Perhatikan panel <strong>priority queue</strong>: elemen terkecil selalu keluar lebih dulu. Simpul ungu tua artinya jaraknya sudah final. Dengan <strong>Mode Tebak</strong>, tebak simpul yang keluar berikutnya dan hasil relaksasinya.</p>
     </div>
@@ -347,7 +347,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="cara" data-toc="Cara Pengerjaan">
-    <h2><span class="sec-icon">🧭</span> Cara Pengerjaan</h2>
+    <h2>Cara Pengerjaan</h2>
     <div class="steps">
         <div class="step-card"><b>Kenali ciri soal Dijkstra</b><span>"Biaya/waktu/jarak minimum" dengan bobot <strong>berbeda-beda</strong> dan <strong>tidak negatif</strong>.</span></div>
         <div class="step-card"><b>Bangun adjacency list berbobot</b><span>Simpan <code>{tetangga, bobot}</code>. Perhatikan berarah atau tidak.</span></div>
@@ -360,7 +360,7 @@ CPP;
 @include('lessons.level', ['n' => 2, 'title' => 'menulis Dijkstra di C++', 'desc' => 'Program lengkap dengan priority queue, data usang, dan rekonstruksi rute.'])
 
 <section class="lesson-section" id="kode" data-toc="Kode C++ Lengkap">
-    <h2><span class="sec-icon">💻</span> Kode C++ Lengkap: Rute Termurah</h2>
+    <h2>Kode C++ Lengkap: Rute Termurah</h2>
     <div class="prose">
         <p><strong>Soal contoh:</strong> graph tak berarah berbobot. Cetak total bobot rute termurah dari <code>s</code> ke <code>t</code> beserta rutenya, atau <code>-1</code> jika tidak ada.</p>
     </div>
@@ -374,19 +374,19 @@ CPP;
 </section>
 
 <section class="lesson-section" id="pola" data-toc="Pola Soal Dijkstra">
-    <h2><span class="sec-icon">🧠</span> Pola Soal yang Sering Muncul</h2>
+    <h2>Pola Soal yang Sering Muncul</h2>
     <div class="pattern-grid">
-        <div class="pattern"><h4>🚚 Satu sumber</h4><p>"Biaya termurah dari gudang ke setiap kota". Dijkstra biasa, cetak semua <code>dist</code>.</p></div>
-        <div class="pattern"><h4>🏁 Ke satu tujuan</h4><p>Boleh berhenti lebih awal begitu t keluar dari PQ (jaraknya sudah final).</p></div>
-        <div class="pattern"><h4>🔄 Arah dibalik</h4><p>"Jarak semua kota <b>ke</b> t" pada graph berarah: balik semua sisi, lalu Dijkstra dari t.</p></div>
-        <div class="pattern"><h4>🎟️ Keadaan tambahan</h4><p>Kupon, bensin, atau jumlah transit: simpul menjadi pasangan <code>(kota, keadaan)</code>.</p></div>
-        <div class="pattern"><h4>🧮 Hitung rute</h4><p>Banyak rute terpendek: tambahkan array <code>cnt</code> saat relaksasi.</p></div>
-        <div class="pattern"><h4>🏥 Banyak sumber</h4><p>Semua sumber masuk PQ dengan jarak 0, seperti multi-source BFS.</p></div>
+        <div class="pattern"><h4>Satu sumber</h4><p>"Biaya termurah dari gudang ke setiap kota". Dijkstra biasa, cetak semua <code>dist</code>.</p></div>
+        <div class="pattern"><h4>Ke satu tujuan</h4><p>Boleh berhenti lebih awal begitu t keluar dari PQ (jaraknya sudah final).</p></div>
+        <div class="pattern"><h4>Arah dibalik</h4><p>"Jarak semua kota <b>ke</b> t" pada graph berarah: balik semua sisi, lalu Dijkstra dari t.</p></div>
+        <div class="pattern"><h4>Keadaan tambahan</h4><p>Kupon, bensin, atau jumlah transit: simpul menjadi pasangan <code>(kota, keadaan)</code>.</p></div>
+        <div class="pattern"><h4>Hitung rute</h4><p>Banyak rute terpendek: tambahkan array <code>cnt</code> saat relaksasi.</p></div>
+        <div class="pattern"><h4>Banyak sumber</h4><p>Semua sumber masuk PQ dengan jarak 0, seperti multi-source BFS.</p></div>
     </div>
 </section>
 
 <section class="lesson-section" id="kompleksitas" data-toc="Kompleksitas & Jebakan">
-    <h2><span class="sec-icon">⏱️</span> Kompleksitas & Jebakan</h2>
+    <h2>Kompleksitas & Jebakan</h2>
     <table class="cx-table">
         <tr><th>Versi</th><th>Waktu</th><th>Cocok untuk</th></tr>
         <tr><td>Priority queue (min-heap)</td><td><code>O((N + M) log M)</code></td><td>Hampir semua soal</td></tr>
@@ -409,7 +409,7 @@ CPP;
 @include('lessons.level', ['n' => 3, 'title' => 'Dijkstra untuk soal sulit', 'desc' => 'Bukti keserakahan, kegagalan pada bobot negatif, keadaan tambahan, dan menghitung rute.'])
 
 <section class="lesson-section" id="bukti" data-toc="Mengapa Dijkstra Benar?">
-    <h2><span class="sec-icon">🔬</span> Mengapa Dijkstra Benar?</h2>
+    <h2>Mengapa Dijkstra Benar?</h2>
     <div class="proof">
         <p><strong>Klaim.</strong> Ketika simpul u keluar dari PQ (dan datanya tidak usang), <code>dist[u]</code> sudah merupakan jarak terpendek yang sebenarnya.</p>
         <p><strong>Bukti singkat.</strong> Misalkan ada rute lain ke u yang lebih pendek. Rute itu pasti keluar dari "wilayah final" melalui suatu simpul x yang belum final. Karena x belum keluar dari PQ, <code>dist[x] ≥ dist[u]</code>. Sisa perjalanan dari x ke u berbobot <strong>≥ 0</strong>, jadi total rute itu ≥ <code>dist[u]</code>. Kontradiksi.</p>
@@ -424,7 +424,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="teknik" data-toc="Teknik Lanjutan">
-    <h2><span class="sec-icon">🚀</span> Teknik Lanjutan</h2>
+    <h2>Teknik Lanjutan</h2>
     <div class="prose">
         <h3>1. Dijkstra dengan keadaan tambahan</h3>
         <p>Soal: "Kamu punya satu kupon untuk menggratiskan satu ruas jalan. Berapa biaya termurah?" Cukup tahu kota saja tidak cukup: kita juga perlu tahu kupon sudah dipakai atau belum. Jadikan <strong>pasangan (kota, kupon)</strong> sebagai simpul baru. Graph-nya jadi dua lapis, dan Dijkstra berjalan seperti biasa di atasnya.</p>
@@ -443,7 +443,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="kuis" data-toc="Cek Pemahaman">
-    <h2><span class="sec-icon">✅</span> Cek Pemahaman</h2>
+    <h2>Cek Pemahaman</h2>
     <div class="quiz" data-quiz data-answer="1" data-explain="Secara bawaan priority_queue adalah max-heap. greater<> membaliknya menjadi min-heap sehingga jarak terkecil keluar lebih dulu.">
         <p class="quiz-q">Mengapa <code>priority_queue</code> di Dijkstra diberi <code>greater&lt;…&gt;</code>?</p>
         <div class="quiz-options">

@@ -270,7 +270,7 @@ CPP;
 @include('lessons.level', ['n' => 1, 'title' => 'leluhur bersama di pohon', 'desc' => 'Dari silsilah keluarga ke ide lompatan berpangkat dua.'])
 
 <section class="lesson-section" id="intuisi" data-toc="Intuisi: Silsilah Keluarga">
-    <h2><span class="sec-icon">💡</span> Intuisi: Silsilah Keluarga</h2>
+    <h2>Intuisi: Silsilah Keluarga</h2>
     <div class="prose">
         <p>Bayangkan pohon silsilah. Kamu dan sepupumu punya banyak leluhur yang sama: kakek, buyut, dan seterusnya. Leluhur bersama yang <strong>paling dekat</strong> (paling dalam di pohon) disebut <strong>Lowest Common Ancestor</strong> (LCA). Untuk dua sepupu, LCA-nya adalah kakek mereka.</p>
         <ul>
@@ -293,7 +293,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="naif" data-toc="Cara Naif & Masalahnya">
-    <h2><span class="sec-icon">🐢</span> Cara Naif dan Masalahnya</h2>
+    <h2>Cara Naif dan Masalahnya</h2>
     <div class="prose">
         <p>Cara paling sederhana mencari LCA(u, v):</p>
         <ol>
@@ -306,7 +306,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="contoh" data-toc="Coba dengan Tangan">
-    <h2><span class="sec-icon">✍️</span> Coba dengan Tangan: LCA(7, 10)</h2>
+    <h2>Coba dengan Tangan: LCA(7, 10)</h2>
     <div class="prose">
         <p>Tabel lompatan untuk pohon di atas (sebagian). Baris <code>2^j</code> berisi leluhur 2<sup>j</sup> langkah di atas setiap simpul.</p>
     </div>
@@ -334,7 +334,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi Interaktif">
-    <h2><span class="sec-icon">🎬</span> Visualisasi Interaktif</h2>
+    <h2>Visualisasi Interaktif</h2>
     <div class="prose">
         <p>Pilih simpul <strong>u</strong> dan <strong>v</strong> di atas visualisasi. Animasi mengisi tabel lompatan dulu, lalu menjawab LCA(u, v) langkah demi langkah. Di <strong>Mode Tebak</strong>, kamu mengisi sel tabel, mengklik simpul tujuan lompatan, dan memutuskan kapan harus melompat.</p>
     </div>
@@ -342,7 +342,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="cara" data-toc="Cara Pengerjaan">
-    <h2><span class="sec-icon">🧭</span> Cara Pengerjaan</h2>
+    <h2>Cara Pengerjaan</h2>
     <div class="steps">
         <div class="step-card"><b>Kenali ciri soal LCA</b><span>Data berbentuk <strong>pohon</strong> (N − 1 sisi, terhubung) dan banyak pertanyaan tentang dua simpul: jarak, leluhur bersama, rute.</span></div>
         <div class="step-card"><b>BFS dari akar</b><span>Isi <code>depth[v]</code> dan <code>up[0][v]</code> (parent). Parent akar = akar itu sendiri.</span></div>
@@ -355,7 +355,7 @@ CPP;
 @include('lessons.level', ['n' => 2, 'title' => 'menulis binary lifting di C++', 'desc' => 'Program lengkap: BFS, tabel lompatan, fungsi lca, dan jarak di pohon.'])
 
 <section class="lesson-section" id="kode" data-toc="Kode C++ Lengkap">
-    <h2><span class="sec-icon">💻</span> Kode C++ Lengkap</h2>
+    <h2>Kode C++ Lengkap</h2>
     <div class="prose">
         <p><strong>Soal contoh:</strong> diberikan pohon dengan N simpul (akar 1) dan T pertanyaan <code>u v</code>. Untuk setiap pertanyaan, cetak LCA(u, v) dan jarak antara u dan v.</p>
     </div>
@@ -369,19 +369,19 @@ CPP;
 </section>
 
 <section class="lesson-section" id="pola" data-toc="Pola Soal">
-    <h2><span class="sec-icon">🧠</span> Pola Soal yang Sering Muncul</h2>
+    <h2>Pola Soal yang Sering Muncul</h2>
     <div class="pattern-grid">
-        <div class="pattern"><h4>👪 Leluhur bersama</h4><p>Silsilah, struktur organisasi, folder komputer. LCA langsung.</p></div>
-        <div class="pattern"><h4>📏 Jarak di pohon</h4><p><code>depth[u] + depth[v] − 2·depth[lca]</code>. Versi berbobot: pakai jarak dari akar.</p></div>
+        <div class="pattern"><h4>Leluhur bersama</h4><p>Silsilah, struktur organisasi, folder komputer. LCA langsung.</p></div>
+        <div class="pattern"><h4>Jarak di pohon</h4><p><code>depth[u] + depth[v] − 2·depth[lca]</code>. Versi berbobot: pakai jarak dari akar.</p></div>
         <div class="pattern"><h4>⬆️ Leluhur ke-k</h4><p>"Siapa atasan 5 tingkat di atas karyawan X?" Lompat sesuai bit k.</p></div>
-        <div class="pattern"><h4>🔗 Apakah leluhur?</h4><p>u leluhur v jika <code>lca(u, v) == u</code>.</p></div>
-        <div class="pattern"><h4>📈 Maksimum di rute</h4><p>Simpan juga nilai terbesar di setiap lompatan (<code>mx[j][v]</code>).</p></div>
-        <div class="pattern"><h4>🧭 Simpul tengah rute</h4><p>Gabungkan jarak dan leluhur ke-k untuk menemukan simpul di tengah jalan u → v.</p></div>
+        <div class="pattern"><h4>Apakah leluhur?</h4><p>u leluhur v jika <code>lca(u, v) == u</code>.</p></div>
+        <div class="pattern"><h4>Maksimum di rute</h4><p>Simpan juga nilai terbesar di setiap lompatan (<code>mx[j][v]</code>).</p></div>
+        <div class="pattern"><h4>Simpul tengah rute</h4><p>Gabungkan jarak dan leluhur ke-k untuk menemukan simpul di tengah jalan u → v.</p></div>
     </div>
 </section>
 
 <section class="lesson-section" id="kompleksitas" data-toc="Kompleksitas & Jebakan">
-    <h2><span class="sec-icon">⏱️</span> Kompleksitas & Jebakan</h2>
+    <h2>Kompleksitas & Jebakan</h2>
     <table class="cx-table">
         <tr><th>Bagian</th><th>Waktu</th><th>Memori</th></tr>
         <tr><td>Persiapan (BFS + tabel)</td><td><code>O(N log N)</code></td><td><code>O(N log N)</code></td></tr>
@@ -400,7 +400,7 @@ CPP;
 @include('lessons.level', ['n' => 3, 'title' => 'binary lifting lebih jauh', 'desc' => 'Mengapa lompatan serakah benar, leluhur ke-k, pohon berbobot, dan maksimum di rute.'])
 
 <section class="lesson-section" id="bukti" data-toc="Mengapa Benar?">
-    <h2><span class="sec-icon">🔬</span> Mengapa Lompatan Serakah Itu Benar?</h2>
+    <h2>Mengapa Lompatan Serakah Itu Benar?</h2>
     <div class="proof">
         <p><strong>Pengamatan.</strong> Setelah kedalaman disamakan, misalkan LCA berada <code>t</code> langkah di atas u (dan v). Untuk lompatan sejauh <code>s</code>: jika <code>s &lt; t</code>, u dan v mendarat di simpul <strong>berbeda</strong>; jika <code>s ≥ t</code>, keduanya mendarat di simpul yang <strong>sama</strong>.</p>
         <p><strong>Akibatnya.</strong> Kita ingin naik tepat <code>t − 1</code> langkah (satu di bawah LCA). Mencoba lompatan 2<sup>LOG−1</sup>, …, 2<sup>1</sup>, 2<sup>0</sup> dan hanya melompat jika hasilnya berbeda sama persis dengan menyusun bilangan <code>t − 1</code> dalam biner dari bit tertinggi. Setiap bit diputuskan sekali, jadi paling banyak LOG lompatan.</p>
@@ -408,7 +408,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="teknik" data-toc="Teknik Lanjutan">
-    <h2><span class="sec-icon">🚀</span> Teknik Lanjutan</h2>
+    <h2>Teknik Lanjutan</h2>
     <div class="prose">
         <h3>1. Leluhur ke-k</h3>
         <p>Tabel yang sama langsung menjawab "siapa leluhur v yang k langkah di atasnya?".</p>
@@ -427,7 +427,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="kuis" data-toc="Cek Pemahaman">
-    <h2><span class="sec-icon">✅</span> Cek Pemahaman</h2>
+    <h2>Cek Pemahaman</h2>
     <div class="quiz" data-quiz data-answer="1" data-explain="Lompat 2^j langkah sama dengan lompat 2^(j−1) langkah dua kali, jadi up[j][v] = up[j−1][up[j−1][v]].">
         <p class="quiz-q">Rumus mengisi tabel lompatan yang benar adalah…</p>
         <div class="quiz-options">

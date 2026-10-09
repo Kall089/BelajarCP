@@ -184,7 +184,7 @@ CPP;
 @include('lessons.level', ['n' => 1, 'title' => 'apa itu Dynamic Programming?', 'desc' => 'Dari rekursi yang boros ke "ingat jawaban yang sudah pernah dihitung".'])
 
 <section class="lesson-section" id="intuisi" data-toc="Intuisi: Jangan Hitung Ulang">
-    <h2><span class="sec-icon">💡</span> Intuisi: Jangan Menghitung Ulang</h2>
+    <h2>Intuisi: Jangan Menghitung Ulang</h2>
     <div class="prose">
         <p>Tulis <code>1 + 1 + 1 + 1 + 1 + 1 + 1 + 1</code> di papan. "Berapa hasilnya?" Kamu menghitung: <strong>8</strong>. Lalu tambahkan <code>+ 1</code> di ujungnya. "Sekarang berapa?" Kamu langsung menjawab <strong>9</strong> tanpa menghitung ulang, karena kamu <strong>ingat</strong> hasil sebelumnya adalah 8.</p>
         <p>Itulah inti <strong>Dynamic Programming</strong> (DP): pecah masalah besar menjadi subsoal yang lebih kecil, selesaikan setiap subsoal <strong>sekali saja</strong>, lalu simpan jawabannya agar bisa dipakai ulang.</p>
@@ -208,17 +208,17 @@ CPP;
 </section>
 
 <section class="lesson-section" id="dua-cara" data-toc="Memoization vs Tabulasi">
-    <h2><span class="sec-icon">🔀</span> Dua Cara: Memoization & Tabulasi</h2>
+    <h2>Dua Cara: Memoization & Tabulasi</h2>
     <div class="diagram-grid" style="max-width: 860px; margin-bottom: 14px">
         <div>
-            <h5>🧠 Memoization (top-down)</h5>
+            <h5>Memoization (top-down)</h5>
             <div class="prose" style="font-size: 14px">
                 <p>Tetap menulis rekursi, tetapi sebelum menghitung, <strong>cek catatan</strong> dulu. Jika sudah ada, pakai. Jika belum, hitung lalu catat.</p>
                 <p>Mulai dari pertanyaan besar, turun ke subsoal yang benar-benar dibutuhkan.</p>
             </div>
         </div>
         <div>
-            <h5>📋 Tabulasi (bottom-up)</h5>
+            <h5>Tabulasi (bottom-up)</h5>
             <div class="prose" style="font-size: 14px">
                 <p>Tanpa rekursi. Siapkan <strong>tabel</strong>, isi dari subsoal terkecil (base case) naik ke yang besar, sesuai urutan yang menjamin bahan selalu siap.</p>
                 <div class="dp-mini" style="grid-template-columns: repeat(7, auto)">
@@ -231,7 +231,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi Interaktif">
-    <h2><span class="sec-icon">🎬</span> Visualisasi Interaktif</h2>
+    <h2>Visualisasi Interaktif</h2>
     <div class="prose">
         <p>Bandingkan ketiga mode. Pada <strong>Rekursi biasa</strong>, perhatikan simpul merah yang dihitung ulang. Pada <strong>Memoization</strong>, simpul biru diambil langsung dari catatan. Pada <strong>Tabulasi</strong>, tabel diisi dari kiri ke kanan. Grafik di panel samping menunjukkan betapa cepat jumlah panggilan rekursi biasa membengkak.</p>
     </div>
@@ -239,7 +239,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="resep" data-toc="Resep 4 Langkah DP">
-    <h2><span class="sec-icon">🧭</span> Resep 4 Langkah Merancang DP</h2>
+    <h2>Resep 4 Langkah Merancang DP</h2>
     <div class="steps">
         <div class="step-card"><b>1. Definisikan state</b><span>Tulis dalam kalimat: "<code>dp[i]</code> = banyaknya cara / nilai terbaik untuk …". Ini langkah terpenting. State yang jelas membuat sisanya mudah.</span></div>
         <div class="step-card"><b>2. Cari transisi</b><span>Pikirkan <strong>langkah terakhir</strong>: dari subsoal mana saja kita bisa tiba di state ini? Contoh tangga: langkah terakhir 1, 2, atau 3 anak tangga, jadi <code>dp[i] = dp[i−1] + dp[i−2] + dp[i−3]</code>.</span></div>
@@ -255,7 +255,7 @@ CPP;
 @include('lessons.level', ['n' => 2, 'title' => 'menulis DP di C++', 'desc' => 'Satu program, dua cara: memoization dan tabulasi, dibahas baris demi baris.'])
 
 <section class="lesson-section" id="kode" data-toc="Kode C++ Lengkap">
-    <h2><span class="sec-icon">💻</span> Kode C++ Lengkap: Naik Tangga 1, 2, atau 3</h2>
+    <h2>Kode C++ Lengkap: Naik Tangga 1, 2, atau 3</h2>
     <div class="prose">
         <p><strong>Soal contoh:</strong> hitung banyaknya cara naik n anak tangga (langkah 1, 2, atau 3) modulo 10<sup>9</sup> + 7. Program menghitungnya dua kali, dengan memoization dan tabulasi, untuk menunjukkan bahwa hasilnya sama.</p>
     </div>
@@ -269,11 +269,11 @@ CPP;
 </section>
 
 <section class="lesson-section" id="pola" data-toc="Jenis Soal DP">
-    <h2><span class="sec-icon">🧠</span> Tiga Jenis Pertanyaan DP</h2>
+    <h2>Tiga Jenis Pertanyaan DP</h2>
     <div class="pattern-grid">
-        <div class="pattern"><h4>🔢 Menghitung cara</h4><p>"Ada berapa cara…". Transisi <b>menjumlahkan</b>: <code>dp[i] = Σ dp[sebelumnya]</code>. Biasanya dengan modulo.</p></div>
-        <div class="pattern"><h4>📉 Minimum / maksimum</h4><p>"Biaya termurah", "nilai terbesar". Transisi memakai <b>min/max</b>: <code>dp[i] = min(dp[j] + biaya)</code>.</p></div>
-        <div class="pattern"><h4>✅ Mungkin / tidak</h4><p>"Bisakah membentuk X?". DP bernilai <b>true/false</b>: <code>dp[i] = dp[i−a] || dp[i−b]</code>.</p></div>
+        <div class="pattern"><h4>Menghitung cara</h4><p>"Ada berapa cara…". Transisi <b>menjumlahkan</b>: <code>dp[i] = Σ dp[sebelumnya]</code>. Biasanya dengan modulo.</p></div>
+        <div class="pattern"><h4>Minimum / maksimum</h4><p>"Biaya termurah", "nilai terbesar". Transisi memakai <b>min/max</b>: <code>dp[i] = min(dp[j] + biaya)</code>.</p></div>
+        <div class="pattern"><h4>Mungkin / tidak</h4><p>"Bisakah membentuk X?". DP bernilai <b>true/false</b>: <code>dp[i] = dp[i−a] || dp[i−b]</code>.</p></div>
     </div>
     <table class="cx-table">
         <tr><th></th><th>Memoization</th><th>Tabulasi</th></tr>
@@ -285,7 +285,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="jebakan" data-toc="Jebakan Umum">
-    <h2><span class="sec-icon">⏱️</span> Jebakan Umum</h2>
+    <h2>Jebakan Umum</h2>
     <div class="callout warn">
         <span class="callout-icon">⚠️</span>
         <p><strong>Modulo terlambat.</strong> <code>(a + b + c) % MOD</code> dengan a, b, c &lt; MOD aman di <code>long long</code>. Tetapi menjumlahkan banyak nilai tanpa modulo di tengah jalan akan meluap.</p>
@@ -303,7 +303,7 @@ CPP;
 @include('lessons.level', ['n' => 3, 'title' => 'DP lebih dalam', 'desc' => 'Mengapa DP benar, menghemat memori, dan Fibonacci dalam O(log n).'])
 
 <section class="lesson-section" id="bukti" data-toc="Mengapa DP Benar?">
-    <h2><span class="sec-icon">🔬</span> Mengapa DP Benar dan Cepat?</h2>
+    <h2>Mengapa DP Benar dan Cepat?</h2>
     <div class="proof">
         <p><strong>Benar</strong> karena transisinya <strong>membagi semua kemungkinan</strong> tanpa ada yang terlewat atau terhitung dua kali. Setiap cara naik ke anak tangga i berakhir dengan tepat satu dari tiga langkah terakhir (1, 2, atau 3). Jadi himpunan semua cara terbagi menjadi tiga kelompok yang tidak beririsan, dan ukuran setiap kelompok adalah <code>dp[i−1]</code>, <code>dp[i−2]</code>, dan <code>dp[i−3]</code>.</p>
         <p><strong>Cepat</strong> karena setiap state dihitung sekali. Ada n + 1 state dan setiap transisi butuh 3 operasi, jadi O(n). Rekursi biasa tanpa catatan butuh waktu sebanding dengan banyaknya <em>cara</em> itu sendiri, yang tumbuh eksponensial.</p>
@@ -311,7 +311,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="teknik" data-toc="Teknik Lanjutan">
-    <h2><span class="sec-icon">🚀</span> Teknik Lanjutan</h2>
+    <h2>Teknik Lanjutan</h2>
     <div class="prose">
         <h3>1. Variabel bergulir (hemat memori)</h3>
         <p>Jika <code>dp[i]</code> hanya bergantung pada beberapa nilai terakhir, kita tidak perlu menyimpan seluruh tabel. Cukup beberapa variabel yang terus "digeser". Memori turun dari O(n) menjadi O(1).</p>
@@ -327,7 +327,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="kuis" data-toc="Cek Pemahaman">
-    <h2><span class="sec-icon">✅</span> Cek Pemahaman</h2>
+    <h2>Cek Pemahaman</h2>
     <div class="quiz" data-quiz data-answer="1" data-explain="Rekursi Fibonacci biasa memanggil subsoal yang sama berulang kali sehingga jumlah panggilannya tumbuh eksponensial. Memoization membuat setiap F(i) dihitung sekali saja.">
         <p class="quiz-q">Mengapa F(40) dengan rekursi biasa sangat lambat?</p>
         <div class="quiz-options">

@@ -3,7 +3,7 @@
 @section('title', 'Masuk')
 
 @section('form')
-    <h2>Selamat datang kembali 👋</h2>
+    <h2>Selamat datang kembali</h2>
     <p class="muted">Masuk untuk melanjutkan perjalanan algoritmamu.</p>
 
     <form method="POST" action="{{ url('/login') }}" class="auth-form" novalidate>
