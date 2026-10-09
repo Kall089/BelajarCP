@@ -198,7 +198,7 @@ CPP;
 @include('lessons.level', ['n' => 1, 'title' => 'DP di atas petak-petak', 'desc' => 'Robot yang hanya boleh ke kanan dan ke bawah, dan pola Pascal yang muncul.'])
 
 <section class="lesson-section" id="intuisi" data-toc="Intuisi: Robot di Grid">
-    <h2><span class="sec-icon">💡</span> Intuisi: Robot di Grid</h2>
+    <h2>Intuisi: Robot di Grid</h2>
     <div class="prose">
         <p>Sebuah robot berdiri di pojok kiri atas sebuah grid dan ingin ke pojok kanan bawah. Ia hanya boleh bergerak <strong>ke kanan</strong> atau <strong>ke bawah</strong>. Ada berapa jalur berbeda?</p>
         <p>Perhatikan satu petak mana pun. Robot hanya bisa masuk dari <strong>atas</strong> atau dari <strong>kiri</strong>. Jadi banyak jalur menuju petak itu = jalur menuju petak di atasnya + jalur menuju petak di kirinya.</p>
@@ -232,7 +232,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="contoh" data-toc="Coba dengan Tangan">
-    <h2><span class="sec-icon">✍️</span> Coba dengan Tangan: Jalur Termurah</h2>
+    <h2>Coba dengan Tangan: Jalur Termurah</h2>
     <div class="prose"><p>Grid biaya di kiri. Isi tabel dp baris demi baris (kanan). Setiap sel = biaya petak + asal termurah (atas atau kiri).</p></div>
     <div class="diagram-grid" style="max-width: 860px; margin-bottom: 14px">
         <div>
@@ -259,15 +259,15 @@ CPP;
 </section>
 
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi Interaktif">
-    <h2><span class="sec-icon">🎬</span> Visualisasi Interaktif</h2>
+    <h2>Visualisasi Interaktif</h2>
     <div class="prose">
-        <p>Klik sel untuk menambah atau menghapus rintangan, lalu putar animasinya. Panah biru dari atas dan pink dari kiri menunjukkan sumber penjumlahan. Aktifkan <strong>🌡 Heatmap</strong> untuk melihat bagaimana angka membesar ke arah kanan bawah.</p>
+        <p>Klik sel untuk menambah atau menghapus rintangan, lalu putar animasinya. Panah biru dari atas dan pink dari kiri menunjukkan sumber penjumlahan. Aktifkan <strong>Heatmap</strong> untuk melihat bagaimana angka membesar ke arah kanan bawah.</p>
     </div>
     <div data-viz="grid"></div>
 </section>
 
 <section class="lesson-section" id="cara" data-toc="Cara Pengerjaan">
-    <h2><span class="sec-icon">🧭</span> Cara Pengerjaan</h2>
+    <h2>Cara Pengerjaan</h2>
     <div class="steps">
         <div class="step-card"><b>State</b><span><code>dp[i][j]</code> = jawaban untuk petak (i, j): banyak jalur, biaya terkecil, atau nilai terbesar sampai di sana.</span></div>
         <div class="step-card"><b>Dari mana saja bisa datang?</b><span>Biasanya atas dan kiri. Bisa juga diagonal, tergantung aturan gerak di soal.</span></div>
@@ -279,7 +279,7 @@ CPP;
 @include('lessons.level', ['n' => 2, 'title' => 'menulis DP grid di C++', 'desc' => 'Jalur termurah lengkap dengan penelusuran rute, lalu pola soal grid.'])
 
 <section class="lesson-section" id="kode" data-toc="Kode C++ Lengkap">
-    <h2><span class="sec-icon">💻</span> Kode C++ Lengkap: Jalur Termurah</h2>
+    <h2>Kode C++ Lengkap: Jalur Termurah</h2>
     <div class="prose">
         <p><strong>Soal contoh:</strong> grid R × C berisi biaya. Robot berjalan dari kiri atas ke kanan bawah, hanya ke kanan (R) atau ke bawah (D). Cetak total biaya minimum dan rutenya.</p>
     </div>
@@ -293,21 +293,21 @@ CPP;
 </section>
 
 <section class="lesson-section" id="pola" data-toc="Pola Soal Grid">
-    <h2><span class="sec-icon">🧠</span> Pola Soal DP Grid</h2>
+    <h2>Pola Soal DP Grid</h2>
     <div class="pattern-grid">
-        <div class="pattern"><h4>🧮 Banyak jalur</h4><p>Jumlahkan atas + kiri, rintangan = 0, ambil modulo.</p></div>
-        <div class="pattern"><h4>💰 Koin terbanyak</h4><p>Ganti <code>min</code> menjadi <code>max</code>.</p></div>
+        <div class="pattern"><h4>Banyak jalur</h4><p>Jumlahkan atas + kiri, rintangan = 0, ambil modulo.</p></div>
+        <div class="pattern"><h4>Koin terbanyak</h4><p>Ganti <code>min</code> menjadi <code>max</code>.</p></div>
         <div class="pattern"><h4>⬛ Persegi terbesar</h4><p><code>min(atas, kiri, diagonal) + 1</code> untuk petak bernilai 1.</p></div>
-        <div class="pattern"><h4>↘️ Tiga arah</h4><p>Boleh turun lurus atau serong: sumbernya (i−1, j−1), (i−1, j), (i−1, j+1).</p></div>
-        <div class="pattern"><h4>🧭 Rute</h4><p>Telusuri mundur dari tujuan ke sumber yang memberi nilai terbaik.</p></div>
-        <div class="pattern"><h4>🔁 Grid tersembunyi</h4><p>Dua string (LCS), barang × kapasitas (knapsack) juga berbentuk tabel 2D.</p></div>
+        <div class="pattern"><h4>Tiga arah</h4><p>Boleh turun lurus atau serong: sumbernya (i−1, j−1), (i−1, j), (i−1, j+1).</p></div>
+        <div class="pattern"><h4>Rute</h4><p>Telusuri mundur dari tujuan ke sumber yang memberi nilai terbaik.</p></div>
+        <div class="pattern"><h4>Grid tersembunyi</h4><p>Dua string (LCS), barang × kapasitas (knapsack) juga berbentuk tabel 2D.</p></div>
     </div>
     <div class="prose"><p><strong>Template banyak jalur dengan rintangan:</strong></p></div>
     @include('lessons.code', ['cpp' => $dgPaths, 'js' => null, 'py' => null])
 </section>
 
 <section class="lesson-section" id="kompleksitas" data-toc="Kompleksitas & Jebakan">
-    <h2><span class="sec-icon">⏱️</span> Kompleksitas & Jebakan</h2>
+    <h2>Kompleksitas & Jebakan</h2>
     <table class="cx-table">
         <tr><th>Aspek</th><th>Nilai</th><th>Keterangan</th></tr>
         <tr><td>Waktu</td><td><code>O(R · C)</code></td><td>Setiap petak dihitung sekali dengan O(1) operasi.</td></tr>
@@ -326,7 +326,7 @@ CPP;
 @include('lessons.level', ['n' => 3, 'title' => 'DP grid tingkat lanjut', 'desc' => 'Persegi terbesar, menghemat memori satu baris, dan bukti transisinya.'])
 
 <section class="lesson-section" id="persegi" data-toc="Persegi Terbesar">
-    <h2><span class="sec-icon">⬛</span> Persegi Terbesar</h2>
+    <h2>Persegi Terbesar</h2>
     <div class="prose">
         <p>Soal: grid berisi 0 dan 1. Cari persegi terbesar yang <strong>seluruhnya</strong> berisi 1. Brute force mencoba setiap pojok dan setiap ukuran: O(N⁴) atau lebih.</p>
         <p>DP: <code>dp[i][j]</code> = sisi persegi 1 terbesar yang pojok <strong>kanan-bawah</strong>-nya di (i, j). Persegi berukuran k di (i, j) hanya mungkin jika petak atas, kiri, dan diagonal kiri-atas masing-masing punya persegi berukuran minimal k − 1.</p>
@@ -338,7 +338,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="teknik" data-toc="Teknik Lanjutan">
-    <h2><span class="sec-icon">🚀</span> Teknik Lanjutan: Satu Baris Saja</h2>
+    <h2>Teknik Lanjutan: Satu Baris Saja</h2>
     <div class="prose">
         <p>Nilai <code>dp[i][j]</code> hanya bergantung pada baris yang sedang diisi dan baris tepat di atasnya. Jika rute tidak perlu disusun ulang, simpan <strong>satu baris</strong> saja: sebelum ditimpa, <code>baris[j]</code> masih menyimpan nilai dari atas, sedangkan <code>baris[j−1]</code> sudah berisi nilai kiri yang baru.</p>
     </div>
@@ -349,7 +349,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="kuis" data-toc="Cek Pemahaman">
-    <h2><span class="sec-icon">✅</span> Cek Pemahaman</h2>
+    <h2>Cek Pemahaman</h2>
     <div class="quiz" data-quiz data-answer="0" data-explain="Grid 3 × 3 (tanpa rintangan): banyak jalurnya C(4, 2) = 6. Di tabel: 1 1 1 / 1 2 3 / 1 3 6.">
         <p class="quiz-q">Berapa banyak jalur (kanan/bawah) pada grid 3 × 3 tanpa rintangan?</p>
         <div class="quiz-options">

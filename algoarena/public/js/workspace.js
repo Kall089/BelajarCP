@@ -93,8 +93,61 @@
                 `self.MonacoEnvironment={baseUrl:'${MONACO_BASE}/'};importScripts('${MONACO_BASE}/vs/base/worker/workerMain.js');`,
             )}`,
     };
-    require.config({ paths: { vs: `${MONACO_BASE}/vs` } });
-    require(["vs/editor/editor.main"], () => {
+    /**
+     * Cadangan jika Monaco (dari CDN) tidak bisa dimuat, misalnya saat belajar tanpa internet:
+     * textarea biasa dengan API "model" yang sama, sehingga Jalankan dan Submit tetap berfungsi.
+     */
+    function startPlainEditor() {
+        if (editor) return;
+        const host = $("[data-editor]");
+        const ta = document.createElement("textarea");
+        ta.className = "plain-editor";
+        ta.spellcheck = false;
+        ta.setAttribute("aria-label", "Editor kode");
+        host.appendChild(ta);
+        for (const lang of langs) {
+            let value = store.get(codeKey(lang), null) ?? P.starter[lang] ?? "";
+            models[lang] = {
+                getValue: () => value,
+                setValue: (v) => {
+                    value = v;
+                    store.set(codeKey(lang), v);
+                    if (lang === language) ta.value = v;
+                },
+            };
+        }
+        editor = {
+            getValue: () => ta.value,
+            setModel: (m) => (ta.value = m.getValue()),
+            updateOptions: () => {},
+        };
+        ta.value = models[language].getValue();
+        ta.addEventListener("input", () => models[language].setValue(ta.value));
+        ta.addEventListener("keydown", (e) => {
+            if (e.key === "Tab") {
+                e.preventDefault();
+                const indent = " ".repeat(TAB_SIZE[language] || 4);
+                ta.setRangeText(indent, ta.selectionStart, ta.selectionEnd, "end");
+                models[language].setValue(ta.value);
+            } else if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+                e.preventDefault();
+                submit();
+            } else if ((e.ctrlKey || e.metaKey) && e.key === "'") {
+                e.preventDefault();
+                runSamples();
+            }
+        });
+        $("[data-editor-loading]").hidden = true;
+    }
+
+    if (typeof window.require !== "function" || typeof window.require.config !== "function") {
+        startPlainEditor();
+    } else {
+        const fallbackTimer = setTimeout(startPlainEditor, 12000);
+        require.config({ paths: { vs: `${MONACO_BASE}/vs` } });
+        require(["vs/editor/editor.main"], () => {
+        clearTimeout(fallbackTimer);
+        if (editor) return; // cadangan sudah aktif lebih dulu
         monaco.editor.defineTheme("algoarena", {
             base: "vs-dark",
             inherit: true,
@@ -174,7 +227,11 @@
         editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => submit());
         editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Quote, () => runSamples());
         $("[data-editor-loading]").hidden = true;
-    });
+        }, () => {
+            clearTimeout(fallbackTimer);
+            startPlainEditor();
+        });
+    }
 
     const getCode = () => (editor ? editor.getValue() : (models[language]?.getValue() ?? P.starter[language]));
 
@@ -314,6 +371,35 @@
             });
         },
     };
+
+    // ── Sidik jari output (harus sama persis dengan Problem::outputFingerprint di PHP) ──
+    const CRC_TABLE = (() => {
+        const t = new Uint32Array(256);
+        for (let n = 0; n < 256; n++) {
+            let c = n;
+            for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+            t[n] = c >>> 0;
+        }
+        return t;
+    })();
+    const normalizeOutput = (s) =>
+        String(s)
+            .split(/\r?\n/)
+            .map((l) => l.replace(/[ \t\n\r\0\x0B]+$/, ""))
+            .join("\n")
+            .replace(/[ \t\n\r\0\x0B]+$/, "");
+    function outputFingerprint(s) {
+        const bytes = new TextEncoder().encode(normalizeOutput(s));
+        let crc = 0xffffffff;
+        let fnv = 0x811c9dc5;
+        for (let i = 0; i < bytes.length; i++) {
+            const b = bytes[i];
+            crc = CRC_TABLE[(crc ^ b) & 0xff] ^ (crc >>> 8);
+            fnv = Math.imul(fnv ^ b, 0x01000193);
+        }
+        const hex = (x) => (x >>> 0).toString(16).padStart(8, "0");
+        return `${hex(fnv)}:${hex(crc ^ 0xffffffff)}:${bytes.length}`;
+    }
 
     async function postJson(url, body) {
         const res = await fetch(url, {
@@ -532,7 +618,9 @@
             results.push({
                 id: tests[i].id,
                 status: r.status,
-                output: (r.output || "").slice(0, 2_000_000),
+                // Output utuh bisa berukuran megabyte: kirim sidik jarinya saja, plus cuplikan untuk ditampilkan.
+                fp: r.status === "ok" ? outputFingerprint(r.output || "") : null,
+                output: (r.output || "").slice(0, 4000),
                 time: Math.round(r.time || 0),
                 error: r.error ? String(r.error).slice(0, 1900) : null,
             });

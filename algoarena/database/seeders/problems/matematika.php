@@ -10,184 +10,9 @@ use Database\Seeders\Support\TestGen as T;
  */
 
 return [
-    // ───────────────────────── Sieve, Faktorisasi & GCD ─────────────────────────
-    [
-        'slug' => 'prima-di-rentang',
-        'lesson' => 'sieve-gcd',
-        'title' => 'Banyak Prima di Rentang',
-        'difficulty' => 'Mudah',
-        'tags' => ['bilangan prima', 'saringan', 'prefix sum'],
-        'statement' => '<p>Jawab <strong>Q</strong> pertanyaan. Setiap pertanyaan berisi dua bilangan L dan R: ada berapa bilangan prima p dengan L ≤ p ≤ R?</p>',
-        'input_format' => '<p>Baris pertama berisi <code>Q</code>. Setiap dari Q baris berikutnya berisi <code>L R</code>.</p>',
-        'output_format' => '<p>Untuk setiap pertanyaan, banyak bilangan prima di [L, R].</p>',
-        'constraints' => '<ul><li>1 ≤ Q ≤ 100 000</li><li>1 ≤ L ≤ R ≤ 10<sup>6</sup></li></ul>',
-        'samples' => [
-            ['input' => "3\n1 10\n10 20\n1 1\n", 'explanation' => 'Prima di [1, 10]: 2, 3, 5, 7. Di [10, 20]: 11, 13, 17, 19. Angka 1 bukan prima.'],
-        ],
-        'tests' => function () {
-            $gen = function (int $q, int $hi) {
-                $rows = [];
-                for ($i = 0; $i < $q; $i++) {
-                    $a = mt_rand(1, $hi);
-                    $b = mt_rand(1, $hi);
-                    $rows[] = min($a, $b).' '.max($a, $b);
-                }
-
-                return "$q\n".implode("\n", $rows)."\n";
-            };
-
-            return [
-                "4\n1 1000000\n2 2\n999983 999983\n1000000 1000000\n", $gen(100, 100), $gen(1000, 10000), $gen(100000, 1000000), $gen(100000, 50),
-            ];
-        },
-        'solve' => function (string $input) {
-            $lines = T::lines($input);
-            $q = (int) $lines[0];
-            $qs = [];
-            $M = 2;
-            for ($i = 1; $i <= $q; $i++) {
-                $qs[] = T::ints($lines[$i]);
-                $M = max($M, $qs[$i - 1][1]);
-            }
-            $is = array_fill(0, $M + 1, 1);
-            $is[0] = $is[1] = 0;
-            for ($i = 2; $i * $i <= $M; $i++) {
-                if ($is[$i]) {
-                    for ($j = $i * $i; $j <= $M; $j += $i) {
-                        $is[$j] = 0;
-                    }
-                }
-            }
-            $pre = [0];
-            for ($i = 1; $i <= $M; $i++) {
-                $pre[$i] = $pre[$i - 1] + $is[$i];
-            }
-            $out = [];
-            foreach ($qs as [$l, $r]) {
-                $out[] = $pre[$r] - $pre[$l - 1];
-            }
-
-            return implode("\n", $out);
-        },
-        'starter' => [
-            'cpp' => <<<'CODE'
-#include <bits/stdc++.h>
-using namespace std;
-
-const int MAKS = 1000000;
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    // 1) saring semua prima ≤ MAKS   2) prefix: banyak prima ≤ x
-    int q;
-    cin >> q;
-    while (q--) {
-        int l, r;
-        cin >> l >> r;
-    }
-    return 0;
-}
-CODE,
-            'javascript' => <<<'CODE'
-const MAKS = 1000000;
-// 1) saring semua prima ≤ MAKS   2) prefix: banyak prima ≤ x
-const q = readInts()[0];
-const out = [];
-for (let i = 0; i < q; i++) {
-  const [l, r] = readInts();
-}
-console.log(out.join("\n"));
-CODE,
-            'python' => <<<'CODE'
-import sys
-
-MAKS = 10**6
-# 1) saring semua prima ≤ MAKS   2) prefix: banyak prima ≤ x
-data = sys.stdin.buffer.read().split()
-q = int(data[0])
-CODE,
-        ],
-        'solutions' => [
-            'cpp' => <<<'CODE'
-#include <bits/stdc++.h>
-using namespace std;
-
-const int MAKS = 1000000;
-bool komposit[MAKS + 1];
-int pre[MAKS + 1];                 // pre[x] = banyak prima ≤ x
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    komposit[0] = komposit[1] = true;
-    for (int i = 2; (long long)i * i <= MAKS; i++)
-        if (!komposit[i])
-            for (int j = i * i; j <= MAKS; j += i) komposit[j] = true;
-    for (int x = 1; x <= MAKS; x++) pre[x] = pre[x - 1] + (komposit[x] ? 0 : 1);
-
-    int q;
-    cin >> q;
-    while (q--) {
-        int l, r;
-        cin >> l >> r;
-        cout << pre[r] - pre[l - 1] << '\n';
-    }
-    return 0;
-}
-CODE,
-            'javascript' => <<<'CODE'
-const MAKS = 1000000;
-const komposit = new Uint8Array(MAKS + 1);
-komposit[0] = komposit[1] = 1;
-for (let i = 2; i * i <= MAKS; i++)
-  if (!komposit[i]) for (let j = i * i; j <= MAKS; j += i) komposit[j] = 1;
-const pre = new Int32Array(MAKS + 1);
-for (let x = 1; x <= MAKS; x++) pre[x] = pre[x - 1] + (komposit[x] ? 0 : 1);
-
-const q = readInts()[0];
-const out = [];
-for (let i = 0; i < q; i++) {
-  const [l, r] = readInts();
-  out.push(pre[r] - pre[l - 1]);
-}
-console.log(out.join("\n"));
-CODE,
-            'python' => <<<'CODE'
-import sys
-from itertools import accumulate
-
-MAKS = 10**6
-prima = bytearray([1]) * (MAKS + 1)
-prima[0] = prima[1] = 0
-for i in range(2, int(MAKS ** 0.5) + 1):
-    if prima[i]:
-        prima[i * i::i] = bytes(len(range(i * i, MAKS + 1, i)))
-pre = list(accumulate(prima))          # pre[x] = banyak prima ≤ x
-
-data = sys.stdin.buffer.read().split()
-q = int(data[0])
-out = []
-for i in range(q):
-    l, r = int(data[1 + 2 * i]), int(data[2 + 2 * i])
-    out.append(pre[r] - pre[l - 1])
-print("\n".join(map(str, out)))
-CODE,
-        ],
-        'editorial' => '<p>Menguji setiap bilangan di setiap pertanyaan terlalu lambat (10<sup>5</sup> × 10<sup>6</sup>). Kerjakan dua langkah sekali di awal:</p>
-<ol><li><strong>Saringan Eratosthenes</strong> sampai 10<sup>6</sup>: tandai komposit dengan mencoret kelipatan setiap prima mulai dari p². O(N log log N).</li>
-<li><strong>Prefix sum</strong>: pre[x] = banyak prima ≤ x.</li></ol>
-<p>Setiap pertanyaan dijawab dalam O(1): pre[R] − pre[L − 1]. Hati-hati: 1 bukan prima.</p>',
-        'hints' => [
-            'Jangan menguji keprimaan per pertanyaan. Apa yang bisa dihitung sekali untuk semua bilangan ≤ 10<sup>6</sup>?',
-            'Saringan Eratosthenes memberi tahu prima atau tidak untuk semua bilangan sekaligus.',
-            'Buat pre[x] = banyak prima ≤ x. Jawabannya pre[R] − pre[L − 1].',
-        ],
-    ],
-
     [
         'slug' => 'fpb-terbesar',
-        'lesson' => 'sieve-gcd',
+        'lesson' => 'bilangan-prima',
         'title' => 'FPB Terbesar dari Sepasang',
         'difficulty' => 'Sedang',
         'tags' => ['gcd', 'kelipatan', 'harmonic sum'],
@@ -340,7 +165,7 @@ CODE,
 
     [
         'slug' => 'prima-rentang-besar',
-        'lesson' => 'sieve-gcd',
+        'lesson' => 'bilangan-prima',
         'title' => 'Prima di Sekitar Satu Triliun',
         'difficulty' => 'Sulit',
         'tags' => ['bilangan prima', 'saringan bersegmen'],
@@ -547,7 +372,7 @@ CODE,
     // ───────────────────────── Aritmetika Modular ─────────────────────────
     [
         'slug' => 'binomial-modulo',
-        'lesson' => 'modular',
+        'lesson' => 'kombinatorika',
         'title' => 'Koefisien Binomial Modulo',
         'difficulty' => 'Mudah',
         'tags' => ['modular', 'kombinatorika', 'invers modulo'],
@@ -743,7 +568,7 @@ CODE,
 
     [
         'slug' => 'deret-geometri',
-        'lesson' => 'modular',
+        'lesson' => 'fpb-modular',
         'title' => 'Deret Geometri Raksasa',
         'difficulty' => 'Sedang',
         'tags' => ['modular', 'perpangkatan cepat', 'invers modulo'],
@@ -939,7 +764,7 @@ CODE,
 
     [
         'slug' => 'pangkat-bertingkat',
-        'lesson' => 'modular',
+        'lesson' => 'fpb-modular',
         'title' => 'Menara Pangkat',
         'difficulty' => 'Sedang',
         'tags' => ['modular', 'teorema Fermat', 'perpangkatan cepat'],
@@ -1108,7 +933,7 @@ CODE,
     // ───────────────────────── Extended Euclid & CRT ─────────────────────────
     [
         'slug' => 'beli-ayam-bebek',
-        'lesson' => 'ext-euclid',
+        'lesson' => 'fpb-modular',
         'title' => 'Belanja Pas di Pasar Ternak',
         'difficulty' => 'Sedang',
         'tags' => ['extended euclid', 'diophantine'],
@@ -1322,7 +1147,7 @@ CODE,
 
     [
         'slug' => 'crt-gabungan',
-        'lesson' => 'ext-euclid',
+        'lesson' => 'fpb-modular',
         'title' => 'Jadwal Lampu Berkedip',
         'difficulty' => 'Sulit',
         'tags' => ['chinese remainder theorem', 'extended euclid'],
@@ -1571,235 +1396,9 @@ CODE,
         ],
     ],
 
-    // ───────────────────────── Matrix Exponentiation ─────────────────────────
-    [
-        'slug' => 'rekurens-linear',
-        'lesson' => 'matrix-expo',
-        'title' => 'Rekurens Linear ke-10^18',
-        'difficulty' => 'Sedang',
-        'tags' => ['matrix exponentiation', 'rekurens'],
-        'statement' => '<p>Barisan f didefinisikan oleh k nilai awal f(0), f(1), …, f(k − 1) dan rekurens</p>
-<p><code>f(i) = c<sub>1</sub>·f(i − 1) + c<sub>2</sub>·f(i − 2) + … + c<sub>k</sub>·f(i − k)</code> untuk i ≥ k.</p>
-<p>Hitung f(n) modulo 10<sup>9</sup> + 7.</p>',
-        'input_format' => '<p>Baris pertama berisi <code>k n</code>. Baris kedua berisi <code>c<sub>1</sub> … c<sub>k</sub></code>. Baris ketiga berisi <code>f(0) … f(k − 1)</code>.</p>',
-        'output_format' => '<p>Satu bilangan: f(n) mod 10<sup>9</sup> + 7.</p>',
-        'constraints' => '<ul><li>1 ≤ k ≤ 10</li><li>0 ≤ n ≤ 10<sup>18</sup></li><li>0 ≤ c<sub>i</sub>, f(i) &lt; 10<sup>9</sup> + 7</li></ul>',
-        'samples' => [
-            ['input' => "2 10\n1 1\n0 1\n", 'explanation' => 'Fibonacci: f(10) = 55.'],
-            ['input' => "3 5\n1 1 1\n1 1 1\n", 'explanation' => 'Tribonacci: 1, 1, 1, 3, 5, 9 → f(5) = 9.'],
-        ],
-        'tests' => function () {
-            $gen = function (int $k, int $nMax, int $vMax) {
-                $n = mt_rand(0, $nMax);
-
-                return "$k $n\n".T::join(T::arr($k, 0, $vMax))."\n".T::join(T::arr($k, 0, $vMax))."\n";
-            };
-
-            return [
-                "1 0\n5\n7\n", "1 1000000000000000000\n2\n1\n", "2 1000000000000000000\n1 1\n0 1\n", $gen(3, 30, 10), $gen(5, 50, 1000),
-                $gen(10, 1000000000000000000, 1000000006), $gen(10, 9, 1000000006), $gen(7, 1000000000000000000, 1000000006), $gen(4, 1000000, 5),
-            ];
-        },
-        'solve' => function (string $input) {
-            $M = 1000000007;
-            $lines = T::lines($input);
-            [$k, $n] = T::ints($lines[0]);
-            $c = T::ints($lines[1]);
-            $f = T::ints($lines[2]);
-            if ($n < $k) {
-                return (string) ($f[$n] % $M);
-            }
-            $mul = function ($A, $B) use ($k, $M) {
-                $C = array_fill(0, $k, array_fill(0, $k, 0));
-                for ($i = 0; $i < $k; $i++) {
-                    for ($t = 0; $t < $k; $t++) {
-                        if ($A[$i][$t] == 0) {
-                            continue;
-                        }
-                        for ($j = 0; $j < $k; $j++) {
-                            $C[$i][$j] = ($C[$i][$j] + $A[$i][$t] * $B[$t][$j]) % $M;
-                        }
-                    }
-                }
-
-                return $C;
-            };
-            $T = array_fill(0, $k, array_fill(0, $k, 0));
-            for ($j = 0; $j < $k; $j++) {
-                $T[0][$j] = $c[$j] % $M;
-            }
-            for ($i = 1; $i < $k; $i++) {
-                $T[$i][$i - 1] = 1;
-            }
-            $R = array_fill(0, $k, array_fill(0, $k, 0));
-            for ($i = 0; $i < $k; $i++) {
-                $R[$i][$i] = 1;
-            }
-            $e = $n - $k + 1;
-            while ($e > 0) {
-                if ($e & 1) {
-                    $R = $mul($R, $T);
-                }
-                $T = $mul($T, $T);
-                $e >>= 1;
-            }
-            $ans = 0;
-            for ($j = 0; $j < $k; $j++) {
-                $ans = ($ans + $R[0][$j] * ($f[$k - 1 - $j] % $M)) % $M;
-            }
-
-            return (string) $ans;
-        },
-        'starter' => [
-            'cpp' => <<<'CODE'
-#include <bits/stdc++.h>
-using namespace std;
-
-const long long MOD = 1000000007;
-typedef vector<vector<long long>> Mat;
-
-int main() {
-    int k;
-    long long n;
-    cin >> k >> n;
-    vector<long long> c(k), f(k);
-    for (auto& v : c) cin >> v;
-    for (auto& v : f) cin >> v;
-    // matriks pendamping k × k, lalu pangkatkan
-    return 0;
-}
-CODE,
-            'javascript' => <<<'CODE'
-const MOD = 1000000007;
-const mul = (a, b) => ((a * (b >>> 16)) % MOD * 65536 + a * (b & 65535)) % MOD;
-const [ks, ns] = readLine().trim().split(/\s+/);
-const k = Number(ks), n = BigInt(ns);
-const c = readInts(), f = readInts();
-// matriks pendamping k × k, lalu pangkatkan
-CODE,
-            'python' => <<<'CODE'
-MOD = 10**9 + 7
-k, n = map(int, input().split())
-c = list(map(int, input().split()))
-f = list(map(int, input().split()))
-# matriks pendamping k × k, lalu pangkatkan
-CODE,
-        ],
-        'solutions' => [
-            'cpp' => <<<'CODE'
-#include <bits/stdc++.h>
-using namespace std;
-
-const long long MOD = 1000000007;
-typedef vector<vector<long long>> Mat;
-
-Mat kali(const Mat& A, const Mat& B) {
-    int k = A.size();
-    Mat C(k, vector<long long>(k, 0));
-    for (int i = 0; i < k; i++)
-        for (int t = 0; t < k; t++) {
-            if (!A[i][t]) continue;
-            for (int j = 0; j < k; j++) C[i][j] = (C[i][j] + A[i][t] * B[t][j]) % MOD;
-        }
-    return C;
-}
-
-int main() {
-    int k;
-    long long n;
-    cin >> k >> n;
-    vector<long long> c(k), f(k);
-    for (auto& v : c) cin >> v;
-    for (auto& v : f) cin >> v;
-    if (n < k) {
-        cout << f[n] % MOD << '\n';
-        return 0;
-    }
-    // keadaan [f(i), f(i-1), ..., f(i-k+1)]; T menggeser satu langkah
-    Mat T(k, vector<long long>(k, 0)), R(k, vector<long long>(k, 0));
-    for (int j = 0; j < k; j++) T[0][j] = c[j] % MOD;
-    for (int i = 1; i < k; i++) T[i][i - 1] = 1;
-    for (int i = 0; i < k; i++) R[i][i] = 1;
-    for (long long e = n - k + 1; e > 0; e >>= 1) {     // dari keadaan i = k-1 ke i = n
-        if (e & 1) R = kali(R, T);
-        T = kali(T, T);
-    }
-    long long jawab = 0;
-    for (int j = 0; j < k; j++) jawab = (jawab + R[0][j] * (f[k - 1 - j] % MOD)) % MOD;
-    cout << jawab << '\n';
-    return 0;
-}
-CODE,
-            'javascript' => <<<'CODE'
-const MOD = 1000000007;
-const mul = (a, b) => ((a * (b >>> 16)) % MOD * 65536 + a * (b & 65535)) % MOD;
-const [ks, ns] = readLine().trim().split(/\s+/);
-const k = Number(ks), n = BigInt(ns);
-const c = readInts(), f = readInts();
-const kali = (A, B) => {
-  const C = Array.from({ length: k }, () => new Array(k).fill(0));
-  for (let i = 0; i < k; i++)
-    for (let t = 0; t < k; t++) {
-      if (!A[i][t]) continue;
-      for (let j = 0; j < k; j++) C[i][j] = (C[i][j] + mul(A[i][t], B[t][j])) % MOD;
-    }
-  return C;
-};
-if (n < BigInt(k)) {
-  console.log(String(f[Number(n)] % MOD));
-} else {
-  let T = Array.from({ length: k }, () => new Array(k).fill(0));
-  let R = Array.from({ length: k }, (_, i) => Array.from({ length: k }, (_, j) => (i === j ? 1 : 0)));
-  for (let j = 0; j < k; j++) T[0][j] = c[j] % MOD;
-  for (let i = 1; i < k; i++) T[i][i - 1] = 1;
-  for (let e = n - BigInt(k) + 1n; e > 0n; e >>= 1n) {
-    if (e & 1n) R = kali(R, T);
-    T = kali(T, T);
-  }
-  let jawab = 0;
-  for (let j = 0; j < k; j++) jawab = (jawab + mul(R[0][j], f[k - 1 - j] % MOD)) % MOD;
-  console.log(String(jawab));
-}
-CODE,
-            'python' => <<<'CODE'
-MOD = 10**9 + 7
-
-def kali(A, B):
-    return [[sum(a * b for a, b in zip(baris, kolom)) % MOD for kolom in zip(*B)] for baris in A]
-
-k, n = map(int, input().split())
-c = list(map(int, input().split()))
-f = list(map(int, input().split()))
-if n < k:
-    print(f[n] % MOD)
-else:
-    T = [[0] * k for _ in range(k)]
-    T[0] = [x % MOD for x in c]
-    for i in range(1, k):
-        T[i][i - 1] = 1
-    R = [[int(i == j) for j in range(k)] for i in range(k)]
-    e = n - k + 1
-    while e:
-        if e & 1:
-            R = kali(R, T)
-        T = kali(T, T)
-        e >>= 1
-    print(sum(R[0][j] * f[k - 1 - j] for j in range(k)) % MOD)
-CODE,
-        ],
-        'editorial' => '<p>Simpan keadaan berupa k suku terakhir: v<sub>i</sub> = [f(i), f(i − 1), …, f(i − k + 1)]. Satu langkah rekurens adalah perkalian dengan <strong>matriks pendamping</strong> T: baris pertama berisi c<sub>1</sub> … c<sub>k</sub> (menghitung suku baru), baris lain menggeser keadaan (T[i][i − 1] = 1).</p>
-<p>Mulai dari v<sub>k−1</sub> = [f(k − 1), …, f(0)], maka v<sub>n</sub> = T<sup>n − k + 1</sup>·v<sub>k−1</sub>, dan f(n) adalah komponen pertamanya. Pangkat matriks dengan kuadrat berulang: O(k³ log n) ≈ 1000 · 60 operasi.</p>
-<p>Jangan lupa kasus n &lt; k (langsung f(n)) dan ambil modulo setiap kali menjumlahkan hasil kali.</p>',
-        'hints' => [
-            'Keadaan apa yang cukup untuk menghitung suku berikutnya? (k suku terakhir.)',
-            'Tulis satu langkah rekurens sebagai perkalian matriks k × k dengan vektor keadaan.',
-            'Pangkatkan matriks itu n − k + 1 kali dengan kuadrat berulang, lalu kalikan dengan vektor awal [f(k−1), …, f(0)].',
-        ],
-    ],
-
     [
         'slug' => 'jalan-tepat-k',
-        'lesson' => 'matrix-expo',
+        'lesson' => 'matriks',
         'title' => 'Jalan Sepanjang Tepat K',
         'difficulty' => 'Sedang',
         'tags' => ['matrix exponentiation', 'graph'],
@@ -2024,114 +1623,6 @@ CODE,
             'Berapa banyak jalan sepanjang 2 dari u ke v? Tuliskan sebagai jumlah atas simpul tengah w.',
             'Itu rumus perkalian matriks: banyak jalan sepanjang t = (A<sup>t</sup>)[u][v].',
             'Pangkatkan matriks ketetanggaan K kali dengan kuadrat berulang (modulo 10<sup>9</sup> + 7).',
-        ],
-    ],
-
-    // ───────────────────────── Inklusi-Eksklusi ─────────────────────────
-    [
-        'slug' => 'tukar-kado',
-        'lesson' => 'inklusi-eksklusi',
-        'title' => 'Tukar Kado Tanpa Dapat Sendiri',
-        'difficulty' => 'Mudah',
-        'tags' => ['inklusi-eksklusi', 'derangement', 'rekurens'],
-        'statement' => '<p>Ada <strong>n</strong> anak yang masing-masing membawa satu kado. Kado-kado dikumpulkan lalu dibagikan lagi sehingga setiap anak menerima tepat satu kado, dan <strong>tidak ada</strong> anak yang menerima kadonya sendiri.</p>
-<p>Ada berapa cara membagikannya? Cetak modulo 10<sup>9</sup> + 7.</p>',
-        'input_format' => '<p>Satu bilangan <code>n</code>.</p>',
-        'output_format' => '<p>Banyak cara mod 10<sup>9</sup> + 7.</p>',
-        'constraints' => '<ul><li>1 ≤ n ≤ 10<sup>6</sup></li></ul>',
-        'samples' => [
-            ['input' => "3\n", 'explanation' => 'Untuk anak A, B, C: (B, C, A) dan (C, A, B). Dua cara.'],
-            ['input' => "4\n", 'explanation' => 'Ada 9 cara.'],
-        ],
-        'tests' => function () {
-            return ["1\n", "2\n", "5\n", "10\n", "20\n", "1000\n", "123456\n", "999999\n", "1000000\n"];
-        },
-        'solve' => function (string $input) {
-            // Referensi: inklusi-eksklusi D(n) = Σ (-1)^i n!/i!  (dihitung mundur tanpa invers)
-            $M = 1000000007;
-            $n = (int) trim($input);
-            // n!/i! untuk i = n, n-1, ..., 0
-            $suku = 1;
-            $hasil = ($n % 2 == 0) ? 1 : $M - 1;       // i = n: (-1)^n · 1
-            for ($i = $n - 1; $i >= 0; $i--) {
-                $suku = $suku * ($i + 1) % $M;          // n!/i! = n!/(i+1)! · (i+1)
-                $hasil = ($i % 2 == 0) ? ($hasil + $suku) % $M : ($hasil - $suku + $M) % $M;
-            }
-
-            return (string) $hasil;
-        },
-        'starter' => [
-            'cpp' => <<<'CODE'
-#include <bits/stdc++.h>
-using namespace std;
-
-const long long MOD = 1000000007;
-
-int main() {
-    int n;
-    cin >> n;
-    // D(1) = 0, D(2) = 1, D(n) = (n - 1)(D(n-1) + D(n-2))
-    return 0;
-}
-CODE,
-            'javascript' => <<<'CODE'
-const MOD = 1000000007;
-const n = readInts()[0];
-// D(1) = 0, D(2) = 1, D(n) = (n - 1)(D(n-1) + D(n-2))
-CODE,
-            'python' => <<<'CODE'
-MOD = 10**9 + 7
-n = int(input())
-# D(1) = 0, D(2) = 1, D(n) = (n - 1)(D(n-1) + D(n-2))
-CODE,
-        ],
-        'solutions' => [
-            'cpp' => <<<'CODE'
-#include <bits/stdc++.h>
-using namespace std;
-
-const long long MOD = 1000000007;
-
-int main() {
-    int n;
-    cin >> n;
-    long long a = 1, b = 0;                 // a = D(0), b = D(1)
-    for (int i = 2; i <= n; i++) {
-        long long c = (i - 1) * ((a + b) % MOD) % MOD;
-        a = b;
-        b = c;
-    }
-    cout << (n == 0 ? a : b) << '\n';
-    return 0;
-}
-CODE,
-            'javascript' => <<<'CODE'
-const MOD = 1000000007;
-const n = readInts()[0];
-let a = 1, b = 0;                           // D(0), D(1)
-for (let i = 2; i <= n; i++) {
-  const c = ((i - 1) * ((a + b) % MOD)) % MOD;   // ≤ 10^6 · 10^9 = 10^15: tepat di double
-  a = b;
-  b = c;
-}
-console.log(String(b));
-CODE,
-            'python' => <<<'CODE'
-MOD = 10**9 + 7
-n = int(input())
-a, b = 1, 0
-for i in range(2, n + 1):
-    a, b = b, (i - 1) * (a + b) % MOD
-print(b)
-CODE,
-        ],
-        'editorial' => '<p>Ini <strong>derangement</strong>: permutasi tanpa titik tetap.</p>
-<p><strong>Inklusi-eksklusi.</strong> Dari n! permutasi, buang yang punya titik tetap. Banyak permutasi yang <em>setidaknya</em> memuat i titik tetap tertentu adalah (n − i)!, dan ada C(n, i) cara memilih i itu. Jadi D(n) = Σ<sub>i</sub> (−1)<sup>i</sup> C(n, i)(n − i)! = n! Σ<sub>i</sub> (−1)<sup>i</sup>/i!.</p>
-<p><strong>Rekurens.</strong> Lihat ke mana kado anak 1 pergi, misalnya ke anak k (n − 1 pilihan). Jika anak k menerima kado anak 1, sisa n − 2 anak membentuk derangement: D(n − 2). Jika tidak, "anak k tidak boleh menerima kado anak 1" berperan seperti "tidak boleh menerima kadonya sendiri" untuk n − 1 anak: D(n − 1). Maka D(n) = (n − 1)(D(n − 1) + D(n − 2)), O(n).</p>',
-        'hints' => [
-            'Hitung semua n! cara, lalu buang yang ada anak menerima kadonya sendiri. Bagaimana menghindari menghitung ganda?',
-            'Inklusi-eksklusi atas himpunan anak yang menerima kadonya sendiri, atau cari rekurens dengan melihat ke mana kado anak 1 pergi.',
-            'D(n) = (n − 1)(D(n − 1) + D(n − 2)) dengan D(1) = 0, D(2) = 1.',
         ],
     ],
 
@@ -2506,197 +1997,9 @@ CODE,
         ],
     ],
 
-    // ───────────────────────── Catalan, Stirling & Burnside ─────────────────────────
-    [
-        'slug' => 'bagi-permen',
-        'lesson' => 'kombinatorika',
-        'title' => 'Membagi Permen dengan Jatah Minimum',
-        'difficulty' => 'Mudah',
-        'tags' => ['kombinatorika', 'bintang dan sekat'],
-        'statement' => '<p>Ibu punya <strong>n</strong> permen identik untuk dibagikan habis kepada <strong>k</strong> anak. Anak ke-i harus mendapat <strong>paling sedikit a<sub>i</sub></strong> permen. Ada berapa cara membagi? Dua cara berbeda jika ada anak yang mendapat banyak permen berbeda. Cetak modulo 10<sup>9</sup> + 7.</p>',
-        'input_format' => '<p>Baris pertama berisi <code>n k</code>. Baris kedua berisi <code>a<sub>1</sub> … a<sub>k</sub></code>.</p>',
-        'output_format' => '<p>Banyak cara mod 10<sup>9</sup> + 7.</p>',
-        'constraints' => '<ul><li>0 ≤ n ≤ 10<sup>6</sup></li><li>1 ≤ k ≤ 200 000</li><li>0 ≤ a<sub>i</sub> ≤ 10<sup>6</sup></li></ul>',
-        'samples' => [
-            ['input' => "7 3\n0 0 0\n", 'explanation' => 'Bintang dan sekat: C(7 + 2, 2) = 36.'],
-            ['input' => "10 3\n2 3 1\n", 'explanation' => 'Berikan jatah minimum dulu (6 permen), sisa 4 permen dibagi bebas: C(4 + 2, 2) = 15.'],
-        ],
-        'tests' => function () {
-            $gen = function (int $n, int $k, int $aMax) {
-                return "$n $k\n".T::join(T::arr($k, 0, $aMax))."\n";
-            };
-
-            return [
-                "0 1\n0\n", "5 1\n6\n", "1000000 200000\n".T::join(array_fill(0, 200000, 0))."\n", $gen(20, 4, 3), $gen(1000000, 200000, 4),
-                $gen(1000000, 1000, 1000), $gen(500, 100, 10), $gen(1000000, 3, 1000000),
-            ];
-        },
-        'solve' => function (string $input) {
-            $M = 1000000007;
-            $lines = T::lines($input);
-            [$n, $k] = T::ints($lines[0]);
-            $sisa = $n - array_sum(T::ints($lines[1]));
-            if ($sisa < 0) {
-                return '0';
-            }
-            // C(sisa + k - 1, k - 1) dengan rumus perkalian C(N, r) = Π (N - r + i) / i
-            $N = $sisa + $k - 1;
-            $r = min($k - 1, $sisa);
-            $pw = function ($a, $e) use ($M) {
-                $x = 1;
-                $a %= $M;
-                while ($e > 0) {
-                    if ($e & 1) {
-                        $x = $x * $a % $M;
-                    }
-                    $a = $a * $a % $M;
-                    $e >>= 1;
-                }
-
-                return $x;
-            };
-            $atas = 1;
-            $bawah = 1;
-            for ($i = 1; $i <= $r; $i++) {
-                $atas = $atas * (($N - $r + $i) % $M) % $M;
-                $bawah = $bawah * $i % $M;
-            }
-
-            return (string) ($atas * $pw($bawah, $M - 2) % $M);
-        },
-        'starter' => [
-            'cpp' => <<<'CODE'
-#include <bits/stdc++.h>
-using namespace std;
-
-const long long MOD = 1000000007;
-
-int main() {
-    long long n;
-    int k;
-    cin >> n >> k;
-    long long wajib = 0;
-    for (int i = 0; i < k; i++) {
-        long long a;
-        cin >> a;
-        wajib += a;
-    }
-    // berikan jatah minimum dulu, lalu bintang dan sekat untuk sisanya
-    return 0;
-}
-CODE,
-            'javascript' => <<<'CODE'
-const MOD = 1000000007;
-const mul = (a, b) => ((a * (b >>> 16)) % MOD * 65536 + a * (b & 65535)) % MOD;
-const [n, k] = readInts();
-const a = readInts();
-// berikan jatah minimum dulu, lalu bintang dan sekat untuk sisanya
-CODE,
-            'python' => <<<'CODE'
-MOD = 10**9 + 7
-n, k = map(int, input().split())
-a = list(map(int, input().split()))
-# berikan jatah minimum dulu, lalu bintang dan sekat untuk sisanya
-CODE,
-        ],
-        'solutions' => [
-            'cpp' => <<<'CODE'
-#include <bits/stdc++.h>
-using namespace std;
-
-const long long MOD = 1000000007;
-
-long long pangkat(long long a, long long e) {
-    long long r = 1;
-    a %= MOD;
-    while (e > 0) {
-        if (e & 1) r = r * a % MOD;
-        a = a * a % MOD;
-        e >>= 1;
-    }
-    return r;
-}
-
-int main() {
-    long long n;
-    int k;
-    cin >> n >> k;
-    long long wajib = 0;
-    for (int i = 0; i < k; i++) {
-        long long a;
-        cin >> a;
-        wajib += a;
-    }
-    long long sisa = n - wajib;
-    if (sisa < 0) {
-        cout << 0 << '\n';
-        return 0;
-    }
-    // C(sisa + k - 1, k - 1): sisa bintang, k - 1 sekat
-    long long N = sisa + k - 1;
-    vector<long long> fact(N + 1);
-    fact[0] = 1;
-    for (long long i = 1; i <= N; i++) fact[i] = fact[i - 1] * (i % MOD) % MOD;
-    long long jawab = fact[N] * pangkat(fact[k - 1] * fact[sisa] % MOD, MOD - 2) % MOD;
-    cout << jawab << '\n';
-    return 0;
-}
-CODE,
-            'javascript' => <<<'CODE'
-const MOD = 1000000007;
-const mul = (a, b) => ((a * (b >>> 16)) % MOD * 65536 + a * (b & 65535)) % MOD;
-const pangkat = (a, e) => {
-  let r = 1;
-  a %= MOD;
-  while (e > 0) {
-    if (e % 2 === 1) r = mul(r, a);
-    a = mul(a, a);
-    e = Math.floor(e / 2);
-  }
-  return r;
-};
-const [n, k] = readInts();
-const a = readInts();
-let wajib = 0;
-for (const x of a) wajib += x;
-const sisa = n - wajib;
-if (sisa < 0) {
-  console.log("0");
-} else {
-  const N = sisa + k - 1;
-  const fact = [1];
-  for (let i = 1; i <= N; i++) fact.push(mul(fact[i - 1], i));
-  console.log(String(mul(fact[N], pangkat(mul(fact[k - 1], fact[sisa]), MOD - 2))));
-}
-CODE,
-            'python' => <<<'CODE'
-MOD = 10**9 + 7
-n, k = map(int, input().split())
-a = list(map(int, input().split()))
-sisa = n - sum(a)
-if sisa < 0:
-    print(0)
-else:
-    N = sisa + k - 1
-    fact = [1] * (N + 1)
-    for i in range(1, N + 1):
-        fact[i] = fact[i - 1] * i % MOD
-    print(fact[N] * pow(fact[k - 1] * fact[sisa] % MOD, MOD - 2, MOD) % MOD)
-CODE,
-        ],
-        'editorial' => '<p>Berikan dulu setiap anak jatah minimumnya: tersisa s = n − Σ a<sub>i</sub> permen (jika negatif, jawabannya 0). Sekarang soalnya: bagi s permen identik ke k anak tanpa batas bawah, yaitu banyak solusi x<sub>1</sub> + … + x<sub>k</sub> = s dengan x<sub>i</sub> ≥ 0.</p>
-<p><strong>Bintang dan sekat:</strong> susun s bintang dan k − 1 sekat dalam satu baris; sekat membagi bintang menjadi k kelompok. Banyak susunan C(s + k − 1, k − 1). Faktorial sampai s + k − 1 ≤ 1,2·10<sup>6</sup> lalu satu invers Fermat.</p>
-<p>Hati-hati: Σ a<sub>i</sub> bisa mencapai 2·10<sup>11</sup>, jadi simpan di <code>long long</code>.</p>',
-        'hints' => [
-            'Berikan jatah minimum lebih dulu. Berapa permen yang tersisa untuk dibagi bebas?',
-            'Membagi s permen identik ke k anak tanpa syarat = menyusun s bintang dan k − 1 sekat.',
-            'Jawabannya C(s + k − 1, k − 1) mod p, atau 0 jika s < 0.',
-        ],
-    ],
-
     [
         'slug' => 'jalan-diagonal',
-        'lesson' => 'kombinatorika',
+        'lesson' => 'kombinatorika-lanjut',
         'title' => 'Jalan di Bawah Diagonal',
         'difficulty' => 'Sedang',
         'tags' => ['kombinatorika', 'prinsip pantulan', 'catalan'],
@@ -2905,7 +2208,7 @@ CODE,
 
     [
         'slug' => 'kalung-manik',
-        'lesson' => 'kombinatorika',
+        'lesson' => 'kombinatorika-lanjut',
         'title' => 'Kalung Manik Berputar',
         'difficulty' => 'Sulit',
         'tags' => ['burnside', 'phi euler', 'kombinatorika'],

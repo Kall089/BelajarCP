@@ -46,7 +46,7 @@
 
     function fmtTime(lg) {
         const lgSec = lg - 8; // asumsi 10^8 operasi per detik
-        if (lgSec > 17.6) return "lebih lama dari umur alam semesta 🌌";
+        if (lgSec > 17.6) return "lebih lama dari umur alam semesta";
         const s = Math.pow(10, lgSec);
         if (s < 0.001) return "< 1 milidetik";
         if (s < 1) return `${Math.round(s * 1000)} milidetik`;
@@ -60,9 +60,9 @@
     }
 
     function status(lg) {
-        if (lg <= 8) return ["ok", "✅ Aman"];
-        if (lg <= 8.7) return ["warn", "⚠️ Mepet"];
-        return ["bad", "❌ TLE"];
+        if (lg <= 8) return ["ok", "Aman"];
+        if (lg <= 8.7) return ["warn", "Mepet"];
+        return ["bad", "TLE"];
     }
 
     V.register("bigo", (root) => {
@@ -173,7 +173,7 @@
             controls: `
                 <label class="viz-input">N <select data-n><option>16</option><option selected>24</option><option>32</option></select></label>
                 <label class="viz-input">Cari <select data-target></select></label>
-                <button class="btn btn-sm" data-random>🎲 Array baru</button>`,
+                <button class="btn btn-sm" data-random>Array baru</button>`,
             legend: [
                 ["Sedang diperiksa", "#f59e0b", "#f59e0b"],
                 ["Masih mungkin (rentang biner)", "#22d3ee", "rgba(34,211,238,.14)"],
@@ -288,16 +288,16 @@ return -1;  // tidak ditemukan`,
                     line = 2;
                     if (arr[mid] === target) {
                         binFound = true;
-                        binText = ` Biner: mid = ${mid}, a[mid] = ${arr[mid]} → <b>ketemu</b> dalam ${binSteps} langkah! 🎯`;
+                        binText = ` Biner: mid = ${mid}, a[mid] = ${arr[mid]} → <b>ketemu</b> dalam ${binSteps} langkah!`;
                         line = 3;
                     } else if (arr[mid] < target) {
                         binText = ` Biner: mid = ${mid}, a[mid] = ${arr[mid]} &lt; ${target} → buang separuh kiri.`;
-                        pendingDir = { type: "choice", options: ["⬅️ Separuh kiri", "➡️ Separuh kanan"], answer: 1, prompt: `a[mid] = ${arr[mid]} dan target = ${target}. Di separuh mana pencarian biner berlanjut?`, hint: "Array terurut: jika a[mid] lebih kecil dari target, target pasti ada di kanan." };
+                        pendingDir = { type: "choice", options: ["← Separuh kiri", "Separuh kanan →"], answer: 1, prompt: `a[mid] = ${arr[mid]} dan target = ${target}. Di separuh mana pencarian biner berlanjut?`, hint: "Array terurut: jika a[mid] lebih kecil dari target, target pasti ada di kanan." };
                         lo = mid + 1;
                         line = 4;
                     } else {
                         binText = ` Biner: mid = ${mid}, a[mid] = ${arr[mid]} &gt; ${target} → buang separuh kanan.`;
-                        pendingDir = { type: "choice", options: ["⬅️ Separuh kiri", "➡️ Separuh kanan"], answer: 0, prompt: `a[mid] = ${arr[mid]} dan target = ${target}. Di separuh mana pencarian biner berlanjut?`, hint: "Array terurut: jika a[mid] lebih besar dari target, target pasti ada di kiri." };
+                        pendingDir = { type: "choice", options: ["← Separuh kiri", "Separuh kanan →"], answer: 0, prompt: `a[mid] = ${arr[mid]} dan target = ${target}. Di separuh mana pencarian biner berlanjut?`, hint: "Array terurut: jika a[mid] lebih besar dari target, target pasti ada di kiri." };
                         hi = mid - 1;
                         line = 5;
                     }
@@ -306,7 +306,7 @@ return -1;  // tidak ditemukan`,
                 snap(linText + binText, { linCur, binCur: mid, line, mark: binFound && binText ? "take" : undefined, ask });
             }
             snap(
-                `🏁 Linear butuh <b>${linSteps}</b> langkah, biner hanya <b>${binSteps}</b>. Untuk N = 1 000 000, linear bisa butuh sejuta langkah, sedangkan biner cukup ±20 (karena 2²⁰ ≈ 1 juta). Inilah beda O(N) dan O(log N)!`,
+                `Linear butuh <b>${linSteps}</b> langkah, biner hanya <b>${binSteps}</b>. Untuk N = 1 000 000, linear bisa butuh sejuta langkah, sedangkan biner cukup ±20 (karena 2²⁰ ≈ 1 juta). Inilah beda O(N) dan O(log N)!`,
                 { mark: "done" },
             );
             player.load(frames);

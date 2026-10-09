@@ -90,18 +90,18 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Menemukan besaran yang tetap atau selalu turun, argumen paritas, pewarnaan papan, dan membuktikan sesuatu mustahil.'],
 
         // ───────────── Teori Bilangan & Kombinatorika ─────────────
-        ['slug' => 'sieve-gcd', 'track' => 'matematika', 'level' => 1, 'title' => 'Sieve, Faktorisasi & GCD', 'subtitle' => 'Bilangan prima dan algoritma Euclid', 'viz' => 'sieve', 'minutes' => 30,
-            'summary' => 'Uji prima O(√n), saringan Eratosthenes, smallest prime factor, faktorisasi cepat, banyak pembagi, GCD dan KPK.'],
-        ['slug' => 'modular', 'track' => 'matematika', 'level' => 1, 'title' => 'Aritmetika Modular & nCr', 'subtitle' => 'Bilangan raksasa dalam sisa bagi', 'viz' => 'fastpow', 'minutes' => 30,
-            'summary' => 'Sifat modulo, kesalahan umum, perpangkatan cepat, invers dengan Fermat kecil, faktorial dan C(n, k) modulo prima.'],
-        ['slug' => 'ext-euclid', 'track' => 'matematika', 'level' => 2, 'title' => 'Extended Euclid, Invers & CRT', 'subtitle' => 'gcd beserta koefisiennya', 'viz' => 'ext-gcd', 'minutes' => 30,
-            'summary' => 'ax + by = gcd(a, b), persamaan Diophantine linear, invers untuk modulus apa pun, dan Chinese Remainder Theorem.'],
-        ['slug' => 'matrix-expo', 'track' => 'matematika', 'level' => 2, 'title' => 'Matrix Exponentiation', 'subtitle' => 'Rekurens linear untuk n sampai 10^18', 'viz' => 'matpow', 'minutes' => 30,
-            'summary' => 'Menulis rekurens sebagai perkalian matriks, perpangkatan matriks cepat, Fibonacci ke-10^18, dan menghitung jalan sepanjang k.'],
-        ['slug' => 'inklusi-eksklusi', 'track' => 'matematika', 'level' => 2, 'title' => 'Inklusi-Eksklusi', 'subtitle' => 'Tambah tunggal, kurangi pasangan, tambah bertiga', 'viz' => 'venn', 'minutes' => 25,
-            'summary' => 'Prinsip inklusi-eksklusi, bilangan yang habis dibagi salah satu, menghitung yang koprima, dan derangement.'],
-        ['slug' => 'kombinatorika', 'track' => 'matematika', 'level' => 3, 'title' => 'Catalan, Stirling & Burnside', 'subtitle' => 'Tiga alat pencacahan yang sering muncul', 'viz' => 'catalan', 'minutes' => 35,
-            'summary' => 'Bilangan Catalan dan bijeksinya, bintang dan sekat, Stirling jenis kedua, dan Lemma Burnside untuk kalung berputar.'],
+        ['slug' => 'fpb-modular', 'track' => 'matematika', 'level' => 1, 'title' => 'FPB, KPK & Aritmetika Modular', 'subtitle' => 'Euclid, pangkat cepat, dan invers', 'viz' => 'euclid', 'minutes' => 35,
+            'summary' => 'Algoritma Euclid, KPK tanpa overflow, aturan modulo, pangkat cepat, invers modular (Fermat dan Euclid diperluas), persamaan Diophantine, dan CRT.'],
+        ['slug' => 'bilangan-prima', 'track' => 'matematika', 'level' => 1, 'title' => 'Bilangan Prima & Saringan', 'subtitle' => 'Eratosthenes, faktorisasi, dan phi Euler', 'viz' => 'sieve', 'minutes' => 35,
+            'summary' => 'Uji prima O(√n), saringan Eratosthenes, faktor prima terkecil untuk faktorisasi cepat, banyak pembagi, fungsi phi Euler, dan saringan rentang.'],
+        ['slug' => 'matriks', 'track' => 'matematika', 'level' => 2, 'title' => 'Eksponensiasi Matriks', 'subtitle' => 'Rekurens linear sampai suku ke-10^18', 'viz' => 'matpow', 'minutes' => 35,
+            'summary' => 'Perkalian matriks modulo, pangkat cepat matriks, menyusun matriks transisi dari rekurens, suku konstan, dan menghitung jalan sepanjang k langkah.'],
+        ['slug' => 'kombinatorika', 'track' => 'matematika', 'level' => 2, 'title' => 'Kombinatorika', 'subtitle' => 'Menghitung tanpa mendaftar', 'viz' => 'gridpath', 'minutes' => 40,
+            'summary' => 'Faktorial dan invers faktorial modulo prima, permutasi multiset, bintang dan sekat, inklusi–eksklusi, derangement, dan jalur grid dengan rintangan.'],
+        ['slug' => 'inklusi-eksklusi', 'track' => 'matematika', 'level' => 2, 'title' => 'Inklusi-Eksklusi', 'subtitle' => 'Tambah tunggal, kurangi pasangan, tambah bertiga', 'viz' => 'venn', 'minutes' => 30,
+            'summary' => 'Prinsip inklusi-eksklusi, iterasi bitmask atas faktor prima, menghitung bilangan koprima di rentang raksasa, surjeksi, dan derangement.'],
+        ['slug' => 'kombinatorika-lanjut', 'track' => 'matematika', 'level' => 3, 'title' => 'Catalan, Stirling & Burnside', 'subtitle' => 'Tiga alat pencacahan yang sering muncul', 'viz' => 'catalan', 'minutes' => 35,
+            'summary' => 'Bilangan Catalan dan bijeksinya, prinsip pantulan untuk jalur di bawah diagonal, Stirling jenis kedua, dan Lemma Burnside untuk kalung berputar.'],
         ['slug' => 'mobius', 'track' => 'matematika', 'level' => 3, 'title' => 'Fungsi Möbius & Inversi', 'subtitle' => 'Menukar syarat gcd menjadi syarat kelipatan', 'viz' => 'mobius', 'minutes' => 35,
             'summary' => 'Fungsi multiplikatif, phi Euler, Möbius dengan sieve linear, menghitung pasangan gcd = 1, dan jumlah gcd semua pasangan.'],
         ['slug' => 'xor-basis', 'track' => 'matematika', 'level' => 3, 'title' => 'Basis Linear XOR', 'subtitle' => '2^n himpunan bagian menjadi 60 bilangan', 'viz' => 'xor-basis', 'minutes' => 30,
@@ -124,12 +124,12 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Memilih algoritma jalur terpendek, BFS 0-1 dengan deque, BFS multi-sumber, dan graph keadaan (posisi + informasi).'],
         ['slug' => 'topological-sort', 'track' => 'graph', 'level' => 2, 'title' => 'Topological Sort', 'subtitle' => 'Mengurutkan tugas yang saling bergantung', 'viz' => 'toposort', 'minutes' => 25,
             'summary' => 'Algoritma Kahn, indegree, deteksi siklus, urutan leksikografis, dan DP di atas DAG.'],
-        ['slug' => 'dsu', 'track' => 'graph', 'level' => 2, 'title' => 'Disjoint Set Union', 'subtitle' => 'Union by size dan path compression', 'viz' => 'dsu-forest', 'minutes' => 30,
-            'summary' => 'Hutan himpunan, find dengan path compression, union by size, komponen secara online, DSU berbobot, dan DSU paritas.'],
         ['slug' => 'mst', 'track' => 'graph', 'level' => 2, 'title' => 'Minimum Spanning Tree', 'subtitle' => 'Kruskal & Union-Find', 'viz' => 'mst', 'minutes' => 30,
             'summary' => 'Menghubungkan semua simpul dengan biaya minimum memakai Kruskal dan struktur Union-Find (DSU).'],
-        ['slug' => 'euler-path', 'track' => 'graph', 'level' => 2, 'title' => 'Lintasan & Sirkuit Euler', 'subtitle' => 'Melewati setiap sisi tepat sekali', 'viz' => 'euler', 'minutes' => 30,
-            'summary' => 'Syarat derajat ganjil/genap, algoritma Hierholzer dengan stack, versi graph berarah, dan soal yang menyamar sebagai Euler.'],
+        ['slug' => 'dsu', 'track' => 'graph', 'level' => 2, 'title' => 'Disjoint Set Union', 'subtitle' => 'Menggabungkan kelompok dan bertanya "satu kelompok?"', 'viz' => 'dsu', 'minutes' => 35,
+            'summary' => 'find dengan path compression, union by size, ukuran komponen, pemrosesan offline terbalik untuk penghapusan, dan DSU berbobot/paritas.'],
+        ['slug' => 'euler', 'track' => 'graph', 'level' => 3, 'title' => 'Jalur & Sirkuit Euler', 'subtitle' => 'Melewati setiap sisi tepat sekali', 'viz' => 'euler', 'minutes' => 35,
+            'summary' => 'Syarat derajat, algoritma Hierholzer tanpa rekursi, graph berarah, urutan leksikografis terkecil, dan soal yang menyamar (rangkaian kata, De Bruijn).'],
         ['slug' => 'floyd-warshall', 'track' => 'graph', 'level' => 3, 'title' => 'Floyd-Warshall & Bellman-Ford', 'subtitle' => 'Jarak semua pasangan & bobot negatif', 'viz' => 'floyd', 'minutes' => 35,
             'summary' => 'DP di atas graph: jarak antar semua pasangan simpul, sisi berbobot negatif, dan deteksi siklus negatif.'],
         ['slug' => 'scc', 'track' => 'graph', 'level' => 3, 'title' => 'Strongly Connected Components', 'subtitle' => 'Kosaraju, Tarjan, dan graph kondensasi', 'viz' => 'scc', 'minutes' => 35,
@@ -138,10 +138,8 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Pohon DFS, sisi balik, nilai tin/low, mencari jembatan dan titik artikulasi dalam O(N + M), serta pohon jembatan.'],
         ['slug' => 'two-sat', 'track' => 'graph', 'level' => 3, 'title' => '2-SAT', 'subtitle' => 'Soal logika menjadi soal graph', 'viz' => 'twosat', 'minutes' => 35,
             'summary' => 'Klausa (a ∨ b) menjadi dua implikasi, graph implikasi, SCC untuk memeriksa x dan ¬x, dan membangun penugasan.'],
-        ['slug' => 'max-flow', 'track' => 'graph', 'level' => 3, 'title' => 'Aliran Maksimum & Min Cut', 'subtitle' => 'Dinic, sisi balik, dan teorema max-flow min-cut', 'viz' => 'maxflow', 'minutes' => 40,
-            'summary' => 'Jaringan aliran, graph residual, jalur penambah, Edmonds-Karp, Dinic dengan level graph, dan potongan minimum.'],
-        ['slug' => 'bipartite-matching', 'track' => 'graph', 'level' => 3, 'title' => 'Pencocokan Bipartit', 'subtitle' => 'Jalur penambah dan algoritma Kuhn', 'viz' => 'matching', 'minutes' => 35,
-            'summary' => 'Matching maksimum, algoritma Kuhn O(VE), teorema König, vertex cover minimum, dan pemodelan soal penugasan.'],
+        ['slug' => 'max-flow', 'track' => 'graph', 'level' => 3, 'title' => 'Aliran Maksimum & Pencocokan', 'subtitle' => 'Edmonds-Karp, potongan minimum, dan Kuhn', 'viz' => 'flow', 'minutes' => 40,
+            'summary' => 'Jaringan aliran, graph residual dan sisi balik, Edmonds-Karp, teorema max-flow min-cut, pencocokan bipartit, dan teknik pemodelan.'],
         ['slug' => 'mcmf', 'track' => 'graph', 'level' => 3, 'title' => 'Aliran Biaya Minimum & Penugasan', 'subtitle' => 'MCMF dengan SPFA, dan Hungarian', 'viz' => 'mcmf', 'minutes' => 40,
             'summary' => 'Biaya per unit aliran, jalur penambah termurah dengan Bellman-Ford/SPFA, sisi balik berbiaya negatif, dan penugasan optimal.'],
 
@@ -184,10 +182,12 @@ class CurriculumSeeder extends Seeder
             'summary' => 'State dp[u][keadaan], menggabungkan anak, DP pohon tanpa rekursi, menghitung cara, teknik kontribusi, dan knapsack di pohon.'],
         ['slug' => 'rerooting', 'track' => 'dp', 'level' => 3, 'title' => 'Rerooting Technique', 'subtitle' => 'Jawaban untuk setiap simpul sebagai akar', 'viz' => 'reroot', 'minutes' => 35,
             'summary' => 'DP ke bawah lalu ke atas, memindahkan akar dari ayah ke anak dalam O(1), prefix/suffix untuk operasi tanpa invers.'],
-        ['slug' => 'dp-ekspektasi', 'track' => 'dp', 'level' => 3, 'title' => 'DP Probabilitas & Ekspektasi', 'subtitle' => 'Linearitas ekspektasi dan keadaan pecahan', 'viz' => 'expect', 'minutes' => 35,
-            'summary' => 'Peluang sebagai DP maju, nilai harapan sebagai DP mundur, linearitas ekspektasi, dan jawaban dalam modulo dengan invers.'],
+        ['slug' => 'dp-peluang', 'track' => 'dp', 'level' => 3, 'title' => 'DP Peluang & Nilai Harapan', 'subtitle' => 'Dadu, harapan, dan pecahan modulo', 'viz' => 'dice', 'minutes' => 35,
+            'summary' => 'Distribusi peluang dengan DP, DP nilai harapan dari belakang, self-loop, pecahan P·Q⁻¹ mod p, linearitas, distribusi geometrik, dan jumlah ekor.'],
         ['slug' => 'broken-profile', 'track' => 'dp', 'level' => 3, 'title' => 'Broken Profile DP', 'subtitle' => 'Menutup grid dengan domino', 'viz' => 'profile', 'minutes' => 40,
             'summary' => 'Profil kolom sebagai bitmask, DP sel demi sel, menghitung cara menutup grid n × m dengan domino, dan variasinya.'],
+        ['slug' => 'dp-optimasi', 'track' => 'dp', 'level' => 3, 'title' => 'Optimasi Transisi DP', 'subtitle' => 'Prefix sum, deque monoton, binary search', 'viz' => 'monoqueue', 'minutes' => 35,
+            'summary' => 'Mempercepat transisi DP: jumlah rentang dengan prefix sum, minimum jendela dengan deque monoton, memisahkan suku, dan penjadwalan berbobot.'],
         ['slug' => 'dnc-knuth', 'track' => 'dp', 'level' => 3, 'title' => 'Optimasi DP: D&C & Knuth', 'subtitle' => 'Memangkas jangkauan titik pecah', 'viz' => 'dnc-opt', 'minutes' => 40,
             'summary' => 'Titik optimal yang monoton, divide and conquer optimization O(kn log n), quadrangle inequality, dan Knuth O(n²).'],
         ['slug' => 'cht', 'track' => 'dp', 'level' => 3, 'title' => 'Convex Hull Trick & Li Chao Tree', 'subtitle' => 'Suku DP berbentuk garis', 'viz' => 'cht', 'minutes' => 40,
@@ -198,16 +198,12 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Fungsi cembung sepotong-sepotong, titik patah di priority queue, operasi tambah |x − a| dan prefix minimum, serta soal membuat barisan naik.'],
 
         // ───────────── Struktur Data ─────────────
-        ['slug' => 'sparse-table', 'track' => 'struktur-data', 'level' => 2, 'title' => 'Sparse Table', 'subtitle' => 'Query minimum O(1) pada data tetap', 'viz' => 'sparse', 'minutes' => 30,
-            'summary' => 'Tabel st[k][i] untuk blok berukuran 2^k, query idempoten dengan dua blok bertumpuk, log bawaan, dan kapan tidak bisa dipakai.'],
-        ['slug' => 'fenwick', 'track' => 'struktur-data', 'level' => 2, 'title' => 'Fenwick Tree (BIT)', 'subtitle' => 'Prefix sum dengan update, kode terpendek', 'viz' => 'fenwick', 'minutes' => 30,
-            'summary' => 'Bit terendah i & −i, update dan query O(log n), range update point query, menghitung inversi, dan BIT 2D.'],
-        ['slug' => 'segment-tree', 'track' => 'struktur-data', 'level' => 2, 'title' => 'Segment Tree', 'subtitle' => 'Query dan update rentang yang serba bisa', 'viz' => 'segtree', 'minutes' => 35,
-            'summary' => 'Pohon biner atas rentang, build, point update, range query, menggabungkan informasi (min, jumlah, gcd, subarray maksimum).'],
-        ['slug' => 'lazy-propagation', 'track' => 'struktur-data', 'level' => 3, 'title' => 'Lazy Propagation', 'subtitle' => 'Update rentang dalam O(log n)', 'viz' => 'lazy', 'minutes' => 35,
-            'summary' => 'Menunda update dengan tag, push sebelum turun, range add + range sum, range assign, dan menggabungkan dua jenis tag.'],
-        ['slug' => 'sqrt-mo', 'track' => 'struktur-data', 'level' => 3, 'title' => 'Sqrt Decomposition & Mo', 'subtitle' => 'Blok berukuran akar n', 'viz' => 'mo', 'minutes' => 35,
-            'summary' => 'Memecah array menjadi blok √n, query dan update blok, algoritma Mo untuk query offline, dan menghitung nilai berbeda di rentang.'],
+        ['slug' => 'fenwick', 'track' => 'struktur-data', 'level' => 2, 'title' => 'Fenwick Tree (BIT)', 'subtitle' => 'Update titik dan jumlah prefix dalam O(log N)', 'viz' => 'fenwick', 'minutes' => 35,
+            'summary' => 'Bit terendah i & -i, update dan query prefix O(log N), menghitung inversi, update rentang, dan mencari elemen ke-k.'],
+        ['slug' => 'segment-tree', 'track' => 'struktur-data', 'level' => 2, 'title' => 'Segment Tree', 'subtitle' => 'Query rentang apa pun, update kapan pun', 'viz' => 'segtree', 'minutes' => 40,
+            'summary' => 'Membangun, query, dan update segment tree; versi iteratif; informasi kustom di simpul; lazy propagation; dan sparse table.'],
+        ['slug' => 'sqrt', 'track' => 'struktur-data', 'level' => 3, 'title' => 'Dekomposisi Akar & Algoritma Mo', 'subtitle' => 'Membagi menjadi √N blok', 'viz' => 'mo', 'minutes' => 40,
+            'summary' => 'Blok berukuran √N untuk query dan update rentang, tag per blok, algoritma Mo untuk query rentang offline, dan memilih ukuran blok.'],
         ['slug' => 'persistent-segtree', 'track' => 'struktur-data', 'level' => 3, 'title' => 'Segment Tree Persisten', 'subtitle' => 'Menyimpan seluruh versi', 'viz' => 'persistent', 'minutes' => 40,
             'summary' => 'Menyalin hanya log n simpul per perubahan, akar setiap versi, elemen terkecil ke-k di rentang, dan query pada versi lama.'],
         ['slug' => 'treap', 'track' => 'struktur-data', 'level' => 3, 'title' => 'Treap & Implicit Treap', 'subtitle' => 'Seimbang tanpa rotasi rumit', 'viz' => 'treap', 'minutes' => 40,
@@ -232,14 +228,14 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Mencari centroid, pohon centroid berkedalaman log n, menghitung pasangan berjarak k, dan query simpul merah terdekat.'],
 
         // ───────────── String ─────────────
-        ['slug' => 'hashing', 'track' => 'string', 'level' => 2, 'title' => 'String Hashing', 'subtitle' => 'Membandingkan potongan dalam O(1)', 'viz' => 'hash', 'minutes' => 30,
-            'summary' => 'Polynomial rolling hash, hash potongan dari prefix, peluang tabrakan, double hash / modulus 2^61 − 1, dan risiko anti-hash.'],
-        ['slug' => 'kmp', 'track' => 'string', 'level' => 2, 'title' => 'KMP & Prefix Function', 'subtitle' => 'Pencarian pola dalam O(n + m)', 'viz' => 'kmp', 'minutes' => 35,
-            'summary' => 'Border, prefix function π, pencarian pola dengan pemisah, periode string, dan automaton KMP.'],
-        ['slug' => 'z-manacher', 'track' => 'string', 'level' => 2, 'title' => 'Z-Function & Manacher', 'subtitle' => 'Awalan dan palindrom, keduanya linear', 'viz' => 'zbox', 'minutes' => 35,
-            'summary' => 'Z-box [l, r), pencarian pola dengan Z, algoritma Manacher untuk semua palindrom, dan palindrom terpanjang.'],
-        ['slug' => 'trie', 'track' => 'string', 'level' => 2, 'title' => 'Trie & Binary Trie', 'subtitle' => 'Pohon awalan, dan XOR terbesar', 'viz' => 'trie', 'minutes' => 30,
-            'summary' => 'Menyisipkan dan mencari kata, menghitung kata berawalan sama, binary trie, dan pasangan dengan XOR maksimum.'],
+        ['slug' => 'string-hashing', 'track' => 'string', 'level' => 2, 'title' => 'String Hashing', 'subtitle' => 'Membandingkan potongan dalam O(1)', 'viz' => 'hash', 'minutes' => 35,
+            'summary' => 'Hash polinomial, prefix hash, hash potongan O(1), tabrakan dan double hashing, palindrom dengan hash maju-mundur, dan binary search + hash.'],
+        ['slug' => 'kmp', 'track' => 'string', 'level' => 2, 'title' => 'KMP & Fungsi Prefiks', 'subtitle' => 'Mencari pola tanpa pernah mundur', 'viz' => 'kmp', 'minutes' => 35,
+            'summary' => 'Border dan fungsi prefiks π, pencarian pola O(n + m), periode terpendek, fungsi Z, dan menghitung kemunculan setiap awalan.'],
+        ['slug' => 'palindrom', 'track' => 'string', 'level' => 3, 'title' => 'Palindrom & Algoritma Manacher', 'subtitle' => 'Semua palindrom dalam waktu linear', 'viz' => 'manacher', 'minutes' => 35,
+            'summary' => 'Ekspansi dari pusat, algoritma Manacher dengan jari-jari ganjil dan genap, menghitung substring palindrom, cek s[l..r] dalam O(1), dan partisi palindrom.'],
+        ['slug' => 'trie', 'track' => 'string', 'level' => 2, 'title' => 'Trie', 'subtitle' => 'Pohon awalan untuk kata dan bit', 'viz' => 'trie', 'minutes' => 30,
+            'summary' => 'Menyisipkan dan mencari kata, menghitung kata berawalan sama, saran kata, trie biner untuk XOR maksimum, dan prefix XOR.'],
         ['slug' => 'suffix-array', 'track' => 'string', 'level' => 3, 'title' => 'Suffix Array & LCP', 'subtitle' => 'Semua sufiks diurutkan', 'viz' => 'suffix-array', 'minutes' => 40,
             'summary' => 'Pengurutan dengan penggandaan O(n log n), algoritma Kasai untuk LCP, banyak substring berbeda, dan substring berulang terpanjang.'],
         ['slug' => 'aho-corasick', 'track' => 'string', 'level' => 3, 'title' => 'Aho-Corasick', 'subtitle' => 'Banyak pola sekaligus, satu kali telusur', 'viz' => 'aho', 'minutes' => 40,
@@ -248,16 +244,14 @@ class CurriculumSeeder extends Seeder
             'summary' => 'Kelas endpos, link sufiks, menambah huruf dengan clone, banyak substring berbeda, dan kemunculan setiap substring.'],
 
         // ───────────── Geometri ─────────────
-        ['slug' => 'geometri-dasar', 'track' => 'geometri', 'level' => 2, 'title' => 'Geometri Dasar & Convex Hull', 'subtitle' => 'Hasil kali silang dan monotone chain', 'viz' => 'hull', 'minutes' => 40,
-            'summary' => 'Vektor, dot dan cross product, orientasi tiga titik, perpotongan ruas garis, luas poligon (shoelace), dan convex hull monotone chain.'],
+        ['slug' => 'geometri', 'track' => 'geometri', 'level' => 2, 'title' => 'Geometri Dasar', 'subtitle' => 'Hasil kali silang sebagai pisau serbaguna', 'viz' => 'hull', 'minutes' => 40,
+            'summary' => 'Vektor dengan koordinat bulat, cross product dan orientasi, perpotongan ruas garis, luas poligon (shoelace), titik dalam poligon, dan convex hull monotone chain.'],
         ['slug' => 'sweep-line', 'track' => 'geometri', 'level' => 3, 'title' => 'Sweep Line & Titik Terdekat', 'subtitle' => 'Garis yang bergerak, bidang menjadi barisan', 'viz' => 'sweep', 'minutes' => 35,
             'summary' => 'Kejadian yang diurutkan, sweep untuk interval dan persegi panjang, pasangan titik terdekat O(n log n) dengan set.'],
 
         // ───────────── Teori Permainan ─────────────
-        ['slug' => 'game-dp', 'track' => 'permainan', 'level' => 2, 'title' => 'Game DP: Posisi Menang & Kalah', 'subtitle' => 'Bermain optimal dari akhir ke awal', 'viz' => 'game-states', 'minutes' => 30,
-            'summary' => 'Posisi P dan N, DP pada keadaan permainan, permainan mengambil batu, minimax selisih skor, dan permainan pada DAG.'],
-        ['slug' => 'sprague-grundy', 'track' => 'permainan', 'level' => 3, 'title' => 'Nim & Sprague-Grundy', 'subtitle' => 'XOR yang menentukan pemenang', 'viz' => 'grundy', 'minutes' => 35,
-            'summary' => 'Permainan Nim dan bukti XOR, mex, bilangan Grundy, menggabungkan permainan dengan XOR, dan mencari pola Grundy.'],
+        ['slug' => 'permainan', 'track' => 'permainan', 'level' => 2, 'title' => 'Teori Permainan: Nim & Sprague–Grundy', 'subtitle' => 'Siapa menang jika keduanya bermain sempurna?', 'viz' => 'nim', 'minutes' => 35,
+            'summary' => 'Posisi menang dan kalah, DP permainan, pola periodik, Nim dan XOR, nilai Grundy dengan mex, dan menggabungkan banyak permainan.'],
 
         // ───────────── Teknik Kontes ─────────────
         ['slug' => 'stress-testing', 'track' => 'kontes', 'level' => 1, 'title' => 'Stress Testing & Mencari Bug', 'subtitle' => 'Uji banding dengan solusi brute force', 'viz' => 'stress', 'minutes' => 25,
@@ -279,6 +273,12 @@ class CurriculumSeeder extends Seeder
         'fondasi', 'graph', 'graph_more', 'dp', 'dp_more',
         'stl', 'array', 'sorting', 'rekursi', 'greedy', 'matematika', 'graph_lanjut', 'dp_lanjut',
         'struktur_data', 'pohon', 'string', 'geometri', 'permainan', 'kontes', 'latihan',
+        'fondasi_more', 'fondasi_stl', 'fondasi_bit', 'fondasi_greedy',
+        'graph_extra', 'graph_extra2', 'graph_extra3', 'graph_euler', 'graph_flow',
+        'dp_extra', 'dp_extra2', 'dp_optimasi', 'dp_peluang',
+        'ds_prefix', 'ds_stack', 'ds_dsu', 'ds_fenwick', 'ds_segtree', 'ds_sqrt',
+        'math_fpb', 'math_prima', 'math_kombi', 'math_matriks', 'math_game', 'math_geo',
+        'str_hash', 'str_kmp', 'str_trie', 'str_palindrom',
     ];
 
     public function run(): void
@@ -330,6 +330,11 @@ class CurriculumSeeder extends Seeder
 
             $this->upsertProblem($p, $lessons, $pos + 1);
         }
+
+        // Materi dan soal yang sudah tidak ada di kurikulum dihapus, agar peta belajar
+        // tidak menyimpan materi lama yang isinya sudah digabung ke materi lain.
+        Lesson::whereNotIn('slug', array_keys($lessons))->delete();
+        Problem::whereNotIn('slug', array_keys($seen))->delete();
     }
 
     private function upsertProblem(array $p, array $lessons, int $position): void

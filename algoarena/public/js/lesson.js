@@ -111,7 +111,7 @@
                 const right = i === answer;
                 opt.classList.add(right ? "correct" : "wrong");
                 if (!right) $$(".quiz-option", quiz)[answer].classList.add("correct");
-                feedback.innerHTML = (right ? "✅ <b>Tepat!</b> " : "❌ <b>Belum tepat.</b> ") + quiz.dataset.explain;
+                feedback.innerHTML = (right ? "<b>Tepat!</b> " : "<b>Belum tepat.</b> ") + quiz.dataset.explain;
                 feedback.hidden = false;
             }),
         );
@@ -139,7 +139,7 @@
                 btn.className = "btn " + (data.done ? "btn-outline" : "btn-primary");
                 $("[data-complete-box]").classList.toggle("is-done", data.done);
                 $("[data-complete-title]").textContent = data.done
-                    ? "Materi ini sudah kamu selesaikan 🎉"
+                    ? "Materi ini sudah kamu selesaikan."
                     : "Sudah memahami materi ini?";
                 $("[data-complete-sub]").textContent = data.done
                     ? "Kamu tetap bisa mengulasnya kapan saja."

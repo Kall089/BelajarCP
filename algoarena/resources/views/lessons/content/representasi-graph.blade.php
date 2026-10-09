@@ -187,7 +187,7 @@ CPP;
 @include('lessons.level', ['n' => 1, 'title' => 'apa itu graph?', 'desc' => 'Mengenal simpul, sisi, dan istilah yang akan dipakai di semua materi graph.'])
 
 <section class="lesson-section" id="intuisi" data-toc="Apa itu Graph?">
-    <h2><span class="sec-icon">💡</span> Apa itu Graph?</h2>
+    <h2>Apa itu Graph?</h2>
     <div class="prose">
         <p>Bayangkan peta jalan di kotamu. Ada <strong>persimpangan</strong>, dan ada <strong>jalan</strong> yang menghubungkannya. Atau daftar pertemanan di media sosial: ada <strong>orang</strong>, dan ada <strong>hubungan pertemanan</strong>. Keduanya bisa digambarkan dengan struktur yang sama, yaitu <strong>graph</strong>.</p>
         <ul>
@@ -216,7 +216,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="istilah" data-toc="Istilah Penting">
-    <h2><span class="sec-icon">📖</span> Istilah Penting</h2>
+    <h2>Istilah Penting</h2>
     <div class="term-grid">
         <div class="term"><b>Tetangga</b><span>Simpul yang terhubung langsung oleh satu sisi. Pada gambar, tetangga 2 adalah 1, 3, dan 5.</span></div>
         <div class="term"><b>Derajat</b><span>Banyaknya sisi yang menempel pada simpul. Derajat simpul 2 adalah 3.</span></div>
@@ -234,7 +234,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="menyimpan" data-toc="Dua Cara Menyimpan">
-    <h2><span class="sec-icon">🗄️</span> Dua Cara Menyimpan Graph</h2>
+    <h2>Dua Cara Menyimpan Graph</h2>
     <div class="prose">
         <p>Komputer tidak bisa "melihat" gambar. Graph harus disimpan dalam struktur data. Ada dua cara utama, kita pakai graph tak berarah di atas sebagai contoh.</p>
     </div>
@@ -271,7 +271,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi Interaktif">
-    <h2><span class="sec-icon">🎬</span> Visualisasi: Membangun List & Matrix</h2>
+    <h2>Visualisasi: Membangun List & Matrix</h2>
     <div class="prose">
         <p>Putar animasi di bawah dan perhatikan bagaimana setiap sisi dicatat ke <strong>adjacency list</strong> dan <strong>adjacency matrix</strong>. Coba mode <em>Berarah</em>, tombol <em>Acak</em>, atau gambar graph-mu sendiri dengan alat edit di pojok kanan atas.</p>
     </div>
@@ -279,7 +279,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="cara" data-toc="Cara Pengerjaan">
-    <h2><span class="sec-icon">🧭</span> Cara Pengerjaan</h2>
+    <h2>Cara Pengerjaan</h2>
     <div class="steps">
         <div class="step-card"><b>Identifikasi simpul & sisi</b><span>Dari cerita soal: apa yang menjadi simpul? Apa yang menjadi sisi? Apakah berarah? Berbobot?</span></div>
         <div class="step-card"><b>Pilih representasi</b><span>Hampir selalu <code>adjacency list</code>. Matrix hanya cocok jika N kecil (≤ ±2000) dan kamu sering bertanya "apakah u–v terhubung?".</span></div>
@@ -291,7 +291,7 @@ CPP;
 @include('lessons.level', ['n' => 2, 'title' => 'menyimpan graph di C++', 'desc' => 'Program lengkap yang membangun adjacency list & matrix, dibahas baris demi baris.'])
 
 <section class="lesson-section" id="kode" data-toc="Kode C++ Lengkap">
-    <h2><span class="sec-icon">💻</span> Kode C++ Lengkap</h2>
+    <h2>Kode C++ Lengkap</h2>
     <div class="prose">
         <p><strong>Soal contoh:</strong> baca graph tak berarah, cetak tetangga dan derajat setiap simpul (terurut), lalu jawab <code>Q</code> pertanyaan "apakah u dan v bertetangga?" dengan <code>YA</code> atau <code>TIDAK</code>.</p>
     </div>
@@ -305,7 +305,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="perbandingan" data-toc="List vs Matrix">
-    <h2><span class="sec-icon">⚖️</span> List vs Matrix</h2>
+    <h2>List vs Matrix</h2>
     <table class="cx-table">
         <tr><th>Operasi</th><th>Adjacency List</th><th>Adjacency Matrix</th></tr>
         <tr><td>Memori</td><td><code>O(N + M)</code></td><td><code>O(N²)</code></td></tr>
@@ -320,14 +320,14 @@ CPP;
 </section>
 
 <section class="lesson-section" id="variasi" data-toc="Variasi Input">
-    <h2><span class="sec-icon">🧠</span> Variasi Input yang Sering Muncul</h2>
+    <h2>Variasi Input yang Sering Muncul</h2>
     <div class="pattern-grid">
-        <div class="pattern"><h4>➡️ Berarah</h4><p>Cukup <code>adj[u].push_back(v)</code>. Kata kunci: "satu arah", "prasyarat", "follow", "mengirim ke".</p></div>
-        <div class="pattern"><h4>⚖️ Berbobot</h4><p>Simpan pasangan <code>{tetangga, bobot}</code> dengan <code>vector&lt;pair&lt;int,int&gt;&gt;</code>.</p></div>
-        <div class="pattern"><h4>🧱 Grid</h4><p>Graph tersembunyi: setiap petak adalah simpul, tetangganya 4 arah. Tidak perlu membangun adjacency list.</p></div>
+        <div class="pattern"><h4>Berarah</h4><p>Cukup <code>adj[u].push_back(v)</code>. Kata kunci: "satu arah", "prasyarat", "follow", "mengirim ke".</p></div>
+        <div class="pattern"><h4>Berbobot</h4><p>Simpan pasangan <code>{tetangga, bobot}</code> dengan <code>vector&lt;pair&lt;int,int&gt;&gt;</code>.</p></div>
+        <div class="pattern"><h4>Grid</h4><p>Graph tersembunyi: setiap petak adalah simpul, tetangganya 4 arah. Tidak perlu membangun adjacency list.</p></div>
         <div class="pattern"><h4>0️⃣ Indeks dari 0</h4><p>Jika simpul bernomor <code>0..N-1</code>, buat vector berukuran <code>n</code> saja.</p></div>
-        <div class="pattern"><h4>🌳 Pohon</h4><p>Sering diberikan sebagai <code>N − 1</code> sisi, atau sebagai array <code>parent[i]</code> untuk i = 2..N.</p></div>
-        <div class="pattern"><h4>📋 Edge list</h4><p>Simpan sisi apa adanya. Dipakai algoritma yang memproses sisi satu per satu (Kruskal, Bellman-Ford).</p></div>
+        <div class="pattern"><h4>Pohon</h4><p>Sering diberikan sebagai <code>N − 1</code> sisi, atau sebagai array <code>parent[i]</code> untuk i = 2..N.</p></div>
+        <div class="pattern"><h4>Edge list</h4><p>Simpan sisi apa adanya. Dipakai algoritma yang memproses sisi satu per satu (Kruskal, Bellman-Ford).</p></div>
     </div>
     <div class="prose"><p><strong>Graph berbobot</strong> disimpan sebagai daftar pasangan:</p></div>
     @include('lessons.code', ['cpp' => $reprWeighted, 'js' => null, 'py' => null])
@@ -336,7 +336,7 @@ CPP;
 @include('lessons.level', ['n' => 3, 'title' => 'sifat-sifat graph & representasi lain', 'desc' => 'Handshaking lemma, edge list, dan cara menghitung kebutuhan memori.'])
 
 <section class="lesson-section" id="bukti" data-toc="Handshaking Lemma">
-    <h2><span class="sec-icon">🔬</span> Handshaking Lemma</h2>
+    <h2>Handshaking Lemma</h2>
     <div class="proof">
         <p><strong>Teorema.</strong> Pada graph tak berarah, jumlah derajat semua simpul selalu sama dengan <code>2 × M</code>.</p>
         <p><strong>Bukti.</strong> Setiap sisi <code>u – v</code> menyumbang tepat 1 ke derajat u dan 1 ke derajat v. Jadi setiap sisi dihitung tepat dua kali saat derajat dijumlahkan.</p>
@@ -348,7 +348,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="teknik" data-toc="Teknik Lanjutan">
-    <h2><span class="sec-icon">🚀</span> Teknik Lanjutan</h2>
+    <h2>Teknik Lanjutan</h2>
     <div class="prose">
         <h3>1. Edge list</h3>
         <p>Kadang kita tidak butuh "siapa tetangga u", melainkan memproses <strong>semua sisi</strong>, misalnya mengurutkannya dari bobot terkecil. Untuk itu cukup simpan sisi dalam satu <code>vector</code> berisi <code>struct</code>:</p>
@@ -368,7 +368,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="kuis" data-toc="Cek Pemahaman">
-    <h2><span class="sec-icon">✅</span> Cek Pemahaman</h2>
+    <h2>Cek Pemahaman</h2>
     <div class="quiz" data-quiz data-answer="2" data-explain="Graph tak berarah dengan M sisi: setiap sisi masuk ke dua list, jadi totalnya 2M = 2 × 6 = 12 entri.">
         <p class="quiz-q">Graph tak berarah punya 5 simpul dan 6 sisi. Berapa total entri di seluruh adjacency list-nya?</p>
         <div class="quiz-options">

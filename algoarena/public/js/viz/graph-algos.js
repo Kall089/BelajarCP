@@ -79,7 +79,7 @@
             practice: false,
             controls: `
                 ${V.segmented("mode", [["0", "Tak berarah"], ["1", "Berarah"]], "0")}
-                <button class="btn btn-sm" data-random>🎲 Acak</button>
+                <button class="btn btn-sm" data-random>Acak</button>
                 <button class="btn btn-sm btn-ghost" data-preset>Reset</button>`,
             legend: [
                 ["Sisi yang sedang dicatat", "#22d3ee", "rgba(34,211,238,.15)"],
@@ -252,7 +252,7 @@ for (int i = 0; i < m; i++) {                            //@2
             title: "Breadth-First Search",
             controls: `
                 <label class="viz-input">Mulai dari <select data-start></select></label>
-                <button class="btn btn-sm" data-random>🎲 Graph acak</button>
+                <button class="btn btn-sm" data-random>Graph acak</button>
                 <button class="btn btn-sm btn-ghost" data-preset>Reset</button>`,
             legend: [
                 ["Simpul awal", "#22c55e"],
@@ -423,7 +423,7 @@ void bfs(int s) {                           //@0
             sync();
             rec.push(
                 -1,
-                `🎉 Antrian kosong, BFS selesai! Urutan kunjungan: <b>${order.join(" → ")}</b>. Warna simpul menunjukkan <b>lapis</b>: ${layers}.` +
+                `Antrian kosong, BFS selesai! Urutan kunjungan: <b>${order.join(" → ")}</b>. Warna simpul menunjukkan <b>lapis</b>: ${layers}.` +
                     (unreached.length ? ` Simpul <b>${unreached.join(", ")}</b> tidak terjangkau (tetap ∞).` : ""),
                 st,
                 { mark: "done" },
@@ -470,7 +470,7 @@ void bfs(int s) {                           //@0
             controls: `
                 ${V.segmented("mode", [["single", "Dari satu simpul"], ["comp", "Hitung komponen"]], "single")}
                 <label class="viz-input" data-start-wrap>Mulai <select data-start></select></label>
-                <button class="btn btn-sm" data-random>🎲 Acak</button>
+                <button class="btn btn-sm" data-random>Acak</button>
                 <button class="btn btn-sm btn-ghost" data-preset>Reset</button>`,
             legend: [
                 ["Sedang dikunjungi", "#f59e0b", "#f59e0b"],
@@ -643,7 +643,7 @@ for (int s = 1; s <= n; s++)        //@1
                 sync();
                 rec.push(
                     -1,
-                    `🎉 DFS selesai. Urutan kunjungan: <b>${order.join(" → ")}</b>. Angka #k di atas simpul adalah urutan kunjungannya.` +
+                    `DFS selesai. Urutan kunjungan: <b>${order.join(" → ")}</b>. Angka #k di atas simpul adalah urutan kunjungannya.` +
                         (missed.length ? ` Simpul <b>${missed.join(", ")}</b> tidak tercapai karena berada di komponen lain. Coba mode <b>Hitung komponen</b>!` : ""),
                     st,
                     { mark: "done" },
@@ -676,7 +676,7 @@ for (int s = 1; s <= n; s++)        //@1
                 }
                 watchRows = [["komponen", comp]];
                 sync();
-                rec.push(-1, `🎉 Selesai! Graph ini terdiri dari <b>${comp} komponen terhubung</b>, masing-masing ditandai warna berbeda.`, st, { mark: "done" });
+                rec.push(-1, `Selesai! Graph ini terdiri dari <b>${comp} komponen terhubung</b>, masing-masing ditandai warna berbeda.`, st, { mark: "done" });
             }
             player.load(rec.frames);
         }
@@ -724,7 +724,7 @@ for (int s = 1; s <= n; s++)        //@1
             title: "Algoritma Dijkstra",
             controls: `
                 <label class="viz-input">Sumber <select data-start></select></label>
-                <button class="btn btn-sm" data-random>🎲 Graph acak</button>
+                <button class="btn btn-sm" data-random>Graph acak</button>
                 <button class="btn btn-sm btn-ghost" data-preset>Reset</button>`,
             legend: [
                 ["Diambil dari PQ", "#f59e0b", "#f59e0b"],
@@ -919,7 +919,7 @@ void dijkstra(int s) {                                  //@0
             const summary = Array.from({ length: g.n }, (_, i) => `${i + 1}: ${fmtD(dist[i + 1])}`).join(", ");
             rec.push(
                 -1,
-                `🎉 PQ kosong, selesai! Jarak terpendek → <b>${summary}</b>. Garis hijau membentuk <b>pohon jalur terpendek</b>; ikuti <code>prev</code> mundur untuk merekonstruksi rute.`,
+                `PQ kosong, selesai! Jarak terpendek → <b>${summary}</b>. Garis hijau membentuk <b>pohon jalur terpendek</b>; ikuti <code>prev</code> mundur untuk merekonstruksi rute.`,
                 st,
                 { mark: "done" },
             );
@@ -964,8 +964,8 @@ void dijkstra(int s) {                                  //@0
         const sh = V.shell(root, {
             title: "Topological Sort: Algoritma Kahn",
             controls: `
-                <button class="btn btn-sm" data-random>🎲 DAG acak</button>
-                <button class="btn btn-sm" data-cycle>🔁 Tambah siklus</button>
+                <button class="btn btn-sm" data-random>DAG acak</button>
+                <button class="btn btn-sm" data-cycle>Tambah siklus</button>
                 <button class="btn btn-sm btn-ghost" data-preset>Reset</button>`,
             legend: [
                 ["Indegree 0 (di antrian)", "#22d3ee", "rgba(34,211,238,.16)"],
@@ -1119,13 +1119,13 @@ if ((int)hasil.size() < n)                    //@7
                 sync();
                 rec.push(
                     7,
-                    `⚠️ Antrian kosong, tapi baru <b>${result.length}</b> dari ${g.n} simpul yang terurut. Simpul <b>${stuck.join(", ")}</b> saling menunggu, berarti ada <b>siklus</b> dan urutan topologis <b>mustahil</b>.`,
+                    `Antrian kosong, tapi baru <b>${result.length}</b> dari ${g.n} simpul yang terurut. Simpul <b>${stuck.join(", ")}</b> saling menunggu, berarti ada <b>siklus</b> dan urutan topologis <b>mustahil</b>.`,
                     st,
                     { mark: "skip" },
                 );
             } else {
                 sync();
-                rec.push(7, `🎉 Semua ${g.n} simpul terurut: <b>${result.join(" → ")}</b>. Tidak ada siklus, jadi graph ini adalah DAG.`, st, { mark: "done" });
+                rec.push(7, `Semua ${g.n} simpul terurut: <b>${result.join(" → ")}</b>. Tidak ada siklus, jadi graph ini adalah DAG.`, st, { mark: "done" });
             }
             player.load(rec.frames);
         }
@@ -1168,7 +1168,7 @@ if ((int)hasil.size() < n)                    //@7
         const sh = V.shell(root, {
             title: "Minimum Spanning Tree: Algoritma Kruskal",
             controls: `
-                <button class="btn btn-sm" data-random>🎲 Graph acak</button>
+                <button class="btn btn-sm" data-random>Graph acak</button>
                 <button class="btn btn-sm btn-ghost" data-preset>Reset</button>`,
             legend: [
                 ["Sisi sedang diperiksa", "#f59e0b"],
@@ -1316,7 +1316,7 @@ for (auto& e : sisi) {                                    //@2
                         pulse: [e.u, e.v],
                         ask: {
                             type: "choice",
-                            options: ["✅ Ambil", "⛔ Tolak (membentuk siklus)"],
+                            options: ["Ambil", "Tolak (membentuk siklus)"],
                             answer: 0,
                             prompt: `Sisi <b>${e.u}–${e.v}</b> (bobot ${e.w}): ambil atau tolak?`,
                             hint: "Tolak hanya jika kedua simpul sudah satu komponen (warnanya sama).",
@@ -1335,7 +1335,7 @@ for (auto& e : sisi) {                                    //@2
                         mark: "skip",
                         ask: {
                             type: "choice",
-                            options: ["✅ Ambil", "⛔ Tolak (membentuk siklus)"],
+                            options: ["Ambil", "Tolak (membentuk siklus)"],
                             answer: 1,
                             prompt: `Sisi <b>${e.u}–${e.v}</b> (bobot ${e.w}): ambil atau tolak?`,
                             hint: "Perhatikan warna simpul: warna sama berarti sudah satu komponen.",
@@ -1362,7 +1362,7 @@ for (auto& e : sisi) {                                    //@2
             rec.push(
                 -1,
                 connected
-                    ? `🎉 Minimum Spanning Tree terbentuk dari <b>${taken} sisi hijau</b> dengan total bobot <b>${total}</b>. Tidak ada cara lain menghubungkan semua simpul dengan biaya lebih kecil.`
+                    ? `Minimum Spanning Tree terbentuk dari <b>${taken} sisi hijau</b> dengan total bobot <b>${total}</b>. Tidak ada cara lain menghubungkan semua simpul dengan biaya lebih kecil.`
                     : `Graph ini <b>tidak terhubung</b>, jadi yang terbentuk adalah <i>spanning forest</i> dengan ${taken} sisi (total ${total}).`,
                 st,
                 {

@@ -162,6 +162,7 @@ class ProblemController extends Controller
                 'results.*.id' => ['required', 'integer'],
                 'results.*.status' => ['required', 'in:ok,tle,re'],
                 'results.*.output' => ['nullable', 'string'],
+                'results.*.fp' => ['nullable', 'string', 'max:40'],
                 'results.*.time' => ['nullable', 'numeric'],
                 'results.*.error' => ['nullable', 'string', 'max:2000'],
             ])['results'])->keyBy('id');
@@ -175,6 +176,7 @@ class ProblemController extends Controller
                 $r === null => 'RE',
                 $r['status'] === 'tle' => 'TLE',
                 $r['status'] === 're' => 'RE',
+                ! empty($r['fp']) => hash_equals(Problem::outputFingerprint($test->output), (string) $r['fp']) ? 'AC' : 'WA',
                 Problem::outputsMatch($test->output, (string) ($r['output'] ?? '')) => 'AC',
                 default => 'WA',
             };
