@@ -122,7 +122,7 @@ class CurriculumSeeder extends Seeder
     ];
 
     /** Urutan file soal; soal nantinya diurutkan mengikuti urutan materi. */
-    private const PROBLEM_FILES = ['fondasi', 'fondasi_more', 'fondasi_greedy', 'graph', 'graph_more', 'graph_extra', 'graph_extra2', 'graph_extra3', 'graph_euler', 'graph_flow', 'dp', 'dp_more', 'dp_extra', 'dp_extra2', 'dp_optimasi', 'dp_peluang', 'ds_prefix', 'ds_stack', 'ds_fenwick', 'ds_segtree', 'math_fpb', 'math_prima', 'math_kombi', 'str_hash', 'str_kmp', 'str_trie'];
+    private const PROBLEM_FILES = ['fondasi', 'fondasi_more', 'fondasi_greedy', 'graph', 'graph_more', 'graph_extra', 'graph_extra2', 'graph_extra3', 'graph_euler', 'graph_flow', 'dp', 'dp_more', 'dp_extra', 'dp_extra2', 'dp_optimasi', 'dp_peluang', 'ds_prefix', 'ds_stack', 'ds_fenwick', 'ds_segtree', 'math_fpb', 'math_prima', 'math_kombi', 'str_hash', 'str_kmp', 'str_trie', 'fondasi_stl', 'fondasi_bit', 'ds_dsu', 'math_matriks', 'math_game', 'math_geo'];
 
     public function run(): void
     {

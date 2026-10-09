@@ -1629,6 +1629,217 @@ html[data-theme="light"] .g-node.colored text.label {
     color: var(--green-text);
 }
 
+/* ═══════════════════════════════ Visualisasi pangkat matriks ═══════════════════════════════ */
+.mp-wrap {
+    display: grid;
+    gap: 18px;
+    padding: 20px 8px 6px;
+    justify-items: center;
+}
+
+.mp-bits {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.mp-bit {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    padding: 4px 0;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--panel);
+    font-family: var(--mono);
+}
+
+.mp-bit small {
+    font-size: 10px;
+    color: var(--faint);
+}
+
+.mp-bit b {
+    font-size: 17px;
+    color: var(--muted);
+}
+
+.mp-bit.one b {
+    color: var(--text-strong);
+}
+
+.mp-bit.done {
+    opacity: 0.55;
+}
+
+.mp-bit.cur {
+    border-color: var(--amber);
+    background: rgba(245, 158, 11, 0.22);
+    opacity: 1;
+}
+
+.mp-mats {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.mp-mat {
+    display: grid;
+    gap: 6px;
+    justify-items: center;
+}
+
+.mp-lbl {
+    font: 700 13px var(--mono);
+    color: var(--muted);
+}
+
+.mp-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(64px, auto));
+    gap: 4px;
+    padding: 8px 10px;
+    border-left: 2px solid var(--text-soft);
+    border-right: 2px solid var(--text-soft);
+    border-radius: 6px;
+}
+
+.mp-grid b {
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: var(--panel-deep);
+    font: 700 15px var(--mono);
+    color: var(--text-strong);
+    text-align: center;
+}
+
+.mp-mat.chg .mp-grid b {
+    background: rgba(34, 197, 94, 0.22);
+}
+
+/* ═══════════════════════════════ Visualisasi teori permainan ═══════════════════════════════ */
+.gm-wrap {
+    display: grid;
+    gap: 10px;
+    padding: 24px 8px 6px;
+    overflow-x: auto;
+}
+
+.gm-row {
+    display: flex;
+    gap: 5px;
+    justify-content: safe center;
+    flex-wrap: wrap;
+}
+
+.gm-cell {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 50px;
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    background: var(--panel);
+    font-family: var(--mono);
+}
+
+.gm-cell small {
+    font-size: 10px;
+    color: var(--faint);
+}
+
+.gm-cell b {
+    font-size: 16px;
+    min-height: 20px;
+    color: var(--text-strong);
+}
+
+.gm-cell.win {
+    border-color: var(--green);
+    background: rgba(34, 197, 94, 0.2);
+}
+
+.gm-cell.lose {
+    border-color: var(--red);
+    background: rgba(239, 68, 68, 0.14);
+}
+
+.gm-cell.reach {
+    box-shadow: 0 0 0 3px var(--cyan);
+}
+
+.gm-cell.cur {
+    border-color: var(--amber);
+    background: rgba(245, 158, 11, 0.28);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.35);
+}
+
+/* ═══════════════════════════════ Visualisasi convex hull ═══════════════════════════════ */
+.hl-svg {
+    display: block;
+    width: 100%;
+    max-height: 380px;
+    margin: 8px 0 4px;
+}
+
+.hl-grid {
+    stroke: var(--border-soft);
+    stroke-width: 1;
+}
+
+.hl-chain {
+    stroke: var(--green);
+    stroke-width: 3;
+}
+
+.hl-try {
+    stroke: var(--amber);
+    stroke-width: 2.5;
+    stroke-dasharray: 6 4;
+}
+
+.hl-drop {
+    stroke: var(--red);
+    stroke-width: 2.5;
+    stroke-dasharray: 4 4;
+}
+
+.hl-poly {
+    fill: rgba(79, 95, 214, 0.14);
+    stroke: #4f5fd6;
+    stroke-width: 3;
+}
+
+.hl-pt circle {
+    fill: var(--panel);
+    stroke: var(--muted);
+    stroke-width: 2;
+}
+
+.hl-pt text {
+    font: 700 12px var(--mono);
+    fill: var(--text-soft);
+}
+
+.hl-pt.on circle {
+    fill: var(--green);
+    stroke: var(--green);
+}
+
+.hl-pt.cur circle {
+    fill: var(--amber);
+    stroke: var(--amber);
+}
+
+.hl-pt.drop circle {
+    fill: var(--red);
+    stroke: var(--red);
+}
+
 /* Editor cadangan saat Monaco tidak dapat dimuat (tanpa internet) */
 .plain-editor {
     display: block;
