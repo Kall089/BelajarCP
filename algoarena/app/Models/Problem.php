@@ -51,11 +51,27 @@ class Problem extends Model
         return $language === 'python' ? $this->time_limit * 3 : $this->time_limit;
     }
 
-    /** Bandingkan output: abaikan spasi di akhir baris dan baris kosong di akhir. */
+    /** Normalisasi output: abaikan spasi di akhir baris dan baris kosong di akhir. */
+    public static function normalizeOutput(string $s): string
+    {
+        return rtrim(implode("\n", array_map('rtrim', preg_split('/\r?\n/', $s))));
+    }
+
+    /** Bandingkan output setelah dinormalisasi. */
     public static function outputsMatch(string $expected, string $actual): bool
     {
-        $normalize = fn (string $s) => rtrim(implode("\n", array_map('rtrim', preg_split('/\r?\n/', $s))));
+        return self::normalizeOutput($expected) === self::normalizeOutput($actual);
+    }
 
-        return $normalize($expected) === $normalize($actual);
+    /**
+     * Sidik jari output yang sudah dinormalisasi: "fnv1a32:crc32b:panjang".
+     * Browser mengirim sidik jari ini (bukan output utuh yang bisa berukuran megabyte)
+     * untuk solusi JavaScript/Python; fungsi kembarannya ada di public/js/workspace.js.
+     */
+    public static function outputFingerprint(string $s): string
+    {
+        $n = self::normalizeOutput($s);
+
+        return hash('fnv1a32', $n).':'.hash('crc32b', $n).':'.strlen($n);
     }
 }

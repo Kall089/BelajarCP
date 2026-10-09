@@ -68,8 +68,8 @@
             title: "Jarak Semua Pasangan & Bobot Negatif",
             controls: `
                 ${V.segmented("mode", [["floyd", "Floyd-Warshall"], ["bf", "Bellman-Ford"]], "floyd")}
-                <button class="btn btn-sm" data-random>🎲 Acak</button>
-                <button class="btn btn-sm" data-cycle hidden>🔁 Tambah siklus negatif</button>
+                <button class="btn btn-sm" data-random>Acak</button>
+                <button class="btn btn-sm" data-cycle hidden>Tambah siklus negatif</button>
                 <button class="btn btn-sm btn-ghost" data-preset>Reset</button>`,
             legend: [
                 ["Perantara k / simpul diproses", "#f59e0b", "#f59e0b"],
@@ -88,7 +88,7 @@
         let edgePanel;
         let distPanel;
         const cycleBtn = sh.head.querySelector("[data-cycle]");
-        const cycleLabel = () => (cycleBtn.textContent = negCycle ? "✂️ Hapus siklus negatif" : "🔁 Tambah siklus negatif");
+        const cycleLabel = () => (cycleBtn.textContent = negCycle ? "Hapus siklus negatif" : "Tambah siklus negatif");
 
         const PSEUDO = {
             floyd: `
@@ -128,7 +128,7 @@ for (auto& e : sisi)                            //@5
             pseudo = V.codePanel(sh.side, PSEUDO[mode]);
             if (mode === "floyd") {
                 const parts = splitStage(sh.stage);
-                view = V.graphView(parts.graph, { hint: "Seret simpul untuk merapikan · 🎲 Acak untuk graph lain" });
+                view = V.graphView(parts.graph, { hint: "Seret simpul untuk merapikan · Acak untuk graph lain" });
                 table = { el: parts.table };
                 edgePanel = null;
                 distPanel = null;
@@ -239,7 +239,7 @@ for (auto& e : sisi)                            //@5
             watchRows = [["total perubahan", changes], ["kompleksitas", "O(N³)"]];
             const qi = n >= 3 ? 2 : 0;
             const qj = n >= 2 ? 1 : 0;
-            put(-1, `🎉 Selesai! Setelah semua simpul pernah menjadi perantara, <b>dist[i][j]</b> berisi jarak terpendek dari i ke j untuk <b>setiap</b> pasangan. Totalnya N³ = ${n ** 3} pengecekan.`, { cls: pathCls }, {
+            put(-1, `Selesai! Setelah semua simpul pernah menjadi perantara, <b>dist[i][j]</b> berisi jarak terpendek dari i ke j untuk <b>setiap</b> pasangan. Totalnya N³ = ${n ** 3} pengecekan.`, { cls: pathCls }, {
                 mark: "done",
                 ask:
                     d[qi][qj] !== INF && qi !== qj
@@ -361,7 +361,7 @@ for (auto& e : sisi)                            //@5
             st.nodes = {};
             st.edges = {};
             watchRows = cycle ? [["hasil", "siklus negatif!"]] : [["hasil", Array.from({ length: n }, (_, i) => fmt(dist[i + 1])).join(" ")]];
-            put(-1, cycle ? "❗ Graph ini punya <b>siklus negatif</b> yang terjangkau dari simpul 1, sehingga jarak terpendek <b>tidak terdefinisi</b> (bisa terus mengecil)." : `🎉 Jarak terpendek dari simpul 1: <b>${Array.from({ length: n }, (_, i) => fmt(dist[i + 1])).join(", ")}</b>. Perhatikan: berkat sisi negatif, beberapa jarak lebih kecil daripada jika memakai rute "biasa".`, -1, 0, { mark: "done" });
+            put(-1, cycle ? "Graph ini punya <b>siklus negatif</b> yang terjangkau dari simpul 1, sehingga jarak terpendek <b>tidak terdefinisi</b> (bisa terus mengecil)." : `Jarak terpendek dari simpul 1: <b>${Array.from({ length: n }, (_, i) => fmt(dist[i + 1])).join(", ")}</b>. Perhatikan: berkat sisi negatif, beberapa jarak lebih kecil daripada jika memakai rute "biasa".`, -1, 0, { mark: "done" });
             player.load(rec.frames);
         }
 
@@ -432,7 +432,7 @@ for (auto& e : sisi)                            //@5
             controls: `
                 <label class="viz-input">u <select data-u></select></label>
                 <label class="viz-input">v <select data-v></select></label>
-                <button class="btn btn-sm" data-random>🎲 Pohon acak</button>
+                <button class="btn btn-sm" data-random>Pohon acak</button>
                 <button class="btn btn-sm btn-ghost" data-preset>Reset</button>`,
             legend: [
                 ["Simpul u", "#22d3ee", "rgba(34,211,238,.3)"],

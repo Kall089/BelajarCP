@@ -111,7 +111,7 @@
                                 @endif
                                 @if ($problem->sample_visual)
                                     <details class="sample-visual" data-sample-visual="{{ $i }}">
-                                        <summary>👁 Lihat contoh ini sebagai gambar</summary>
+                                        <summary>Lihat contoh ini sebagai gambar</summary>
                                         <div class="sample-visual-body"></div>
                                     </details>
                                 @endif
@@ -134,7 +134,6 @@
 
                     @if ($problem->lesson)
                         <a class="lesson-link" href="{{ route('lessons.show', $problem->lesson) }}">
-                            <span style="font-size: 22px">🎬</span>
                             <div>
                                 <b>Lupa caranya? Pelajari lagi: {{ $problem->lesson->title }}</b>
                                 <small>Lengkap dengan visualisasi langkah demi langkah</small>
@@ -248,7 +247,7 @@
             <div class="modal-icon">
                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5" /></svg>
             </div>
-            <h2>Accepted! 🎉</h2>
+            <h2>Accepted!</h2>
             <p data-modal-text>Semua tes lolos.</p>
             <div class="modal-actions">
                 <button class="btn btn-outline" data-modal-editorial>Lihat Pembahasan</button>

@@ -256,7 +256,7 @@ CPP;
 @include('lessons.level', ['n' => 1, 'title' => 'memahami cara kerja DFS', 'desc' => 'Analogi labirin, jejak call stack dengan tangan, dan visualisasi interaktif.'])
 
 <section class="lesson-section" id="intuisi" data-toc="Intuisi: Menjelajah Labirin">
-    <h2><span class="sec-icon">💡</span> Intuisi: Menjelajah Labirin</h2>
+    <h2>Intuisi: Menjelajah Labirin</h2>
     <div class="prose">
         <p>Bayangkan kamu masuk labirin sambil membawa gulungan benang. Di setiap persimpangan, kamu <strong>pilih satu lorong dan terus masuk</strong> sejauh mungkin. Jika buntu atau semua lorong di depan sudah pernah dilewati, kamu <strong>mundur mengikuti benang</strong> ke persimpangan terakhir dan mencoba lorong lain.</p>
         <p>Itulah <strong>Depth-First Search</strong> (DFS, "penelusuran mendalam"). Berbeda dengan BFS yang menyebar lapis demi lapis, DFS <strong>menyelam dulu</strong>, baru kembali.</p>
@@ -275,7 +275,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="contoh" data-toc="Coba dengan Tangan">
-    <h2><span class="sec-icon">✍️</span> Coba dengan Tangan</h2>
+    <h2>Coba dengan Tangan</h2>
     <div class="prose">
         <p>Jalankan DFS dari simpul 1 pada komponen ungu. Tetangga diperiksa dari nomor terkecil. Perhatikan kolom <strong>call stack</strong>: simpul ditambahkan di atas ketika kita menyelam, dan dibuang dari atas ketika kita kembali.</p>
     </div>
@@ -301,7 +301,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi Interaktif">
-    <h2><span class="sec-icon">🎬</span> Visualisasi Interaktif</h2>
+    <h2>Visualisasi Interaktif</h2>
     <div class="prose">
         <p>Perhatikan panel <strong>call stack</strong> yang tumbuh saat menyelam dan menyusut saat kembali. Coba mode <strong>Hitung komponen</strong> untuk melihat DFS diulang dari setiap simpul yang belum dikunjungi. Dengan <strong>Mode Tebak</strong>, kamu diminta menebak ke simpul mana DFS menyelam berikutnya.</p>
     </div>
@@ -309,7 +309,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="cara" data-toc="Cara Pengerjaan">
-    <h2><span class="sec-icon">🧭</span> Cara Pengerjaan</h2>
+    <h2>Cara Pengerjaan</h2>
     <div class="steps">
         <div class="step-card"><b>Kenali ciri soal DFS</b><span>"Berapa kelompok/pulau", "apakah terhubung", "tandai seluruh area", "apakah ada siklus", "bisakah dibagi dua". Jarak tidak penting.</span></div>
         <div class="step-card"><b>Siapkan penanda</b><span>Array <code>visited</code>/<code>komp</code>/<code>warna</code> berukuran N + 1 yang awalnya 0 atau false.</span></div>
@@ -321,7 +321,7 @@ CPP;
 @include('lessons.level', ['n' => 2, 'title' => 'menulis DFS di C++', 'desc' => 'Program pelabelan komponen lengkap, flood fill di grid, dan jebakan rekursi.'])
 
 <section class="lesson-section" id="kode" data-toc="Kode C++ Lengkap">
-    <h2><span class="sec-icon">💻</span> Kode C++ Lengkap: Melabeli Komponen</h2>
+    <h2>Kode C++ Lengkap: Melabeli Komponen</h2>
     <div class="prose">
         <p><strong>Soal contoh:</strong> diberikan graph tak berarah. Cetak banyaknya komponen terhubung, lalu anggota setiap komponen (terurut, komponen diurutkan menurut anggota terkecilnya).</p>
     </div>
@@ -335,21 +335,21 @@ CPP;
 </section>
 
 <section class="lesson-section" id="pola" data-toc="Pola Soal DFS">
-    <h2><span class="sec-icon">🧠</span> Pola Soal yang Sering Muncul</h2>
+    <h2>Pola Soal yang Sering Muncul</h2>
     <div class="pattern-grid">
-        <div class="pattern"><h4>🏝️ Hitung pulau</h4><p>Grid berisi daratan & air. Setiap DFS dari daratan baru = satu pulau. Disebut <b>flood fill</b>.</p></div>
-        <div class="pattern"><h4>👥 Komponen</h4><p>"Berapa kelompok", "kelompok terbesar", "berapa jalan minimal agar semua terhubung" (= komponen − 1).</p></div>
-        <div class="pattern"><h4>🎨 Dua kubu</h4><p>"Bisakah dibagi dua tim tanpa musuh satu tim?" Warnai bergantian, cek konflik.</p></div>
-        <div class="pattern"><h4>🔁 Ada siklus?</h4><p>Tak berarah: tetangga sudah dikunjungi dan bukan parent. Berarah: pakai tiga warna.</p></div>
-        <div class="pattern"><h4>🌳 Ukuran subtree</h4><p>Pada pohon: <code>size[u] = 1 + Σ size[anak]</code>, dihitung saat kembali dari rekursi.</p></div>
-        <div class="pattern"><h4>🧩 Semua kemungkinan</h4><p>Backtracking (permutasi, sudoku) adalah DFS pada "pohon pilihan".</p></div>
+        <div class="pattern"><h4>Hitung pulau</h4><p>Grid berisi daratan & air. Setiap DFS dari daratan baru = satu pulau. Disebut <b>flood fill</b>.</p></div>
+        <div class="pattern"><h4>Komponen</h4><p>"Berapa kelompok", "kelompok terbesar", "berapa jalan minimal agar semua terhubung" (= komponen − 1).</p></div>
+        <div class="pattern"><h4>Dua kubu</h4><p>"Bisakah dibagi dua tim tanpa musuh satu tim?" Warnai bergantian, cek konflik.</p></div>
+        <div class="pattern"><h4>Ada siklus?</h4><p>Tak berarah: tetangga sudah dikunjungi dan bukan parent. Berarah: pakai tiga warna.</p></div>
+        <div class="pattern"><h4>Ukuran subtree</h4><p>Pada pohon: <code>size[u] = 1 + Σ size[anak]</code>, dihitung saat kembali dari rekursi.</p></div>
+        <div class="pattern"><h4>Semua kemungkinan</h4><p>Backtracking (permutasi, sudoku) adalah DFS pada "pohon pilihan".</p></div>
     </div>
     <div class="prose"><p><strong>Template flood fill di grid.</strong> Fungsi rekursif yang langsung berhenti jika keluar peta atau bukan daratan:</p></div>
     @include('lessons.code', ['cpp' => $dfsFlood, 'js' => null, 'py' => null])
 </section>
 
 <section class="lesson-section" id="kompleksitas" data-toc="Kompleksitas & Jebakan">
-    <h2><span class="sec-icon">⏱️</span> Kompleksitas & Jebakan</h2>
+    <h2>Kompleksitas & Jebakan</h2>
     <table class="cx-table">
         <tr><th>Aspek</th><th>Nilai</th><th>Alasan</th></tr>
         <tr><td>Waktu</td><td><code>O(N + M)</code></td><td>Setiap simpul dikunjungi sekali, setiap sisi diperiksa paling banyak dua kali.</td></tr>
@@ -368,7 +368,7 @@ CPP;
 @include('lessons.level', ['n' => 3, 'title' => 'DFS untuk soal sulit', 'desc' => 'Pewarnaan dua warna, deteksi siklus berarah, dan DFS tanpa rekursi.'])
 
 <section class="lesson-section" id="bipartite" data-toc="Pewarnaan Dua Warna">
-    <h2><span class="sec-icon">🎨</span> Pewarnaan Dua Warna (Bipartite)</h2>
+    <h2>Pewarnaan Dua Warna (Bipartite)</h2>
     <div class="prose">
         <p>Graph disebut <strong>bipartite</strong> jika simpulnya bisa dibagi dua kelompok sehingga <strong>setiap sisi menghubungkan dua kelompok berbeda</strong>. Contoh soal: membagi siswa menjadi dua tim debat sehingga dua orang yang bermusuhan tidak satu tim.</p>
         <p>Caranya: warnai simpul awal dengan warna 1, lalu setiap tetangga diberi warna lawan (<code>3 − w</code> mengubah 1↔2). Jika suatu saat ada tetangga yang <strong>sudah berwarna sama</strong>, pembagian mustahil.</p>
@@ -380,7 +380,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="siklus" data-toc="Deteksi Siklus">
-    <h2><span class="sec-icon">🔁</span> Deteksi Siklus pada Graph Berarah</h2>
+    <h2>Deteksi Siklus pada Graph Berarah</h2>
     <div class="prose">
         <p>Pada graph berarah, "tetangga sudah dikunjungi" belum tentu berarti ada siklus (bisa saja simpul itu sudah selesai diproses lewat jalur lain). Kita perlu membedakan tiga keadaan:</p>
         <ul>
@@ -394,7 +394,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="iteratif" data-toc="DFS Tanpa Rekursi">
-    <h2><span class="sec-icon">🧰</span> DFS Tanpa Rekursi</h2>
+    <h2>DFS Tanpa Rekursi</h2>
     <div class="prose">
         <p>Untuk menghindari stack overflow, ganti call stack dengan <code>stack&lt;int&gt;</code> buatan sendiri. Urutan kunjungannya sedikit berbeda dari versi rekursif, tetapi untuk soal komponen, pulau, atau keterhubungan hasilnya sama.</p>
     </div>
@@ -406,7 +406,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="kuis" data-toc="Cek Pemahaman">
-    <h2><span class="sec-icon">✅</span> Cek Pemahaman</h2>
+    <h2>Cek Pemahaman</h2>
     <div class="quiz" data-quiz data-answer="1" data-explain="DFS memakai stack (LIFO): simpul yang terakhir masuk diproses lebih dulu, sehingga penjelajahan terus menyelam. Pada DFS rekursif, stack ini adalah call stack.">
         <p class="quiz-q">Struktur data apa yang membuat DFS "menyelam" lebih dulu?</p>
         <div class="quiz-options">

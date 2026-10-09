@@ -56,7 +56,7 @@
             @includeFirst(['lessons.content.'.$lesson->slug, 'lessons.content._soon'])
 
             <section class="lesson-section" id="latihan" data-toc="Latihan Soal" data-level="0">
-                <h2><span class="sec-icon">🏁</span> Latihan Soal</h2>
+                <h2>Latihan Soal</h2>
                 <p class="prose">Sudah paham caranya? Saatnya membuktikan! Soal-soal ini memakai teknik yang sama dengan materi di atas.</p>
                 <div class="practice-grid">
                     @foreach ($lesson->problems as $p)
@@ -77,7 +77,7 @@
 
                 <div @class(['complete-box', 'is-done' => $done]) data-complete-box>
                     <div style="flex: 1">
-                        <b data-complete-title>{{ $done ? 'Materi ini sudah kamu selesaikan 🎉' : 'Sudah memahami materi ini?' }}</b>
+                        <b data-complete-title>{{ $done ? 'Materi ini sudah kamu selesaikan.' : 'Sudah memahami materi ini?' }}</b>
                         <div class="muted" data-complete-sub>
                             {{ $done ? 'Kamu tetap bisa mengulasnya kapan saja.' : 'Tandai selesai agar progresmu tercatat di peta belajar.' }}
                         </div>
@@ -109,7 +109,7 @@
     <script src="{{ asset('js/viz/graph-algos.js') }}?v={{ filemtime(public_path('js/viz/graph-algos.js')) }}"></script>
     <script src="{{ asset('js/viz/dp-algos.js') }}?v={{ filemtime(public_path('js/viz/dp-algos.js')) }}"></script>
     {{-- kit.js: komponen visual bersama; t-{track}.js: visualisasi khusus track materi ini --}}
-    @foreach (['js/viz/widgets.js', 'js/viz/graph-advanced.js', 'js/viz/graph-more.js', 'js/viz/dp-advanced.js', 'js/viz/dp-more.js', 'js/viz/fondasi.js', 'js/viz/kit.js', 'js/viz/t-'.$lesson->track.'.js', 'js/walkthrough.js'] as $script)
+    @foreach (['js/viz/widgets.js', 'js/viz/graph-advanced.js', 'js/viz/graph-more.js', 'js/viz/graph-extra.js', 'js/viz/dp-advanced.js', 'js/viz/dp-more.js', 'js/viz/dp-extra.js', 'js/viz/ds.js', 'js/viz/ds-more.js', 'js/viz/math.js', 'js/viz/math-more.js', 'js/viz/string.js', 'js/viz/fondasi.js', 'js/viz/kit.js', 'js/viz/t-'.$lesson->track.'.js', 'js/walkthrough.js'] as $script)
         @if (is_file(public_path($script)))
             <script src="{{ asset($script) }}?v={{ filemtime(public_path($script)) }}"></script>
         @endif

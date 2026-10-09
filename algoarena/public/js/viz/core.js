@@ -325,11 +325,11 @@ window.Viz = (() => {
             }
             const p = this.promptEl;
             p.innerHTML = `
-                <div class="prompt-q"><span class="prompt-icon">🎯</span><div><b>Tebak dulu!</b> ${ask.prompt}</div></div>
+                <div class="prompt-q"><div><b>Tebak dulu!</b> ${ask.prompt}</div></div>
                 <div class="prompt-a">
                     ${ask.type === "value" ? '<input class="prompt-input" data-in autocomplete="off" spellcheck="false" placeholder="jawabanmu"><button class="btn btn-sm btn-primary" data-check>Cek</button>' : ""}
                     ${ask.type === "choice" ? ask.options.map((o, k) => `<button class="btn btn-sm prompt-opt" data-opt="${k}">${esc(o)}</button>`).join("") : ""}
-                    ${ask.type === "node" ? '<span class="prompt-hint">👆 Klik simpulnya langsung pada graph</span>' : ""}
+                    ${ask.type === "node" ? '<span class="prompt-hint">Klik simpulnya langsung pada graph</span>' : ""}
                     <button class="btn btn-sm btn-ghost" data-reveal>Tunjukkan jawaban</button>
                 </div>
                 <div class="prompt-fb" data-fb></div>`;
@@ -368,7 +368,7 @@ window.Viz = (() => {
                 const fb = this.promptEl.querySelector("[data-fb]");
                 fb.className = "prompt-fb bad";
                 fb.innerHTML =
-                    this.attempts >= 2 && ask.hint ? `❌ Belum tepat. <b>Petunjuk:</b> ${ask.hint}` : "❌ Belum tepat, coba lagi.";
+                    this.attempts >= 2 && ask.hint ? `Belum tepat. <b>Petunjuk:</b> ${ask.hint}` : "Belum tepat, coba lagi.";
                 this.promptEl.classList.remove("shake");
                 void this.promptEl.offsetWidth;
                 this.promptEl.classList.add("shake");
@@ -792,11 +792,12 @@ window.Viz = (() => {
     const MARKER_COLORS = { default: "var(--edge)", active: "#f59e0b", tree: "#8b5cf6", path: "#22c55e", skip: "#ef4444", new: "#22d3ee" };
     const NODE_GRADS = {
         base: ["var(--node-a)", "var(--node-b)"],
-        queued: ["#1d7189", "#0b2731"],
+        // warna diambil dari token tema (lihat --ng-* di app.css / theme.css)
+        queued: ["var(--ng-queued-a, #1d7189)", "var(--ng-queued-b, #0b2731)"],
         current: ["#fff3c4", "#f59e0b"],
-        visited: ["#8d72ee", "#382679"],
-        done: ["#a184ff", "#4e30b6"],
-        path: ["#86efac", "#15803d"],
+        visited: ["var(--ng-visited-a, #8d72ee)", "var(--ng-visited-b, #382679)"],
+        done: ["var(--ng-done-a, #a184ff)", "var(--ng-done-b, #4e30b6)"],
+        path: ["var(--ng-path-a, #86efac)", "var(--ng-path-b, #15803d)"],
     };
 
     function graphView(stage, opts = {}) {
@@ -849,12 +850,12 @@ window.Viz = (() => {
         if (opts.editable) {
             tools = html(`
                 <div class="graph-tools" role="toolbar" aria-label="Alat edit graph">
-                    <button data-gmode="move" class="active" title="Geser: seret simpul untuk merapikan">✋<span>Geser</span></button>
+                    <button data-gmode="move" class="active" title="Geser: seret simpul untuk merapikan">✥<span>Geser</span></button>
                     <button data-gmode="node" title="Tambah simpul: klik area kosong">＋<span>Simpul</span></button>
                     <button data-gmode="edge" title="Tambah / hapus sisi: klik dua simpul">⟷<span>Sisi</span></button>
                     <button data-gmode="erase" title="Hapus: klik simpul atau sisi">⌫<span>Hapus</span></button>
                     <label class="gt-weight" data-gweight hidden>bobot <input type="number" min="1" max="99" value="5"></label>
-                    <button data-gclear title="Hapus semua sisi">🧹</button>
+                    <button data-gclear title="Hapus semua sisi">Kosongkan</button>
                 </div>`);
             stage.appendChild(tools);
             tools.querySelectorAll("[data-gmode]").forEach((b) => b.addEventListener("click", () => setMode(b.dataset.gmode)));
@@ -973,7 +974,7 @@ window.Viz = (() => {
                 el.line.setAttribute("d", graph.directed ? gm.trimmed : gm.full);
                 el.hit.setAttribute("d", gm.full);
                 if (el.weight) {
-                    const w = Math.max(24, String(e.w).length * 8 + 12);
+                    const w = Math.max(24, String(el.wt.textContent).length * 8 + 12);
                     el.wr.setAttribute("x", gm.lx - w / 2);
                     el.wr.setAttribute("y", gm.ly - 10);
                     el.wr.setAttribute("width", w);
@@ -1016,6 +1017,17 @@ window.Viz = (() => {
                 const cls = edges[key] || "";
                 el.grp.setAttribute("class", `g-edge ${cls}`);
                 if (el.weight) el.weight.setAttribute("class", `g-weight ${cls}`);
+                if (el.wt) {
+                    // f.wlabels: teks label sisi per frame (mis. "aliran/kapasitas")
+                    const txt = String(f.wlabels && f.wlabels[key] !== undefined ? f.wlabels[key] : el.e.w);
+                    if (el.wt.textContent !== txt) {
+                        el.wt.textContent = txt;
+                        const w = Math.max(24, txt.length * 8 + 12);
+                        const cx = +el.wt.getAttribute("x");
+                        el.wr.setAttribute("x", cx - w / 2);
+                        el.wr.setAttribute("width", w);
+                    }
+                }
                 if (graph.directed) {
                     const state = ["active", "path", "tree", "skip", "new"].find((s) => cls.includes(s)) || "default";
                     el.line.setAttribute("marker-end", `url(#aa-arrow-${state})`);

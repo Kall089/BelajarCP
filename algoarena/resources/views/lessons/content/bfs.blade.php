@@ -276,7 +276,7 @@ CPP;
 @include('lessons.level', ['n' => 1, 'title' => 'memahami cara kerja BFS', 'desc' => 'Mulai dari analogi sederhana, coba jalankan dengan tangan, lalu lihat algoritmanya bergerak.'])
 
 <section class="lesson-section" id="intuisi" data-toc="Intuisi: Riak Air">
-    <h2><span class="sec-icon">💡</span> Intuisi: Riak Air</h2>
+    <h2>Intuisi: Riak Air</h2>
     <div class="prose">
         <p>Lemparkan batu ke kolam. Riaknya menyebar <strong>melingkar</strong>: mula-mula ke titik terdekat, lalu ke lingkaran berikutnya, dan seterusnya. <strong>Breadth-First Search</strong> (BFS, "penelusuran melebar") menjelajahi graph dengan cara yang persis sama.</p>
         <ul>
@@ -301,7 +301,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="istilah" data-toc="Bahan-bahan BFS">
-    <h2><span class="sec-icon">🧩</span> Bahan-bahan BFS</h2>
+    <h2>Bahan-bahan BFS</h2>
     <div class="term-grid">
         <div class="term"><b>Antrian (queue)</b><span>Tempat simpul yang sudah ditemukan tetapi tetangganya belum diperiksa. Diproses dari depan.</span></div>
         <div class="term"><b>dist[v]</b><span>Jarak dari simpul awal ke v. Diisi -1 (atau ∞) jika belum ditemukan.</span></div>
@@ -311,7 +311,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="contoh" data-toc="Coba dengan Tangan">
-    <h2><span class="sec-icon">✍️</span> Coba dengan Tangan</h2>
+    <h2>Coba dengan Tangan</h2>
     <div class="prose">
         <p>Sebelum melihat kode, jalankan BFS dari simpul 1 pada graph di atas memakai pensil. Tetangga diperiksa dari nomor terkecil. Perhatikan kolom antrian: simpul selalu <strong>masuk di belakang</strong> dan <strong>keluar dari depan</strong>.</p>
     </div>
@@ -336,7 +336,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi Interaktif">
-    <h2><span class="sec-icon">🎬</span> Visualisasi Interaktif</h2>
+    <h2>Visualisasi Interaktif</h2>
     <div class="prose">
         <p>Tekan <strong>▶ Putar</strong> atau maju langkah demi langkah. Perhatikan isi <strong>antrian</strong>, angka <strong>jarak</strong> di atas simpul, dan garis ungu pohon BFS. Klik simpul mana pun untuk mengganti titik awal, atau ubah graph-nya dengan alat edit.</p>
         <p>Aktifkan <strong>Mode Tebak</strong> untuk menguji diri: kamu akan diminta menebak simpul mana yang keluar dari antrian berikutnya dan berapa jaraknya.</p>
@@ -345,7 +345,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="cara" data-toc="Cara Pengerjaan">
-    <h2><span class="sec-icon">🧭</span> Cara Pengerjaan</h2>
+    <h2>Cara Pengerjaan</h2>
     <div class="steps">
         <div class="step-card"><b>Kenali ciri soal BFS</b><span>"Langkah minimum", "jarak terdekat", "berapa lapis", dan setiap langkah bernilai <strong>sama</strong> (bobot 1).</span></div>
         <div class="step-card"><b>Tentukan simpul dan sisinya</b><span>Simpul bisa berupa kota, petak grid, atau keadaan (misalnya posisi bidak catur). Sisi adalah satu langkah yang diperbolehkan.</span></div>
@@ -358,7 +358,7 @@ CPP;
 @include('lessons.level', ['n' => 2, 'title' => 'menulis BFS di C++', 'desc' => 'Program lengkap dibedah baris demi baris, lalu pola soal yang sering muncul.'])
 
 <section class="lesson-section" id="kode" data-toc="Kode C++ Lengkap">
-    <h2><span class="sec-icon">💻</span> Kode C++ Lengkap: Jarak & Rute Terpendek</h2>
+    <h2>Kode C++ Lengkap: Jarak & Rute Terpendek</h2>
     <div class="prose">
         <p><strong>Soal contoh:</strong> diberikan graph tak berarah dengan <code>n</code> simpul dan <code>m</code> sisi. Cetak jarak terpendek dari <code>s</code> ke <code>t</code> beserta rutenya, atau <code>-1</code> jika t tidak terjangkau.</p>
         <p>Klik <strong>Berikutnya</strong> untuk membaca penjelasan setiap bagian. Baris kode yang sedang dibahas akan menyala.</p>
@@ -373,14 +373,14 @@ CPP;
 </section>
 
 <section class="lesson-section" id="pola" data-toc="Pola Soal BFS">
-    <h2><span class="sec-icon">🧠</span> Pola Soal yang Sering Muncul</h2>
+    <h2>Pola Soal yang Sering Muncul</h2>
     <div class="pattern-grid">
-        <div class="pattern"><h4>📏 Jarak tak berbobot</h4><p>"Berapa langkah minimum…", "jarak pertemanan". <b>Langsung BFS</b> dari titik awal.</p></div>
-        <div class="pattern"><h4>🧱 Grid / labirin</h4><p>Setiap petak adalah simpul, tetangganya atas-bawah-kiri-kanan. Periksa batas dan tembok.</p></div>
-        <div class="pattern"><h4>🦠 Banyak sumber</h4><p>"Jarak ke api / virus terdekat". Masukkan <b>semua sumber</b> ke antrian sejak awal.</p></div>
-        <div class="pattern"><h4>♞ Ruang keadaan</h4><p>Simpul = keadaan (posisi kuda, isi ember, kunci yang dimiliki). Sisi = satu aksi.</p></div>
-        <div class="pattern"><h4>🎨 Dua warna</h4><p>"Bisakah dibagi dua kelompok?" Warnai lapis genap & ganjil, cek sisi yang warnanya sama.</p></div>
-        <div class="pattern"><h4>⚖️ Bobot 0 atau 1</h4><p>Gunakan <b>0-1 BFS</b> dengan deque, bukan Dijkstra. Lihat level Lanjut.</p></div>
+        <div class="pattern"><h4>Jarak tak berbobot</h4><p>"Berapa langkah minimum…", "jarak pertemanan". <b>Langsung BFS</b> dari titik awal.</p></div>
+        <div class="pattern"><h4>Grid / labirin</h4><p>Setiap petak adalah simpul, tetangganya atas-bawah-kiri-kanan. Periksa batas dan tembok.</p></div>
+        <div class="pattern"><h4>Banyak sumber</h4><p>"Jarak ke api / virus terdekat". Masukkan <b>semua sumber</b> ke antrian sejak awal.</p></div>
+        <div class="pattern"><h4>Ruang keadaan</h4><p>Simpul = keadaan (posisi kuda, isi ember, kunci yang dimiliki). Sisi = satu aksi.</p></div>
+        <div class="pattern"><h4>Dua warna</h4><p>"Bisakah dibagi dua kelompok?" Warnai lapis genap & ganjil, cek sisi yang warnanya sama.</p></div>
+        <div class="pattern"><h4>Bobot 0 atau 1</h4><p>Gunakan <b>0-1 BFS</b> dengan deque, bukan Dijkstra. Lihat level Lanjut.</p></div>
     </div>
     <div class="prose">
         <p><strong>Template BFS di grid.</strong> Simpan arah gerak di array <code>dr</code> dan <code>dc</code> supaya keempat tetangga cukup diperiksa dengan satu loop:</p>
@@ -389,7 +389,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="kompleksitas" data-toc="Kompleksitas & Jebakan">
-    <h2><span class="sec-icon">⏱️</span> Kompleksitas & Jebakan</h2>
+    <h2>Kompleksitas & Jebakan</h2>
     <table class="cx-table">
         <tr><th>Aspek</th><th>Nilai</th><th>Alasan</th></tr>
         <tr><td>Waktu</td><td><code>O(N + M)</code></td><td>Setiap simpul masuk antrian sekali, setiap sisi diperiksa sekali (dua kali jika tak berarah).</td></tr>
@@ -409,7 +409,7 @@ CPP;
 @include('lessons.level', ['n' => 3, 'title' => 'teknik BFS untuk soal sulit', 'desc' => 'Bukti kebenaran, BFS banyak sumber, ruang keadaan, dan 0-1 BFS.'])
 
 <section class="lesson-section" id="bukti" data-toc="Mengapa BFS Benar?">
-    <h2><span class="sec-icon">🔬</span> Mengapa Jaraknya Pasti Terpendek?</h2>
+    <h2>Mengapa Jaraknya Pasti Terpendek?</h2>
     <div class="proof">
         <p><strong>Sifat antrian.</strong> Di setiap saat, jarak simpul di dalam antrian selalu berbentuk <code>d, d, …, d, d+1, …, d+1</code>: tidak turun, dan selisih yang terdepan dengan yang terbelakang paling banyak 1.</p>
         <p><strong>Alasannya.</strong> Awalnya antrian hanya berisi s (jarak 0). Setiap kali kita mengambil u berjarak d dari depan, simpul baru yang kita masukkan berjarak d + 1, dan ditaruh di belakang. Polanya tetap terjaga.</p>
@@ -418,7 +418,7 @@ CPP;
 </section>
 
 <section class="lesson-section" id="teknik" data-toc="Teknik Lanjutan">
-    <h2><span class="sec-icon">🚀</span> Teknik Lanjutan</h2>
+    <h2>Teknik Lanjutan</h2>
     <div class="prose">
         <h3>1. Multi-source BFS</h3>
         <p>Soal seperti "berapa menit sampai virus menyebar ke semua kota?" atau "jarak setiap petak ke api terdekat" punya <strong>banyak titik awal</strong>. Menjalankan BFS dari setiap sumber satu per satu terlalu lambat (O(K · (N + M))). Triknya: masukkan <strong>semua sumber</strong> ke antrian dengan jarak 0 sekaligus. Bayangkan ada satu "simpul super" yang terhubung ke semua sumber.</p>
@@ -441,7 +441,7 @@ const int dc[8] = {-1, 1, -2, 2, -2, 2, -1, 1};</code></pre>
 </section>
 
 <section class="lesson-section" id="kuis" data-toc="Cek Pemahaman">
-    <h2><span class="sec-icon">✅</span> Cek Pemahaman</h2>
+    <h2>Cek Pemahaman</h2>
     <div class="quiz" data-quiz data-answer="0" data-explain="BFS memproses simpul sesuai urutan masuk (FIFO), sehingga lapis yang lebih dekat selalu selesai lebih dulu.">
         <p class="quiz-q">Struktur data apa yang membuat BFS menjelajah lapis demi lapis?</p>
         <div class="quiz-options">

@@ -9,8 +9,11 @@ const BOOT = `
 import sys, io, traceback, builtins
 
 def __aa_run(code, data):
-    sys.stdin = io.StringIO(data)
-    out = io.StringIO()
+    # stdin/stdout berupa TextIOWrapper di atas BytesIO, sama seperti judge sungguhan:
+    # input(), sys.stdin.readline(), sys.stdin.read(), dan sys.stdin.buffer.read() semuanya bisa dipakai.
+    sys.stdin = io.TextIOWrapper(io.BytesIO(data.encode("utf-8")), encoding="utf-8")
+    out_bytes = io.BytesIO()
+    out = io.TextIOWrapper(out_bytes, encoding="utf-8", newline="\n", write_through=True)
     old_out = sys.stdout
     sys.stdout = out
 
@@ -33,9 +36,13 @@ def __aa_run(code, data):
         keep = [l for l in lines if "solusi.py" in l or not l.startswith("  File")]
         err = "\\n".join(keep[-6:])
     finally:
+        try:
+            out.flush()
+        except Exception:
+            pass
         sys.stdout = old_out
         sys.setrecursionlimit(1000)
-    return out.getvalue(), err
+    return out_bytes.getvalue().decode("utf-8", "replace"), err
 `;
 
 self.onmessage = async (e) => {
