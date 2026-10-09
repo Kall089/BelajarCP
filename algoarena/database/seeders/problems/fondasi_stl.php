@@ -56,7 +56,7 @@ $lampEvents = function (int $x, array $pts, int $nq): string {
 return [
     [
         'slug' => 'hitung-cepat-osis',
-        'lesson' => 'stl',
+        'lesson' => 'set-map',
         'title' => 'Hitung Cepat Pemilihan OSIS',
         'difficulty' => 'Mudah',
         'tags' => ['map', 'frekuensi', 'sorting', 'pembanding'],
@@ -224,223 +224,8 @@ CODE,
     ],
 
     [
-        'slug' => 'poster-berlapis',
-        'lesson' => 'stl',
-        'title' => 'Poster Berlapis di Pagar',
-        'difficulty' => 'Sedang',
-        'tags' => ['kompresi koordinat', 'array selisih', 'sorting'],
-        'statement' => '<p>Menjelang pentas seni, panitia menempel <strong>N</strong> poster di pagar sekolah yang sangat panjang. Posisi di pagar diukur dalam meter dari ujung kiri. Poster ke-i menutupi pagar dari titik <code>l<sub>i</sub></code> sampai titik <code>r<sub>i</sub></code>, jadi panjangnya <code>r<sub>i</sub> − l<sub>i</sub></code> meter. Poster boleh saling menumpuk.</p>
-<p>Bagian pagar yang tertutup paling sedikit <strong>K</strong> lapis poster terlalu berat dan perlu diberi paku tambahan. Berapa meter total panjang bagian pagar yang tertutup paling sedikit K poster?</p>',
-        'input_format' => '<p>Baris pertama berisi <code>N K</code>. Masing-masing dari N baris berikutnya berisi <code>l<sub>i</sub> r<sub>i</sub></code>.</p>',
-        'output_format' => '<p>Satu bilangan bulat: total panjang bagian pagar yang tertutup paling sedikit K poster.</p>',
-        'constraints' => '<ul><li>1 ≤ K ≤ N ≤ 200 000</li><li>0 ≤ l<sub>i</sub> &lt; r<sub>i</sub> ≤ 10<sup>9</sup></li></ul>',
-        'samples' => [
-            ['input' => "4 2\n1 5\n3 8\n4 6\n10 12\n", 'explanation' => 'Tebal tumpukan: 1 lapis di [1, 3], 2 lapis di [3, 4], 3 lapis di [4, 5], 2 lapis di [5, 6], dan 1 lapis di [6, 8] serta [10, 12]. Bagian yang tertutup paling sedikit 2 lapis adalah [3, 6], panjangnya 3 meter.'],
-            ['input' => "3 2\n2 5\n5 9\n0 1000000000\n", 'explanation' => 'Poster ketiga menutupi seluruh pagar, sehingga [2, 5] dan [5, 9] masing-masing tertutup 2 lapis: total 3 + 4 = 7 meter. Poster pertama dan kedua hanya bersentuhan di titik 5, tidak saling menumpuk.'],
-        ],
-        'tests' => function () {
-            $mk = function (int $n, int $k, int $maxX, int $maxLen) {
-                $rows = [];
-                for ($i = 0; $i < $n; $i++) {
-                    $len = mt_rand(1, $maxLen);
-                    $l = mt_rand(0, $maxX - $len);
-                    $rows[] = $l.' '.($l + $len);
-                }
-
-                return "$n $k\n".implode("\n", $rows)."\n";
-            };
-            $common = function (int $n) {
-                $rows = [];
-                for ($i = 0; $i < $n; $i++) {
-                    $rows[] = mt_rand(0, 400000000).' '.mt_rand(600000000, 1000000000);
-                }
-
-                return "$n $n\n".implode("\n", $rows)."\n";
-            };
-
-            return [
-                "1 1\n0 1000000000\n",
-                "2 2\n0 5\n5 10\n",
-                "3 3\n1 10\n2 9\n3 8\n",
-                "5 2\n0 3\n0 3\n0 3\n7 9\n8 9\n",
-                $mk(8, 2, 30, 10),
-                $mk(1000, 3, 10000, 200),
-                $mk(200000, 1, 1000000000, 5000),
-                $mk(200000, 1000, 1000000000, 1000000000),
-                $common(200000),
-                $mk(200000, 500, 1000, 1000),
-                $mk(200000, 2, 1000000000, 10000),
-                $mk(200000, 60000, 1000000000, 1000000000),
-            ];
-        },
-        'solve' => function (string $input) {
-            $lines = T::lines($input);
-            [$n, $k] = T::ints($lines[0]);
-            $l = [];
-            $r = [];
-            $xs = [];
-            for ($i = 1; $i <= $n; $i++) {
-                [$a, $b] = T::ints($lines[$i]);
-                $l[] = $a;
-                $r[] = $b;
-                $xs[] = $a;
-                $xs[] = $b;
-            }
-            sort($xs);
-            $u = [];
-            foreach ($xs as $x) {
-                if (! $u || end($u) !== $x) {
-                    $u[] = $x;
-                }
-            }
-            $id = array_flip($u);
-            $m = count($u);
-            $d = array_fill(0, $m + 1, 0);
-            for ($i = 0; $i < $n; $i++) {
-                $d[$id[$l[$i]]]++;
-                $d[$id[$r[$i]]]--;
-            }
-            $ans = 0;
-            $cur = 0;
-            for ($j = 0; $j + 1 < $m; $j++) {
-                $cur += $d[$j];
-                if ($cur >= $k) {
-                    $ans += $u[$j + 1] - $u[$j];
-                }
-            }
-
-            return (string) $ans;
-        },
-        'starter' => $st("    int n, k;\n    cin >> n >> k;\n    vector<int> l(n), r(n);\n    for (int i = 0; i < n; i++) cin >> l[i] >> r[i];", "const [n, k] = readInts();\nconst l = [], r = [];\nfor (let i = 0; i < n; i++) {\n  const [a, b] = readInts();\n  l.push(a);\n  r.push(b);\n}", "n, k = map(int, input().split())\nposter = [tuple(map(int, input().split())) for _ in range(n)]  # (l, r)"),
-        'solutions' => [
-            'cpp' => <<<'CODE'
-#include <bits/stdc++.h>
-using namespace std;
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    int n, k;
-    cin >> n >> k;
-    vector<int> l(n), r(n), xs;
-    xs.reserve(2 * n);
-    for (int i = 0; i < n; i++) {
-        cin >> l[i] >> r[i];
-        xs.push_back(l[i]);
-        xs.push_back(r[i]);
-    }
-
-    // Kompresi koordinat: urutkan semua titik ujung lalu buang duplikat.
-    sort(xs.begin(), xs.end());
-    xs.erase(unique(xs.begin(), xs.end()), xs.end());
-    int m = xs.size();
-    auto id = [&](int x) { return int(lower_bound(xs.begin(), xs.end(), x) - xs.begin()); };
-
-    // Array selisih di atas indeks hasil kompresi.
-    vector<int> d(m + 1, 0);
-    for (int i = 0; i < n; i++) {
-        d[id(l[i])]++;
-        d[id(r[i])]--;
-    }
-
-    long long jawaban = 0;
-    int tebal = 0;
-    for (int j = 0; j + 1 < m; j++) {
-        tebal += d[j];                   // tebal tumpukan pada ruas [xs[j], xs[j+1]]
-        if (tebal >= k) jawaban += xs[j + 1] - xs[j];   // panjang asli, bukan 1
-    }
-    cout << jawaban << '\n';
-    return 0;
-}
-CODE,
-            'javascript' => <<<'CODE'
-const [n, k] = readInts();
-const l = new Int32Array(n), r = new Int32Array(n);
-const xs = new Int32Array(2 * n);
-for (let i = 0; i < n; i++) {
-  const [a, b] = readInts();
-  l[i] = a;
-  r[i] = b;
-  xs[2 * i] = a;
-  xs[2 * i + 1] = b;
-}
-
-// Kompresi koordinat: sort (typed array terurut secara numerik) lalu unique.
-xs.sort();
-let m = 0;
-for (let i = 0; i < xs.length; i++) {
-  if (i === 0 || xs[i] !== xs[i - 1]) xs[m++] = xs[i];
-}
-// lower_bound: indeks pertama dengan xs[idx] >= x
-const id = (x) => {
-  let lo = 0, hi = m;
-  while (lo < hi) {
-    const mid = (lo + hi) >> 1;
-    if (xs[mid] < x) lo = mid + 1;
-    else hi = mid;
-  }
-  return lo;
-};
-
-const d = new Int32Array(m + 1);
-for (let i = 0; i < n; i++) {
-  d[id(l[i])]++;
-  d[id(r[i])]--;
-}
-let tebal = 0, jawaban = 0;
-for (let j = 0; j + 1 < m; j++) {
-  tebal += d[j]; // tebal tumpukan pada ruas [xs[j], xs[j+1]]
-  if (tebal >= k) jawaban += xs[j + 1] - xs[j];
-}
-console.log(jawaban);
-CODE,
-            'python' => <<<'CODE'
-import sys
-input = sys.stdin.readline
-
-n, k = map(int, input().split())
-l = [0] * n
-r = [0] * n
-for i in range(n):
-    l[i], r[i] = map(int, input().split())
-
-# Kompresi koordinat: titik ujung unik yang terurut.
-xs = sorted(set(l) | set(r))
-# Peta nilai -> indeks (sama dengan bisect_left(xs, x), tetapi lebih cepat di Python).
-idx = {x: i for i, x in enumerate(xs)}
-m = len(xs)
-
-d = [0] * (m + 1)
-for i in range(n):
-    d[idx[l[i]]] += 1
-    d[idx[r[i]]] -= 1
-
-jawaban = 0
-tebal = 0
-for j in range(m - 1):
-    tebal += d[j]                   # tebal tumpukan pada ruas [xs[j], xs[j+1]]
-    if tebal >= k:
-        jawaban += xs[j + 1] - xs[j]
-print(jawaban)
-CODE,
-        ],
-        'editorial' => '<p>Seandainya koordinat kecil, soal ini cukup diselesaikan dengan <strong>array selisih</strong>: <code>d[l]++</code> dan <code>d[r]−−</code> untuk setiap poster, lalu prefix sum memberi tebal tumpukan di setiap meter. Masalahnya, koordinat sampai 10<sup>9</sup>, terlalu besar untuk ukuran array.</p>
-<p>Perhatikan bahwa tebal tumpukan hanya bisa berubah di titik ujung poster. Kumpulkan semua l dan r (paling banyak 2N nilai), lalu lakukan <strong>kompresi koordinat</strong>: <code>sort</code>, <code>unique</code>, dan ganti setiap titik ujung dengan indeksnya melalui <code>lower_bound</code>. Misalkan titik unik yang terurut adalah x<sub>0</sub> &lt; x<sub>1</sub> &lt; … &lt; x<sub>m−1</sub>. Buat array selisih di atas indeks: <code>d[id(l)]++</code>, <code>d[id(r)]−−</code>. Prefix sum sampai indeks j sama dengan tebal tumpukan di seluruh ruas [x<sub>j</sub>, x<sub>j+1</sub>], karena di dalam ruas itu tidak ada ujung poster. Jika tebalnya ≥ K, tambahkan <code>x<sub>j+1</sub> − x<sub>j</sub></code> ke jawaban.</p>
-<p>Kompleksitas O(N log N) karena pengurutan. Hal yang perlu diperhatikan:</p>
-<ul><li>Setiap ruas harus dihitung dengan <em>panjang aslinya</em> (selisih koordinat), bukan 1 per indeks hasil kompresi.</li>
-<li>Poster [l, r] menambah tebal pada ruas mulai indeks id(l) dan berhenti tepat sebelum id(r). Itu sebabnya dua poster yang hanya bersentuhan di satu titik tidak menghasilkan tumpukan (contoh kedua).</li>
-<li>Jawaban paling besar 10<sup>9</sup>, masih muat di <code>int</code>, tetapi <code>long long</code> lebih aman untuk penjumlahan.</li></ul>',
-        'hints' => [
-            'Jika koordinat hanya sampai 10^6, bagaimana kamu menghitung tebal tumpukan di setiap meter dengan array selisih?',
-            'Tebal tumpukan hanya berubah di titik l atau r. Kumpulkan semua titik itu, urutkan, lalu buang duplikat (sort + unique).',
-            'Buat array selisih di atas indeks hasil kompresi. Untuk ruas antara titik ke-j dan ke-(j+1), jika tebalnya ≥ K tambahkan selisih koordinat kedua titik itu.',
-        ],
-    ],
-
-    [
         'slug' => 'loket-tiket-konser',
-        'lesson' => 'stl',
+        'lesson' => 'set-map',
         'title' => 'Loket Tiket Konser',
         'difficulty' => 'Sedang',
         'tags' => ['multiset', 'upper bound', 'simulasi', 'dsu'],
@@ -630,7 +415,7 @@ CODE,
 
     [
         'slug' => 'ruas-tanpa-lampu',
-        'lesson' => 'stl',
+        'lesson' => 'set-map',
         'title' => 'Ruas Jalan Tanpa Lampu',
         'difficulty' => 'Sulit',
         'tags' => ['set', 'multiset', 'offline', 'proses terbalik', 'linked list'],

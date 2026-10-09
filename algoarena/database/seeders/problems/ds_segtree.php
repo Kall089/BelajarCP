@@ -746,7 +746,7 @@ CODE,
     ],
 
     [
-        'slug' => 'cat-pagar',
+        'slug' => 'cat-pagar-kerja-bakti',
         'lesson' => 'segment-tree',
         'title' => 'Kerja Bakti Mengecat Pagar',
         'difficulty' => 'Sulit',
