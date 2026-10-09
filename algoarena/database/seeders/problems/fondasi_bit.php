@@ -57,7 +57,7 @@ $jumlahSubset = function (array $v): array {
 return [
     [
         'slug' => 'paket-oleh-oleh-bitmask',
-        'lesson' => 'bit',
+        'lesson' => 'enumerasi-subset',
         'title' => 'Paket Oleh-oleh',
         'difficulty' => 'Mudah',
         'tags' => ['bitmask', 'enumerasi subset', 'brute force'],
@@ -223,7 +223,7 @@ CODE,
 
     [
         'slug' => 'jumlah-xor-semua-pasangan',
-        'lesson' => 'bit',
+        'lesson' => 'enumerasi-subset',
         'title' => 'Total Gangguan Sinyal',
         'difficulty' => 'Sedang',
         'tags' => ['bit', 'xor', 'kontribusi per bit'],
@@ -354,7 +354,7 @@ CODE,
 
     [
         'slug' => 'and-tim-robot',
-        'lesson' => 'bit',
+        'lesson' => 'enumerasi-subset',
         'title' => 'Tim Robot Paling Kompak',
         'difficulty' => 'Sedang',
         'tags' => ['bit', 'and', 'greedy'],
@@ -502,7 +502,7 @@ CODE,
 
     [
         'slug' => 'mantra-meet-in-the-middle',
-        'lesson' => 'bit',
+        'lesson' => 'meet-in-the-middle',
         'title' => 'Kombinasi Mantra',
         'difficulty' => 'Sulit',
         'tags' => ['meet in the middle', 'bitmask', 'two pointer', 'sorting'],

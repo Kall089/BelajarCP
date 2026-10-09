@@ -133,7 +133,7 @@ $pyHead = "import sys\ninput = sys.stdin.readline\n\n".$pyFakt."\n\n\n";
 
 return [
     [
-        'slug' => 'susun-huruf',
+        'slug' => 'hitung-susunan-huruf',
         'lesson' => 'kombinatorika',
         'title' => 'Menyusun Kartu Huruf',
         'difficulty' => 'Mudah',

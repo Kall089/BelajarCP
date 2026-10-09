@@ -1,6 +1,6 @@
 @php
     $psSteps = [
-        ['Membaca operasi ke array selisih', <<<'CPP'
+        ['Pertanyaan yang diubah', <<<'CPP'
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -8,288 +8,240 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int n, m, q;
-    cin >> n >> m >> q;
-    vector<long long> d(n + 2, 0);
-    for (int j = 0; j < m; j++) {
-        int l, r;
-        long long v;
-        cin >> l >> r >> v;
-        d[l] += v;
-        d[r + 1] -= v;
-    }
-
+    int n;
+    long long K;
+    cin >> n >> K;
 CPP, <<<'TXT'
-<p>Ada N elemen yang awalnya 0, M operasi "tambah v ke elemen l..r", lalu Q pertanyaan "berapa jumlah elemen l..r setelah semua operasi?".</p>
-<p><code>d[i]</code> menyimpan <strong>selisih</strong> <code>a[i] − a[i−1]</code>. Menambah v pada l..r hanya mengubah dua selisih: di l nilainya naik v dibanding tetangga kirinya, dan di r + 1 turun kembali v. Ukuran d adalah n + 2 agar <code>d[r + 1]</code> aman ketika r = n.</p>
+<p><strong>Soal contoh "Subarray Berjumlah K":</strong> diberikan n bilangan (boleh negatif) dan K. Ada berapa pasang (l, r) sehingga <code>a[l] + … + a[r] = K</code>?</p>
+<p>Mencoba semua pasangan butuh O(n²). Dengan prefix sum, syaratnya berubah bentuk:</p>
+<p style="text-align:center"><code>pre[r+1] − pre[l] = K</code> ⟺ <code>pre[l] = pre[r+1] − K</code></p>
+<p>Jadi untuk setiap ujung kanan, kita hanya perlu tahu: <em>berapa kali nilai <code>pre − K</code> sudah muncul sebelumnya?</em></p>
 TXT],
-        ['Membangun array akhir dan prefix sum-nya', <<<'CPP'
-    vector<long long> a(n + 1, 0), pre(n + 1, 0);
-    for (int i = 1; i <= n; i++) {
-        a[i] = a[i - 1] + d[i];
-        pre[i] = pre[i - 1] + a[i];
-    }
+        ['Menghitung prefix yang sudah lewat', <<<'CPP'
 
+    map<long long, long long> pernah;   // nilai prefix → berapa kali muncul
+    pernah[0] = 1;                       // pre[0] = 0 (array kosong)
+    long long pre = 0, jawaban = 0;
 CPP, <<<'TXT'
-<p>Prefix sum dari d mengembalikan array asli: <code>a[i] = d[1] + … + d[i]</code>. Di loop yang sama kita langsung membangun prefix sum kedua, <code>pre[i] = a[1] + … + a[i]</code>, untuk menjawab pertanyaan jumlah rentang.</p>
-<p>Jadi ada dua arah yang saling berkebalikan: <strong>selisih</strong> mengubah array menjadi "perubahannya", <strong>prefix sum</strong> mengubah "perubahan" kembali menjadi array.</p>
+<p><code>pernah[x]</code> mencatat berapa banyak indeks l (yang sudah dilewati) dengan <code>pre[l] = x</code>.</p>
+<p><code>pernah[0] = 1</code> mewakili <code>pre[0] = 0</code>. Tanpanya, subarray yang dimulai dari indeks pertama tidak akan pernah terhitung.</p>
 TXT],
-        ['Menjawab pertanyaan dalam O(1)', <<<'CPP'
-    string out;
-    for (int j = 0; j < q; j++) {
-        int l, r;
-        cin >> l >> r;
-        out += to_string(pre[r] - pre[l - 1]) + "\n";
+        ['Satu kali jalan', <<<'CPP'
+    for (int i = 0; i < n; i++) {
+        long long a;
+        cin >> a;
+        pre += a;                                  // pre = pre[i+1]
+        auto it = pernah.find(pre - K);
+        if (it != pernah.end()) jawaban += it->second;
+        pernah[pre]++;                             // catat SETELAH menghitung
     }
-    cout << out;
+CPP, <<<'TXT'
+<p>Urutan dua baris terakhir penting: kita menghitung pasangan dengan l yang <strong>sebelum</strong> r, baru kemudian mencatat prefix saat ini. Jika dicatat lebih dulu, untuk K = 0 kita akan menghitung subarray kosong.</p>
+<pre>a   :    1   2   1  -1   2   1     K = 3
+pre : 0  1   3   4   3   5   6
+pre=1 → cari −2 → 0
+pre=3 → cari  0 → 1   [1,2]
+pre=4 → cari  1 → 1   [2,1]
+pre=3 → cari  0 → 1   [1,2,1,−1]
+pre=5 → cari  2 → 0
+pre=6 → cari  3 → 2   [1,−1,2,1] dan [2,1]
+total = 5</pre>
+TXT],
+        ['Jawaban', <<<'CPP'
+
+    cout << jawaban << '\n';
     return 0;
 }
 CPP, <<<'TXT'
-<p>Jumlah a[l..r] = <code>pre[r] − pre[l − 1]</code>: jumlah sampai r dikurangi bagian sebelum l. <code>pre[0] = 0</code> membuat rumus ini juga benar untuk l = 1.</p>
-<p>Total O(N + M + Q). Cara langsung (menambah satu per satu lalu menjumlah satu per satu) butuh O((M + Q) · N).</p>
+<p>Total O(n log n) dengan <code>map</code>. Teknik "prefix + hitung yang sudah lewat" juga menjawab: subarray berjumlah kelipatan M (pakai <code>pre mod M</code>), subarray dengan jumlah 0, atau subarray dengan banyak huruf A = banyak huruf B (ubah A → +1, B → −1).</p>
 TXT],
     ];
 
     $psPy = <<<'PY'
 import sys
-data = sys.stdin.buffer.read().split()
-n, m, q = int(data[0]), int(data[1]), int(data[2])
-d = [0] * (n + 2)
-p = 3
-for _ in range(m):
-    l, r, v = int(data[p]), int(data[p + 1]), int(data[p + 2])
-    p += 3
-    d[l] += v
-    d[r + 1] -= v
-pre = [0] * (n + 1)
-a = 0
-for i in range(1, n + 1):
-    a += d[i]
-    pre[i] = pre[i - 1] + a
-out = []
-for _ in range(q):
-    l, r = int(data[p]), int(data[p + 1])
-    p += 2
-    out.append(pre[r] - pre[l - 1])
-print("\n".join(map(str, out)))
+from collections import defaultdict
+data = sys.stdin.read().split()
+n, K = int(data[0]), int(data[1])
+pernah = defaultdict(int)
+pernah[0] = 1
+pre = jawaban = 0
+for a in map(int, data[2:2 + n]):
+    pre += a
+    jawaban += pernah[pre - K]
+    pernah[pre] += 1
+print(jawaban)
 PY;
 
+    $ps1d = <<<'CPP'
+vector<long long> pre(n + 1, 0);          // pre[i] = a[0] + ... + a[i-1]
+for (int i = 0; i < n; i++) pre[i + 1] = pre[i] + a[i];
+// jumlah a[l..r] (0-indexed, inklusif)
+long long jumlah = pre[r + 1] - pre[l];
+
+// Variasi: prefix XOR, prefix banyak bilangan genap, prefix per huruf
+vector<int> px(n + 1, 0);
+for (int i = 0; i < n; i++) px[i + 1] = px[i] ^ a[i];
+int xorRentang = px[r + 1] ^ px[l];       // XOR juga punya "kebalikan": dirinya sendiri
+CPP;
+
     $ps2d = <<<'CPP'
-// P[i][j] = jumlah semua sel (x, y) dengan 1 ≤ x ≤ i dan 1 ≤ y ≤ j. Baris/kolom 0 bernilai 0.
+// P[i][j] = jumlah semua a[x][y] dengan x < i dan y < j
+vector<vector<long long>> P(R + 1, vector<long long>(C + 1, 0));
 for (int i = 1; i <= R; i++)
     for (int j = 1; j <= C; j++)
-        P[i][j] = g[i][j] + P[i - 1][j] + P[i][j - 1] - P[i - 1][j - 1];
+        P[i][j] = a[i - 1][j - 1] + P[i - 1][j] + P[i][j - 1] - P[i - 1][j - 1];
 
-// Jumlah persegi panjang (r1, c1)–(r2, c2): inklusi–eksklusi
-long long jumlah = P[r2][c2] - P[r1 - 1][c2] - P[r2][c1 - 1] + P[r1 - 1][c1 - 1];
-CPP;
-
-    $ps2dDiff = <<<'CPP'
-// Tambah v ke semua sel di persegi panjang (r1, c1)–(r2, c2): cukup tandai 4 pojok.
-D[r1][c1] += v;
-D[r1][c2 + 1] -= v;
-D[r2 + 1][c1] -= v;
-D[r2 + 1][c2 + 1] += v;
-
-// Setelah SEMUA operasi: nilai akhir = prefix sum 2D dari D (boleh di tempat).
-for (int i = 1; i <= R; i++)
-    for (int j = 1; j <= C; j++)
-        D[i][j] += D[i - 1][j] + D[i][j - 1] - D[i - 1][j - 1];
-CPP;
-
-    $psMod = <<<'CPP'
-// Banyak subarray yang jumlahnya habis dibagi k.
-// jumlah a[l..r] = pre[r] − pre[l−1] habis dibagi k  <=>  pre[r] mod k == pre[l−1] mod k
-map<long long, long long> frek;
-frek[0] = 1;                              // pre[0] = 0
-long long pre = 0, jawab = 0;
-for (int i = 1; i <= n; i++) {
-    pre = ((pre + a[i]) % k + k) % k;     // + k: a[i] boleh negatif
-    jawab += frek[pre];                   // pasangkan dengan semua l−1 yang bersisa sama
-    frek[pre]++;
-}
+// jumlah persegi (r1, c1) .. (r2, c2), 0-indexed inklusif
+long long s = P[r2 + 1][c2 + 1] - P[r1][c2 + 1] - P[r2 + 1][c1] + P[r1][c1];
 CPP;
 @endphp
 
 <div class="lead-box">
     <h3>Setelah materi ini kamu bisa:</h3>
     <ul>
-        <li>Menjawab banyak pertanyaan jumlah rentang dalam O(1) dengan <strong>prefix sum</strong>.</li>
-        <li>Melakukan banyak penambahan rentang dalam O(1) per operasi dengan <strong>array selisih</strong>.</li>
-        <li>Memperluas keduanya ke grid 2D dengan inklusi–eksklusi.</li>
-        <li>Menghitung subarray dengan sifat tertentu memakai prefix + tabel frekuensi.</li>
+        <li>Membangun prefix sum dalam O(n) dan menjawab jumlah rentang apa pun dalam O(1).</li>
+        <li>Memakai prefix sum 2D dengan rumus inklusi-eksklusi untuk jumlah submatriks.</li>
+        <li>Menghitung subarray dengan syarat jumlah tertentu memakai "prefix + hitung yang sudah lewat".</li>
+        <li>Tahu batasnya: hanya untuk data statis dan operasi yang punya kebalikan.</li>
     </ul>
 </div>
 
-@include('lessons.level', ['n' => 1, 'title' => 'dua operasi yang saling berkebalikan', 'desc' => 'Prefix sum untuk bertanya, array selisih untuk mengubah.'])
+@include('lessons.level', ['n' => 1, 'title' => 'saldo, bukan setoran', 'desc' => 'Ide prefix sum dan cara membangunnya.'])
 
-<section class="lesson-section" id="prefix" data-toc="Prefix Sum">
-    <h2>Prefix Sum: Menyimpan Jumlah Sejauh Ini</h2>
+<section class="lesson-section" id="intuisi" data-toc="Intuisi: Buku Tabungan">
+    <h2>Intuisi: Buku Tabungan</h2>
     <div class="prose">
-        <p>Bayangkan buku tabungan yang di setiap baris mencatat <strong>saldo</strong>, bukan hanya setoran hari itu. Untuk tahu total setoran dari hari ke-l sampai hari ke-r, cukup kurangi saldo hari r dengan saldo hari l − 1. Tidak perlu menjumlah ulang.</p>
-        <p>Itulah prefix sum: <code>pre[i] = a[1] + a[2] + … + a[i]</code>, dengan <code>pre[0] = 0</code>. Menyiapkannya O(N), lalu setiap pertanyaan jumlah rentang O(1):</p>
-        <p style="text-align:center"><code>a[l] + … + a[r] = pre[r] − pre[l − 1]</code></p>
+        <p>Buku tabungan mencatat <strong>saldo</strong> setiap hari, bukan hanya setoran harian. Untuk tahu total setoran dari tanggal 1 sampai 20 Maret, kamu tidak perlu menjumlahkan 20 setoran: cukup <em>saldo tanggal 20 dikurangi saldo akhir Februari</em>.</p>
+        <p>Itulah prefix sum: siapkan tabel jumlah kumulatif <strong>sekali</strong> dalam O(n), lalu setiap pertanyaan jumlah rentang dijawab dengan <strong>satu pengurangan</strong>.</p>
     </div>
-    <div class="trace-wrap">
-        <table class="trace-table">
-            <tr><th>i</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
-            <tr><td>a[i]</td><td>–</td><td>5</td><td>−2</td><td>7</td><td>3</td><td>−4</td></tr>
-            <tr><td>pre[i]</td><td>0</td><td>5</td><td>3</td><td>10</td><td>13</td><td>9</td></tr>
-        </table>
-    </div>
-    <div class="prose"><p>Jumlah a[2..4] = pre[4] − pre[1] = 13 − 5 = 8 (memang −2 + 7 + 3 = 8).</p></div>
-</section>
-
-<section class="lesson-section" id="selisih" data-toc="Array Selisih">
-    <h2>Array Selisih: Tandai Awal dan Akhir</h2>
-    <div class="prose">
-        <p>Sekarang kebalikannya. Panitia lomba mencatat M kelompok pengunjung; kelompok ke-j berjumlah v orang dan berada di area l sampai r. Berapa orang di setiap area? Menambah v ke setiap area dalam rentang memakan O(N) per kelompok.</p>
-        <p>Trik array selisih: cukup tulis "<strong>+v mulai di l</strong>" dan "<strong>−v mulai di r + 1</strong>". Ketika nanti kita berjalan dari kiri sambil menjumlahkan tanda-tanda ini (prefix sum), kenaikan v otomatis berlaku tepat dari l sampai r.</p>
-    </div>
+    <div class="recurrence"><small>Rumus</small>pre[0] = 0
+pre[i + 1] = pre[i] + a[i]
+jumlah a[l..r] = pre[r + 1] − pre[l]</div>
     <div class="callout key">
         <span class="callout-icon">🔑</span>
-        <p>Array selisih <code>d[i] = a[i] − a[i−1]</code> dan prefix sum adalah operasi yang saling membatalkan. Penambahan rentang di a hanya mengubah <strong>dua</strong> sel di d. Syaratnya: semua operasi selesai dulu, baru array akhirnya dibaca (pemrosesan <em>offline</em>).</p>
+        <p>Perhatikan indeksnya: <code>pre[i]</code> adalah jumlah <strong>i elemen pertama</strong> (a[0] sampai a[i−1]), bukan sampai indeks i. Konvensi "geser satu" ini membuat <code>pre[0] = 0</code> menangani rentang yang dimulai dari awal tanpa kasus khusus.</p>
     </div>
+    @include('lessons.code', ['cpp' => $ps1d, 'js' => null, 'py' => null])
 </section>
 
 <section class="lesson-section" id="visualisasi" data-toc="Visualisasi">
-    <h2>Visualisasi</h2>
-    <div class="prose"><p>Perhatikan bahwa setiap operasi hanya mewarnai dua sel di baris <code>d</code>. Pada fase kedua, baris <code>a</code> diisi dari kiri dengan menjumlahkan d. Ganti operasinya (format <code>l r v</code>, dipisah titik koma) lalu tekan Terapkan.</p></div>
-    <div data-viz="diffarray"></div>
-</section>
-
-<section class="lesson-section" id="cara" data-toc="Cara Pengerjaan">
-    <h2>Cara Pengerjaan</h2>
-    <div class="steps">
-        <div class="step-card"><b>Siapkan d</b><span>Ukuran N + 2, semua 0 (atau isi dengan selisih array awal).</span></div>
-        <div class="step-card"><b>Setiap operasi</b><span><code>d[l] += v</code>, <code>d[r + 1] −= v</code>.</span></div>
-        <div class="step-card"><b>Bangun a</b><span>Prefix sum dari d.</span></div>
-        <div class="step-card"><b>Pertanyaan</b><span>Jika perlu jumlah rentang, buat prefix sum lagi dari a.</span></div>
+    <h2>Visualisasi: 1D lalu 2D</h2>
+    <div class="prose">
+        <p>Mode <strong>1 dimensi</strong> membangun <code>pre</code> sel demi sel lalu menjawab beberapa pertanyaan. Mode <strong>2 dimensi</strong> memperlihatkan mengapa satu sel harus <em>dikurangi</em>: bagian kiri-atas terhitung dua kali. Nyalakan Mode Tebak untuk menebak isi sel sebelum ditampilkan.</p>
     </div>
-</section>
-
-@include('lessons.level', ['n' => 2, 'title' => 'program lengkap', 'desc' => 'Penambahan rentang lalu pertanyaan jumlah rentang.'])
-
-<section class="lesson-section" id="kode" data-toc="Kode C++ Lengkap">
-    <h2>Kode C++ Lengkap</h2>
-    @include('lessons.walkthrough', [
-        'title' => 'Array selisih + prefix sum',
-        'steps' => $psSteps,
-        'sample' => ['input' => "6 3 3\n1 3 2\n2 5 3\n4 4 -1\n1 6\n2 4\n5 5\n", 'output' => "17\n12\n3\n"],
-        'py' => $psPy,
-    ])
+    <div data-viz="prefix-2d"></div>
 </section>
 
 <section class="lesson-section" id="tangan" data-toc="Coba dengan Tangan">
     <h2>Coba dengan Tangan</h2>
-    <div class="prose"><p>Operasi: +2 pada 1..3, +3 pada 2..5, −1 pada 4..4. N = 6.</p></div>
     <div class="trace-wrap">
         <table class="trace-table">
-            <tr><th>i</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr>
-            <tr><td>d setelah +2 di 1..3</td><td>2</td><td>0</td><td>0</td><td>−2</td><td>0</td><td>0</td><td>0</td></tr>
-            <tr><td>d setelah +3 di 2..5</td><td>2</td><td>3</td><td>0</td><td>−2</td><td>0</td><td>−3</td><td>0</td></tr>
-            <tr class="hl"><td>d setelah −1 di 4..4</td><td>2</td><td>3</td><td>0</td><td>−3</td><td>1</td><td>−3</td><td>0</td></tr>
-            <tr class="ok"><td>a = prefix d</td><td>2</td><td>5</td><td>5</td><td>2</td><td>3</td><td>0</td><td></td></tr>
-            <tr><td>pre = prefix a</td><td>2</td><td>7</td><td>12</td><td>14</td><td>17</td><td>17</td><td></td></tr>
+            <tr><th>i</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+            <tr><td>a[i]</td><td>1</td><td>3</td><td>4</td><td>8</td><td>6</td><td>–</td></tr>
+            <tr class="hl"><td>pre[i]</td><td>0</td><td>1</td><td>4</td><td>8</td><td>16</td><td>22</td></tr>
         </table>
     </div>
-    <div class="prose"><p>Jumlah 2..4 = pre[4] − pre[1] = 14 − 2 = 12, sesuai output contoh.</p></div>
+    <div class="prose">
+        <ul>
+            <li>jumlah a[1..3] = pre[4] − pre[1] = 16 − 1 = <strong>15</strong> (3 + 4 + 8).</li>
+            <li>jumlah a[0..4] = pre[5] − pre[0] = <strong>22</strong>.</li>
+            <li>jumlah a[2..2] = pre[3] − pre[2] = 8 − 4 = <strong>4</strong>.</li>
+        </ul>
+    </div>
 </section>
 
-<section class="lesson-section" id="kompleksitas" data-toc="Kompleksitas & Jebakan">
+@include('lessons.level', ['n' => 2, 'title' => 'prefix sum di C++', 'desc' => 'Dua dimensi, dan menghitung subarray dengan syarat jumlah.'])
+
+<section class="lesson-section" id="dua-dimensi" data-toc="Prefix Sum 2D">
+    <h2>Prefix Sum 2D: Inklusi-Eksklusi</h2>
+    <div class="prose">
+        <p>Untuk grid, <code>P[i][j]</code> = jumlah persegi dari sudut kiri atas sampai (i−1, j−1). Saat membangun, kita menambah persegi di atas dan persegi di kiri; bagian kiri-atas terhitung <strong>dua kali</strong>, jadi dikurangi sekali. Saat menjawab, kebalikannya: kurangi dua persegi, lalu tambahkan kembali sudut yang terkurangi dua kali.</p>
+    </div>
+    @include('lessons.code', ['cpp' => $ps2d, 'js' => null, 'py' => null])
+    <div class="steps">
+        <div class="step-card"><b>Ambil persegi besar</b><span><code>P[r2+1][c2+1]</code>: dari sudut (0, 0) sampai sudut kanan bawah yang ditanya.</span></div>
+        <div class="step-card"><b>Buang bagian atas</b><span><code>− P[r1][c2+1]</code>: baris-baris di atas r1.</span></div>
+        <div class="step-card"><b>Buang bagian kiri</b><span><code>− P[r2+1][c1]</code>: kolom-kolom di kiri c1.</span></div>
+        <div class="step-card"><b>Kembalikan sudut</b><span><code>+ P[r1][c1]</code>: sudut kiri atas terbuang dua kali.</span></div>
+    </div>
+</section>
+
+<section class="lesson-section" id="kode" data-toc="Kode C++ Lengkap">
+    <h2>Kode C++ Lengkap: Subarray Berjumlah K</h2>
+    @include('lessons.walkthrough', [
+        'title' => 'Prefix sum + map: menghitung pasangan',
+        'steps' => $psSteps,
+        'sample' => ['input' => "6 3\n1 2 1 -1 2 1\n", 'output' => "5\n"],
+        'py' => $psPy,
+    ])
+</section>
+
+<section class="lesson-section" id="jebakan" data-toc="Kompleksitas & Jebakan">
     <h2>Kompleksitas & Jebakan</h2>
     <table class="cx-table">
-        <tr><th>Kebutuhan</th><th>Cara langsung</th><th>Dengan teknik ini</th></tr>
-        <tr><td>Q pertanyaan jumlah rentang (array tetap)</td><td><code>O(Q · N)</code></td><td><code>O(N + Q)</code> prefix sum</td></tr>
-        <tr><td>M penambahan rentang, dibaca di akhir</td><td><code>O(M · N)</code></td><td><code>O(N + M)</code> array selisih</td></tr>
-        <tr><td>Penambahan dan pertanyaan bergantian</td><td><code>O((M + Q) · N)</code></td><td>Butuh Fenwick tree / segment tree, <code>O(log N)</code> per operasi</td></tr>
+        <tr><th>Operasi</th><th>Tanpa prefix</th><th>Dengan prefix</th></tr>
+        <tr><td>Membangun</td><td>–</td><td><code>O(n)</code> / <code>O(R · C)</code></td></tr>
+        <tr><td>Satu query jumlah rentang</td><td><code>O(n)</code></td><td><code>O(1)</code></td></tr>
+        <tr><td>Q query</td><td><code>O(n · Q)</code></td><td><code>O(n + Q)</code></td></tr>
     </table>
     <div class="callout warn">
         <span class="callout-icon">⚠️</span>
-        <p><strong>Indeks r + 1.</strong> Buat array berukuran N + 2 (indeks 1-based) agar <code>d[r + 1]</code> tidak keluar batas saat r = N.</p>
+        <p><strong>Overflow.</strong> Jumlah 2 · 10<sup>5</sup> bilangan sebesar 10<sup>9</sup> mencapai 2 · 10<sup>14</sup>. Array <code>pre</code> harus <code>long long</code>, walaupun input muat di <code>int</code>.</p>
     </div>
     <div class="callout warn">
         <span class="callout-icon">⚠️</span>
-        <p><strong>Overflow.</strong> 2 · 10<sup>5</sup> elemen bernilai 10<sup>9</sup> berjumlah 2 · 10<sup>14</sup>. Prefix sum hampir selalu butuh <code>long long</code>.</p>
+        <p><strong>Data berubah.</strong> Prefix sum hanya benar selama array tidak diubah setelah tabelnya dibuat. Jika ada update di sela query, pakai Fenwick tree atau segment tree.</p>
     </div>
     <div class="callout warn">
         <span class="callout-icon">⚠️</span>
-        <p><strong>Online vs offline.</strong> Array selisih hanya cocok jika semua penambahan terjadi sebelum array dibaca. Jika pertanyaan dan penambahan bercampur, gunakan materi berikutnya: Fenwick tree atau segment tree.</p>
+        <p><strong>Maksimum dan minimum tidak bisa.</strong> Jumlah punya kebalikan (pengurangan), XOR punya kebalikan (XOR lagi), tetapi max tidak. Untuk min/max rentang, pakai sparse table.</p>
     </div>
 </section>
 
-@include('lessons.level', ['n' => 3, 'title' => 'dua dimensi & frekuensi', 'desc' => 'Inklusi–eksklusi pada grid dan prefix dengan tabel frekuensi.'])
+@include('lessons.level', ['n' => 3, 'title' => 'prefix sebagai cara berpikir', 'desc' => 'Mengubah syarat subarray menjadi syarat pasangan prefix.'])
 
-<section class="lesson-section" id="dua-dimensi" data-toc="Prefix Sum 2D">
-    <h2>Prefix Sum 2D</h2>
-    <div class="prose">
-        <p><code>P[i][j]</code> = jumlah semua sel di persegi panjang dari pojok (1, 1) sampai (i, j). Jumlah persegi panjang sembarang (r1, c1)–(r2, c2) diperoleh dari empat nilai P:</p>
+<section class="lesson-section" id="pola" data-toc="Pola Prefix + Hitung">
+    <h2>Pola: Ubah Subarray Menjadi Pasangan Prefix</h2>
+    <div class="proof">
+        <p>Setiap subarray a[l..r] berkorespondensi satu-satu dengan pasangan indeks prefix (l, r + 1) dengan l &lt; r + 1. Maka "berapa subarray yang jumlahnya memenuhi syarat X" sama dengan "berapa pasangan prefix (i &lt; j) dengan pre[j] − pre[i] memenuhi X".</p>
+        <p>Jika X berbentuk <em>"sama dengan K"</em>, untuk setiap j cukup menghitung berapa i sebelumnya dengan <code>pre[i] = pre[j] − K</code>: map atau array frekuensi. Jika X berbentuk <em>"habis dibagi M"</em>, syaratnya menjadi <code>pre[i] ≡ pre[j] (mod M)</code>: hitung berdasarkan sisa bagi.</p>
     </div>
-    <figure class="diagram">
-        <svg viewBox="0 0 520 250" role="img" aria-label="Inklusi-eksklusi prefix sum 2D">
-            <rect x="60" y="20" width="330" height="200" rx="6" style="fill: var(--panel-2); stroke: var(--line-strong)" />
-            <rect x="60" y="20" width="330" height="70" style="fill: rgba(239, 68, 68, 0.13)" />
-            <rect x="60" y="20" width="110" height="200" style="fill: rgba(239, 68, 68, 0.13)" />
-            <rect x="60" y="20" width="110" height="70" style="fill: rgba(245, 158, 11, 0.32)" />
-            <rect x="170" y="90" width="220" height="130" style="fill: rgba(34, 211, 238, 0.22); stroke: var(--cyan); stroke-width: 2" />
-            <text x="115" y="60" class="dg-small" style="text-anchor: middle; fill: var(--hl-text); font-weight: 700">+ P[r1−1][c1−1]</text>
-            <text x="280" y="60" class="dg-small" style="text-anchor: middle; fill: var(--red-text)">− P[r1−1][c2]</text>
-            <text x="115" y="160" class="dg-small" style="text-anchor: middle; fill: var(--red-text)">− P[r2][c1−1]</text>
-            <text x="280" y="160" class="dg-small" style="text-anchor: middle; fill: var(--text-strong); font-weight: 700">persegi yang ditanya</text>
-            <text x="384" y="212" class="dg-small" style="text-anchor: end; fill: var(--muted)">(r2, c2)</text>
-            <text x="178" y="106" class="dg-small" style="fill: var(--muted)">(r1, c1)</text>
-            <text x="450" y="125" class="dg-small" style="text-anchor: middle; fill: var(--muted)">P[r2][c2]</text>
-            <text x="450" y="142" class="dg-small" style="text-anchor: middle; fill: var(--muted)">= seluruh kotak</text>
-        </svg>
-        <figcaption>Mulai dari P[r2][c2] (seluruh kotak abu-abu), buang pita atas dan pita kiri (merah). Pojok kiri atas (jingga) terbuang dua kali, jadi tambahkan sekali lagi.</figcaption>
-    </figure>
-    @include('lessons.code', ['cpp' => $ps2d, 'js' => null, 'py' => null])
-    <div class="prose"><p>Array selisih juga punya versi 2D: tandai empat pojok, lalu prefix sum 2D mengembalikan nilai akhir. Ini menjawab soal seperti "tambahkan v pada banyak persegi panjang, lalu cetak grid akhirnya".</p></div>
-    @include('lessons.code', ['cpp' => $ps2dDiff, 'js' => null, 'py' => null])
-</section>
-
-<section class="lesson-section" id="frekuensi" data-toc="Prefix + Frekuensi">
-    <h2>Prefix + Tabel Frekuensi</h2>
-    <div class="prose">
-        <p>Banyak soal "hitung subarray yang …" bisa diubah menjadi "hitung pasangan indeks prefix yang …". Subarray l..r berpadanan dengan pasangan (l − 1, r). Jika syaratnya hanya membandingkan <code>pre[r]</code> dan <code>pre[l − 1]</code>, simpan berapa kali setiap nilai prefix sudah muncul.</p>
-    </div>
-    @include('lessons.code', ['cpp' => $psMod, 'js' => null, 'py' => null])
     <div class="pattern-grid">
-        <div class="pattern"><h4>Jumlah tepat K</h4><p>Cari pre[l − 1] = pre[r] − K di tabel frekuensi.</p></div>
-        <div class="pattern"><h4>Habis dibagi K</h4><p>Cocokkan sisa bagi prefix (awas sisa negatif).</p></div>
-        <div class="pattern"><h4>XOR rentang</h4><p>px[i] = a[1] ⊕ … ⊕ a[i]; XOR l..r = px[r] ⊕ px[l − 1].</p></div>
-        <div class="pattern"><h4>Banyak huruf</h4><p>Prefix per huruf: berapa huruf 'a' di s[l..r]? cnt[r][a] − cnt[l−1][a].</p></div>
-        <div class="pattern"><h4>Seimbang</h4><p>Ubah 0 menjadi −1; subarray seimbang = pre sama di dua ujung.</p></div>
-        <div class="pattern"><h4>Rata-rata ≥ X</h4><p>Kurangi setiap elemen dengan X; cari subarray berjumlah ≥ 0.</p></div>
+        <div class="pattern"><h4>Jumlah rentang statis</h4><p><code>pre[r+1] − pre[l]</code>.</p></div>
+        <div class="pattern"><h4>Submatriks</h4><p>Prefix 2D dengan inklusi-eksklusi.</p></div>
+        <div class="pattern"><h4>Subarray berjumlah K</h4><p>map frekuensi prefix.</p></div>
+        <div class="pattern"><h4>Kelipatan M</h4><p>Hitung prefix per sisa bagi M.</p></div>
+        <div class="pattern"><h4>Seimbang A dan B</h4><p>A = +1, B = −1, cari subarray berjumlah 0.</p></div>
+        <div class="pattern"><h4>Hasil kali kecuali diri sendiri</h4><p>Prefix kali dan suffix kali.</p></div>
     </div>
 </section>
 
 <section class="lesson-section" id="kuis" data-toc="Cek Pemahaman">
     <h2>Cek Pemahaman</h2>
-    <div class="quiz" data-quiz data-answer="2" data-explain="Penambahan v pada l..r hanya mengubah selisih di l (naik v) dan di r + 1 (turun v).">
-        <p class="quiz-q">Menambah 4 pada a[3..7] mengubah array selisih d di …</p>
+    <div class="quiz" data-quiz data-answer="1" data-explain="pre = [0, 2, 7, 8, 12]. jumlah a[1..2] = pre[3] − pre[1] = 8 − 2 = 6 (5 + 1).">
+        <p class="quiz-q">a = [2, 5, 1, 4]. Berapa <code>pre[3] − pre[1]</code>?</p>
         <div class="quiz-options">
-            <button class="quiz-option">d[3..7] semuanya +4</button>
-            <button class="quiz-option">d[3] += 4 dan d[7] −= 4</button>
-            <button class="quiz-option">d[3] += 4 dan d[8] −= 4</button>
+            <button class="quiz-option">5</button>
+            <button class="quiz-option">6</button>
+            <button class="quiz-option">10</button>
         </div>
         <p class="quiz-feedback" hidden></p>
     </div>
-    <div class="quiz" data-quiz data-answer="0" data-explain="Pojok P[r1−1][c1−1] terkurangi dua kali (oleh pita atas dan pita kiri), jadi harus ditambah sekali.">
-        <p class="quiz-q">Mengapa rumus jumlah persegi 2D menambahkan <code>P[r1−1][c1−1]</code>?</p>
+    <div class="quiz" data-quiz data-answer="2" data-explain="Saat menjumlahkan persegi atas dan persegi kiri, persegi kiri-atas ikut terhitung dua kali, sehingga harus dikurangi sekali.">
+        <p class="quiz-q">Mengapa ada <code>− P[i−1][j−1]</code> saat membangun prefix 2D?</p>
         <div class="quiz-options">
-            <button class="quiz-option">Karena bagian itu terkurangi dua kali</button>
-            <button class="quiz-option">Karena baris 0 tidak dihitung</button>
-            <button class="quiz-option">Agar hasilnya tidak negatif</button>
+            <button class="quiz-option">Agar tidak overflow</button>
+            <button class="quiz-option">Karena indeks dimulai dari 1</button>
+            <button class="quiz-option">Bagian kiri-atas terhitung dua kali</button>
         </div>
         <p class="quiz-feedback" hidden></p>
     </div>
-    <div class="quiz" data-quiz data-answer="1" data-explain="Prefix sum statis tidak bisa diperbarui murah: setiap perubahan a[i] mengubah pre[i..N]. Untuk campuran update dan query, pakai Fenwick tree atau segment tree.">
-        <p class="quiz-q">Q operasi bercampur: ubah satu elemen, atau tanya jumlah rentang. Prefix sum biasa …</p>
+    <div class="quiz" data-quiz data-answer="0" data-explain="Maksimum tidak punya operasi kebalikan: dari max(a[0..r]) dan max(a[0..l−1]) kita tidak bisa mendapat max(a[l..r]).">
+        <p class="quiz-q">Query mana yang <strong>tidak</strong> bisa dijawab dengan prefix?</p>
         <div class="quiz-options">
-            <button class="quiz-option">tetap O(1) per operasi</button>
-            <button class="quiz-option">butuh O(N) untuk setiap perubahan, jadi terlalu lambat</button>
-            <button class="quiz-option">tidak bisa dipakai sama sekali untuk jumlah</button>
+            <button class="quiz-option">Maksimum a[l..r]</button>
+            <button class="quiz-option">XOR a[l..r]</button>
+            <button class="quiz-option">Banyak bilangan genap di a[l..r]</button>
         </div>
         <p class="quiz-feedback" hidden></p>
     </div>

@@ -54,28 +54,31 @@
             </div>
         </section>
 
-        @foreach ($tracks as $track)
+        @php
+            $shownTracks = $tracks->filter(fn ($t) => $t['lessons']->isNotEmpty());
+        @endphp
+        <nav class="track-jump" aria-label="Lompat ke track">
+            @foreach ($shownTracks as $track)
+                <a href="#track-{{ $track['key'] }}" class="track-jump-item track-{{ $track['key'] }}">
+                    <span class="tj-icon">
+                        @include('partials.track-icon', ['key' => $track['key'], 'size' => 15])
+                    </span>
+                    <span>{{ $track['name'] }}</span>
+                    <small>{{ $track['lessonsDone'] }}/{{ $track['lessons']->count() }}</small>
+                </a>
+            @endforeach
+        </nav>
+
+        @foreach ($shownTracks as $track)
             @php
                 $pct = $track['lessons']->count() ? $track['lessonsDone'] / $track['lessons']->count() * 100 : 0;
                 $firstOpen = $track['lessons']->first(fn ($l) => ! $completed->has($l->id));
             @endphp
-            <section class="track track-{{ $track['key'] }}">
+            <section class="track track-{{ $track['key'] }}" id="track-{{ $track['key'] }}">
                 <div class="track-head">
                     <div class="track-title">
                         <span class="track-icon">
-                            @if ($track['key'] === 'graph')
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="6" r="2.5" /><circle cx="19" cy="6" r="2.5" /><circle cx="12" cy="18" r="2.5" /><path d="M7.5 6h9M6.3 8.2l4.4 7.6M17.7 8.2l-4.4 7.6" /></svg>
-                            @elseif ($track['key'] === 'struktur-data')
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="5" rx="1.2" /><rect x="3" y="15" width="6" height="5" rx="1.2" /><rect x="15" y="15" width="6" height="5" rx="1.2" /><path d="M12 8v3M6 15v-4h12v4" /></svg>
-                            @elseif ($track['key'] === 'matematika')
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h6M8 4v6M14 7h5M5 17h6M14 15.5h5M14 18.5h5" /><path d="M5.5 14.5l5 5M10.5 14.5l-5 5" /></svg>
-                            @elseif ($track['key'] === 'string')
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 18l4-12 4 12M5.5 14h5" /><path d="M14 10h3.5a2 2 0 0 1 0 4H14V7h3a2 2 0 0 1 0 3M14 14h4a2 2 0 0 1 0 4h-4z" /></svg>
-                            @elseif ($track['key'] === 'fondasi')
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16M6 20V10M12 20V6M18 20v-7" /></svg>
-                            @else
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" /><path d="M10 6.5h4M17.5 10v4" /></svg>
-                            @endif
+                            @include('partials.track-icon', ['key' => $track['key']])
                         </span>
                         <div>
                             <h2>{{ $track['name'] }}</h2>
