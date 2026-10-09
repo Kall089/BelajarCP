@@ -54,20 +54,31 @@
             </div>
         </section>
 
-        @foreach ($tracks as $track)
+        @php
+            $shownTracks = $tracks->filter(fn ($t) => $t['lessons']->isNotEmpty());
+        @endphp
+        <nav class="track-jump" aria-label="Lompat ke track">
+            @foreach ($shownTracks as $track)
+                <a href="#track-{{ $track['key'] }}" class="track-jump-item track-{{ $track['key'] }}">
+                    <span class="tj-icon">
+                        @include('partials.track-icon', ['key' => $track['key'], 'size' => 15])
+                    </span>
+                    <span>{{ $track['name'] }}</span>
+                    <small>{{ $track['lessonsDone'] }}/{{ $track['lessons']->count() }}</small>
+                </a>
+            @endforeach
+        </nav>
+
+        @foreach ($shownTracks as $track)
             @php
                 $pct = $track['lessons']->count() ? $track['lessonsDone'] / $track['lessons']->count() * 100 : 0;
                 $firstOpen = $track['lessons']->first(fn ($l) => ! $completed->has($l->id));
             @endphp
-            <section class="track track-{{ $track['key'] }}">
+            <section class="track track-{{ $track['key'] }}" id="track-{{ $track['key'] }}">
                 <div class="track-head">
                     <div class="track-title">
                         <span class="track-icon">
-                            @if ($track['key'] === 'graph')
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="6" r="2.5" /><circle cx="19" cy="6" r="2.5" /><circle cx="12" cy="18" r="2.5" /><path d="M7.5 6h9M6.3 8.2l4.4 7.6M17.7 8.2l-4.4 7.6" /></svg>
-                            @else
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" /><path d="M10 6.5h4M17.5 10v4" /></svg>
-                            @endif
+                            @include('partials.track-icon', ['key' => $track['key']])
                         </span>
                         <div>
                             <h2>{{ $track['name'] }}</h2>
