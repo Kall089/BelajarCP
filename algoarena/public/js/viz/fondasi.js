@@ -219,4 +219,184 @@ for (int r = 0; r < n; r++) {                //@1
         [arrIn, kIn].forEach((el) => el.addEventListener("keydown", (e) => e.key === "Enter" && build()));
         build();
     });
+
+    // ════════════════════════════ Greedy: jadwal rapat ════════════════════════════
+    V.register("interval", (root) => {
+        const KEYS = {
+            selesai: { label: "selesai paling awal", key: (r) => r.e, tag: (r) => `selesai ${r.e}` },
+            mulai: { label: "mulai paling awal", key: (r) => r.s, tag: (r) => `mulai ${r.s}` },
+            pendek: { label: "paling pendek", key: (r) => r.e - r.s, tag: (r) => `panjang ${r.e - r.s}` },
+        };
+        const sh = V.shell(root, {
+            title: "Greedy: Jadwal Rapat Terbanyak",
+            controls: `
+                ${V.segmented("key", [["selesai", "Selesai awal"], ["mulai", "Mulai awal"], ["pendek", "Terpendek"]], "selesai")}
+                <label class="viz-input">Rapat <input data-iv value="0-11, 1-5, 4-7, 6-10, 10-13, 11-14, 12-16, 14-17" style="width:230px"></label>
+                <button class="btn btn-sm btn-primary" data-apply>Terapkan</button>`,
+            legend: [
+                ["Sedang dipertimbangkan", "#f59e0b", "rgba(245,158,11,.3)"],
+                ["Diambil", "#22c55e", "rgba(34,197,94,.3)"],
+                ["Dilewati (bentrok)", "#ef4444", "rgba(239,68,68,.18)"],
+                ["Penyebab bentrok", "#8b5cf6"],
+            ],
+        });
+        const ivIn = sh.head.querySelector("[data-iv]");
+        let mode = "selesai";
+        const code = V.codePanel(
+            sh.side,
+            `
+// rapat[i] = {mulai, selesai}
+sort(rapat.begin(), rapat.end(), [&](auto& a, auto& b) {   //@1
+    return kunci(a) < kunci(b);                            //@1
+});
+vector<pair<int, int>> dipilih;                            //@0
+for (auto [s, e] : rapat) {                                //@2
+    bool bentrok = false;                                  //@3
+    for (auto [s2, e2] : dipilih)                          //@3
+        if (s < e2 && s2 < e) bentrok = true;              //@3
+    if (!bentrok) dipilih.push_back({s, e});   // ambil    //@4,5
+}
+cout << dipilih.size() << '\\n';                            //@6`,
+        );
+        const watch = V.watchPanel(sh.side);
+
+        // Jawaban optimal untuk pembanding: greedy selesai paling awal.
+        function optimal(rs) {
+            let bebas = -Infinity;
+            let n = 0;
+            for (const r of [...rs].sort((a, b) => a.e - b.e || a.s - b.s)) if (r.s >= bebas) (n++, (bebas = r.e));
+            return n;
+        }
+
+        function build() {
+            let rs = String(ivIn.value)
+                .split(/[,;]+/)
+                .map((t) => t.match(/(\d+)\s*[-–:]\s*(\d+)/))
+                .filter(Boolean)
+                .map((m) => ({ s: Math.min(+m[1], 30), e: Math.min(+m[2], 30) }))
+                .filter((r) => r.s < r.e)
+                .slice(0, 10);
+            if (rs.length < 2) rs = [[0, 11], [1, 5], [4, 7], [6, 10], [10, 13], [11, 14], [12, 16], [14, 17]].map(([s, e]) => ({ s, e }));
+            rs.forEach((r, i) => (r.id = String.fromCharCode(65 + i)));
+            ivIn.value = rs.map((r) => `${r.s}-${r.e}`).join(", ");
+            const K = KEYS[mode];
+            const best = optimal(rs);
+            const T = Math.max(...rs.map((r) => r.e));
+            const W = 600;
+            const L = 74;
+            const RH = 30;
+            const x = (t) => L + ((W - L - 92) * t) / T;   // sisakan ruang kanan untuk label
+
+            const render = (order, st) => {
+                const rows = order.length;
+                const top = 46;
+                const H = top + rows * RH + 34;
+                let svg = `<svg viewBox="0 0 ${W} ${H}" class="iv-svg">`;
+                const step = T > 20 ? 4 : 2;
+                for (let t = 0; t <= T; t += step) {
+                    svg += `<line x1="${x(t)}" y1="${top - 8}" x2="${x(t)}" y2="${top + rows * RH}" class="iv-grid"/>`;
+                    svg += `<text x="${x(t)}" y="${top + rows * RH + 16}" class="iv-tick">${t}</text>`;
+                }
+                // lajur ruangan: rapat yang sudah diambil
+                svg += `<text x="8" y="22" class="iv-lane">ruangan</text>`;
+                svg += `<rect x="${x(0)}" y="10" width="${x(T) - x(0)}" height="22" rx="5" class="iv-room"/>`;
+                for (const r of st.taken) svg += `<rect x="${x(r.s) + 1}" y="12" width="${x(r.e) - x(r.s) - 2}" height="18" rx="4" class="iv-bar take"/><text x="${(x(r.s) + x(r.e)) / 2}" y="22" class="iv-id on">${r.id}</text>`;
+                if (st.bebas !== undefined && st.bebas > -Infinity && mode !== "pendek")
+                    svg += `<line x1="${x(st.bebas)}" y1="6" x2="${x(st.bebas)}" y2="${top + rows * RH}" class="iv-free"/><text x="${x(st.bebas) + 4}" y="${top - 12}" class="iv-free-t">bebas ${st.bebas}</text>`;
+                order.forEach((r, i) => {
+                    const y = top + i * RH;
+                    const cls = st.cls[r.id] || "";
+                    svg += `<text x="8" y="${y + RH / 2}" class="iv-lbl ${cls}">${r.id} [${r.s}, ${r.e})</text>`;
+                    svg += `<rect x="${x(r.s)}" y="${y + 6}" width="${x(r.e) - x(r.s)}" height="${RH - 12}" rx="5" class="iv-bar ${cls}"/>`;
+                    if (st.tags) svg += `<text x="${x(r.e) + 6}" y="${y + RH / 2}" class="iv-tag">${K.tag(r)}</text>`;
+                });
+                return `${svg}</svg>`;
+            };
+
+            const frames = [];
+            const taken = [];
+            let bebas = -Infinity;
+            const cls = {};
+            const w = (extra = []) => [["strategi", K.label], ["diambil", taken.length], ...extra];
+            frames.push({
+                line: 0,
+                text: `Satu ruangan, ${rs.length} permintaan rapat. Pilih sebanyak mungkin rapat yang tidak saling bertabrakan. Strategi: ambil rapat dengan <b>${K.label}</b> lebih dulu, asalkan tidak bentrok.`,
+                html: render(rs, { taken: [], cls: {} }),
+                watch: w(),
+            });
+            const order = [...rs].sort((a, b) => K.key(a) - K.key(b) || a.e - b.e || a.s - b.s);
+            frames.push({
+                line: 1,
+                text: `Urutkan menurut <b>${K.label}</b>. Setelah itu setiap rapat cukup dipertimbangkan sekali, dari atas ke bawah.`,
+                html: render(order, { taken: [], cls: {}, tags: true }),
+                watch: w(),
+            });
+            for (const r of order) {
+                const clash = taken.filter((t) => r.s < t.e && t.s < r.e);
+                frames.push({
+                    line: 2,
+                    text: `Pertimbangkan rapat <b>${r.id} [${r.s}, ${r.e})</b>.`,
+                    html: render(order, { taken: [...taken], cls: { ...cls, [r.id]: "cur" }, bebas, tags: true }),
+                    watch: w([["rapat", `${r.id} [${r.s}, ${r.e})`]]),
+                });
+                const ok = clash.length === 0;
+                const blame = {};
+                clash.forEach((t) => (blame[t.id] = "take blame"));
+                const masked = render(order, { taken: [...taken], cls: { ...cls, [r.id]: "cur" }, bebas, tags: true });
+                if (ok) {
+                    taken.push(r);
+                    cls[r.id] = "take";
+                    if (mode !== "pendek") bebas = Math.max(bebas, r.e);
+                } else cls[r.id] = "skip";
+                const why = ok
+                    ? mode === "selesai"
+                        ? `Mulai ${r.s} ≥ ${taken.length > 1 ? `selesainya rapat terakhir (${taken[taken.length - 2].e})` : "awal hari"}: tidak bentrok, <b>ambil</b>. Ruangan sekarang bebas mulai menit ${r.e}, sedini mungkin.`
+                        : `Tidak bentrok dengan rapat yang sudah diambil: <b>ambil</b>.`
+                    : `Bentrok dengan ${clash.map((t) => `${t.id} [${t.s}, ${t.e})`).join(" dan ")}: <b>lewati</b>.`;
+                frames.push({
+                    line: ok ? 4 : 5,
+                    text: why,
+                    mark: ok ? "take" : "skip",
+                    html: render(order, { taken: [...taken], cls: { ...cls, ...blame }, bebas, tags: true }),
+                    htmlMasked: masked,
+                    watch: [["strategi", K.label], ["diambil", taken.length, true], ["rapat", `${r.id} [${r.s}, ${r.e})`], ["keputusan", ok ? "ambil" : "lewati", true]],
+                    ask: {
+                        type: "choice",
+                        options: ["Ambil", "Lewati"],
+                        answer: ok ? 0 : 1,
+                        prompt: `Rapat <b>${r.id} [${r.s}, ${r.e})</b>: diambil atau dilewati?`,
+                        hint: "Bandingkan dengan rapat hijau di lajur ruangan. [a, b) dan [c, d) bentrok jika a < d dan c < b.",
+                        context: `Rapat ${r.id} sedang dipertimbangkan.`,
+                    },
+                });
+            }
+            const verdict =
+                taken.length === best
+                    ? mode === "selesai"
+                        ? `Selesai: <b>${taken.length}</b> rapat, dan ini memang paling banyak. Memilih yang selesai paling awal menyisakan waktu sebanyak mungkin untuk rapat berikutnya.`
+                        : `Selesai: <b>${taken.length}</b> rapat, kebetulan optimal untuk data ini. Coba data lain; strategi ini tidak selalu benar.`
+                    : `Selesai: hanya <b>${taken.length}</b> rapat, padahal bisa <b>${best}</b>. Strategi "${K.label}" <b>salah</b>: ${mode === "mulai" ? "rapat yang mulai paling awal bisa sangat panjang dan menutup banyak rapat lain" : "rapat pendek bisa berada di tengah dan memotong dua rapat sekaligus"}.`;
+            frames.push({
+                line: 6,
+                text: verdict,
+                mark: "done",
+                html: render(order, { taken: [...taken], cls: { ...cls }, bebas, tags: true }),
+                watch: w([["optimal", best]]),
+            });
+            player.load(frames);
+        }
+
+        const player = new V.Player(sh, (f) => {
+            sh.stage.innerHTML = f.masked && f.htmlMasked ? f.htmlMasked : f.html;
+            code.set(f.line);
+            watch.set(f.watch, f.masked);
+        });
+        V.bindSegmented(sh.head, "key", (v) => {
+            mode = v;
+            build();
+        });
+        sh.head.querySelector("[data-apply]").onclick = build;
+        ivIn.addEventListener("keydown", (e) => e.key === "Enter" && build());
+        build();
+    });
 })();

@@ -1337,6 +1337,110 @@ html[data-theme="light"] .g-node.colored text.label {
     stroke: var(--amber);
 }
 
+/* ═══════════════════════════════ Visualisasi greedy interval ═══════════════════════════════ */
+.iv-svg {
+    display: block;
+    width: 100%;
+    max-height: 440px;
+    margin: 12px 0 4px;
+}
+
+.iv-grid {
+    stroke: var(--border-soft);
+    stroke-width: 1;
+}
+
+.iv-tick,
+.iv-lane,
+.iv-tag {
+    font: 600 11px var(--mono);
+    fill: var(--faint);
+}
+
+.iv-tick {
+    text-anchor: middle;
+}
+
+.iv-lane {
+    dominant-baseline: central;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.iv-tag {
+    dominant-baseline: central;
+}
+
+.iv-lbl {
+    font: 700 12px var(--mono);
+    fill: var(--text-soft);
+    dominant-baseline: central;
+}
+
+.iv-lbl.cur {
+    fill: var(--amber-text);
+}
+
+.iv-lbl.take {
+    fill: var(--green-text);
+}
+
+.iv-lbl.skip {
+    fill: var(--red-text);
+    text-decoration: line-through;
+}
+
+.iv-room {
+    fill: var(--panel-deep);
+    stroke: var(--border);
+}
+
+.iv-bar {
+    fill: var(--cyan-soft);
+    stroke: var(--cyan);
+    stroke-width: 1.5;
+}
+
+.iv-bar.cur {
+    fill: rgba(245, 158, 11, 0.3);
+    stroke: var(--amber);
+    stroke-width: 2.5;
+}
+
+.iv-bar.take {
+    fill: rgba(34, 197, 94, 0.3);
+    stroke: var(--green);
+}
+
+.iv-bar.skip {
+    fill: rgba(239, 68, 68, 0.14);
+    stroke: var(--red);
+    stroke-dasharray: 5 4;
+}
+
+.iv-bar.blame {
+    stroke: #8b5cf6;
+    stroke-width: 3;
+}
+
+.iv-id {
+    font: 700 11px var(--mono);
+    fill: var(--text-strong);
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+.iv-free {
+    stroke: var(--green);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 4;
+}
+
+.iv-free-t {
+    font: 700 11px var(--mono);
+    fill: var(--green-text);
+}
+
 /* Editor cadangan saat Monaco tidak dapat dimuat (tanpa internet) */
 .plain-editor {
     display: block;
