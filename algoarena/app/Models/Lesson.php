@@ -9,11 +9,37 @@ class Lesson extends Model
 {
     protected $guarded = [];
 
+    /** Urutan track mengikuti urutan folder materi CP (01 Dasar sampai 16 Teknik Kontes). */
     public const TRACKS = [
         'fondasi' => [
-            'name' => 'Fondasi',
-            'tagline' => 'Kompleksitas, rekursi, dan pencarian cepat',
+            'name' => 'Fondasi & STL',
+            'tagline' => 'Kompleksitas, kontainer STL, dan alat dasar C++',
             'icon' => 'fondasi',
+        ],
+        'array' => [
+            'name' => 'Teknik Array',
+            'tagline' => 'Prefix sum, two pointers, stack dan deque monoton',
+            'icon' => 'array',
+        ],
+        'sorting' => [
+            'name' => 'Sorting & Searching',
+            'tagline' => 'Mengurutkan, membagi dua, dan mencari jawaban',
+            'icon' => 'sorting',
+        ],
+        'rekursi' => [
+            'name' => 'Rekursi & Brute Force',
+            'tagline' => 'Mencoba semua kemungkinan dengan rapi',
+            'icon' => 'rekursi',
+        ],
+        'greedy' => [
+            'name' => 'Greedy',
+            'tagline' => 'Mengambil yang terbaik saat ini, lalu membuktikannya',
+            'icon' => 'greedy',
+        ],
+        'matematika' => [
+            'name' => 'Teori Bilangan & Kombinatorika',
+            'tagline' => 'Prima, modulo, matriks, dan seni menghitung',
+            'icon' => 'matematika',
         ],
         'graph' => [
             'name' => 'Graph',
@@ -24,6 +50,41 @@ class Lesson extends Model
             'name' => 'Dynamic Programming',
             'tagline' => 'Pecah masalah besar, ingat jawaban kecil',
             'icon' => 'dp',
+        ],
+        'struktur-data' => [
+            'name' => 'Struktur Data',
+            'tagline' => 'Menjawab query rentang dalam O(log N)',
+            'icon' => 'struktur-data',
+        ],
+        'pohon' => [
+            'name' => 'Pohon',
+            'tagline' => 'Akar, subtree, leluhur, dan dekomposisi pohon',
+            'icon' => 'pohon',
+        ],
+        'string' => [
+            'name' => 'String',
+            'tagline' => 'Mencari pola dan membandingkan teks dengan cepat',
+            'icon' => 'string',
+        ],
+        'geometri' => [
+            'name' => 'Geometri',
+            'tagline' => 'Titik, garis, dan selubung cembung',
+            'icon' => 'geometri',
+        ],
+        'permainan' => [
+            'name' => 'Teori Permainan',
+            'tagline' => 'Posisi menang, posisi kalah, dan bilangan Grundy',
+            'icon' => 'permainan',
+        ],
+        'kontes' => [
+            'name' => 'Teknik Kontes',
+            'tagline' => 'Menemukan bug sendiri dan memakai keacakan dengan benar',
+            'icon' => 'kontes',
+        ],
+        'latihan' => [
+            'name' => 'Latihan Terpadu',
+            'tagline' => 'Kumpulan soal DP, graf, dan greedy bertingkat',
+            'icon' => 'latihan',
         ],
     ];
 

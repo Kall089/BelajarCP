@@ -108,7 +108,8 @@
     <script src="{{ asset('js/viz/core.js') }}?v={{ filemtime(public_path('js/viz/core.js')) }}"></script>
     <script src="{{ asset('js/viz/graph-algos.js') }}?v={{ filemtime(public_path('js/viz/graph-algos.js')) }}"></script>
     <script src="{{ asset('js/viz/dp-algos.js') }}?v={{ filemtime(public_path('js/viz/dp-algos.js')) }}"></script>
-    @foreach (['js/viz/widgets.js', 'js/viz/graph-advanced.js', 'js/viz/graph-more.js', 'js/viz/dp-advanced.js', 'js/viz/dp-more.js', 'js/viz/fondasi.js', 'js/walkthrough.js'] as $script)
+    {{-- kit.js: komponen visual bersama; t-{track}.js: visualisasi khusus track materi ini --}}
+    @foreach (['js/viz/widgets.js', 'js/viz/graph-advanced.js', 'js/viz/graph-more.js', 'js/viz/dp-advanced.js', 'js/viz/dp-more.js', 'js/viz/fondasi.js', 'js/viz/kit.js', 'js/viz/t-'.$lesson->track.'.js', 'js/walkthrough.js'] as $script)
         @if (is_file(public_path($script)))
             <script src="{{ asset($script) }}?v={{ filemtime(public_path($script)) }}"></script>
         @endif
