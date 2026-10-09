@@ -28,7 +28,10 @@ window.Kit = (() => {
         });
         if (cfg.stageClass) sh.stage.classList.add(...cfg.stageClass.split(" "));
         const ui = { sh, head: sh.head, stage: sh.stage, side: sh.side, panels: {} };
-        if (cfg.code) ui.code = V.codePanel(sh.side, cfg.code, cfg.codeTitle || "Kode C++");
+        if (cfg.code && typeof cfg.code !== "function") {
+            ui.code = V.codePanel(sh.side, cfg.code, cfg.codeTitle || "Kode C++");
+            ui._codeSrc = cfg.code;
+        }
         if (cfg.watch !== false) ui.watch = V.watchPanel(sh.side, cfg.watch || "Variabel");
         for (const p of cfg.panels || []) {
             if (p.type === "ds") ui.panels[p.key] = V.dsPanel(sh.side, p.title, p.hint || "", { vertical: p.vertical });
@@ -60,6 +63,13 @@ window.Kit = (() => {
             }
         };
         ui.rebuild = rebuild;
+        if (typeof cfg.code === "function") {
+            const inner = cfg.build;
+            cfg.build = (u) => {
+                swapCode(u, cfg.code(u), cfg.codeTitle || "Kode C++");
+                return inner(u);
+            };
+        }
         sh.head.querySelectorAll("[data-apply]").forEach((b) => (b.onclick = rebuild));
         sh.head.querySelectorAll("input").forEach((el) => el.addEventListener("keydown", (e) => e.key === "Enter" && rebuild()));
         sh.head.querySelectorAll("select").forEach((el) => (el.onchange = rebuild));
@@ -73,6 +83,16 @@ window.Kit = (() => {
         );
         rebuild();
         return ui;
+    }
+
+    /** Ganti isi panel kode (misalnya saat mode visualisasi berubah). */
+    function swapCode(ui, code, title = "Kode C++") {
+        if (ui._codeSrc === code) return;
+        ui._codeSrc = code;
+        const fresh = V.codePanel(document.createElement("div"), code, title);
+        if (ui.code) ui.code.el.replaceWith(fresh.el);
+        else ui.side.prepend(fresh.el);
+        ui.code = fresh;
     }
 
     /** Nilai tombol aktif pada kontrol segmented: segVal(ui, "mode") untuk <div class="segmented" data-mode>. */
@@ -299,5 +319,5 @@ window.Kit = (() => {
 
     const bin = (x, w) => (x >>> 0).toString(2).padStart(w, "0");
 
-    return { widget, segVal, val, cells, line, bars, stack, table, chip, tree, plot, nums, bin, esc };
+    return { widget, swapCode, segVal, val, cells, line, bars, stack, table, chip, tree, plot, nums, bin, esc };
 })();

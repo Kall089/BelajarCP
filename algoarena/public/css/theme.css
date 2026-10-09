@@ -1017,6 +1017,7 @@ html[data-theme="dark"] :is(.pill-array, .pill-sorting, .pill-rekursi, .pill-gre
 .kx-poly { fill: color-mix(in srgb, var(--green) 13%, transparent); stroke: var(--green); stroke-width: 2; }
 .kx-poly.on { fill: color-mix(in srgb, var(--amber) 14%, transparent); stroke: var(--amber); }
 .kx-poly.in { fill: color-mix(in srgb, var(--cyan) 12%, transparent); stroke: var(--cyan); }
+.kx-poly.bad { fill: color-mix(in srgb, var(--red) 12%, transparent); stroke: var(--red); stroke-dasharray: 5 4; }
 .kx-plabel { font: 600 11px var(--mono); fill: var(--muted); }
 .kx-plabel.on { fill: var(--amber); }
 .kx-plabel.ok { fill: var(--green-text); }
@@ -1059,3 +1060,18 @@ html[data-theme="dark"] :is(.pill-array, .pill-sorting, .pill-rekursi, .pill-gre
 .kx-cell.empty b { color: var(--faint); }
 .kx-stage > .kx-line { align-self: center; }
 .viz-side .kx-v .kx-stack { min-height: 0; }
+
+/* Garis waktu interval (Kit greedy) */
+.kx-tl { width: 100%; max-width: 660px; height: auto; display: block; margin: 0 auto; }
+.kx-tl .kx-iv rect { fill: var(--panel-2); stroke: var(--line-strong); stroke-width: 1.5; }
+.kx-tl .kx-iv text { font: 600 11px var(--mono); fill: var(--svg-text); text-anchor: middle; }
+.kx-tl .kx-iv.on rect { fill: var(--amber-soft); stroke: var(--amber); stroke-width: 2; }
+.kx-tl .kx-iv.ok rect { fill: var(--green-soft); stroke: var(--green); }
+.kx-tl .kx-iv.in rect { fill: var(--cyan-soft); stroke: var(--cyan); }
+.kx-tl .kx-iv.vi rect { fill: rgba(124, 92, 219, 0.12); stroke: #7c5cdb; }
+.kx-tl .kx-iv.bad rect { fill: var(--red-soft); stroke: var(--red); stroke-dasharray: 4 3; }
+.kx-tl .kx-iv.dim { opacity: 0.4; }
+.kx-tl .kx-axis line { stroke: var(--edge); stroke-width: 1.2; }
+.kx-tl .kx-axis text { font: 500 10px var(--mono); fill: var(--muted); text-anchor: middle; }
+.kx-tl .kx-tmark line { stroke: var(--primary); stroke-width: 2; stroke-dasharray: 5 4; }
+.kx-tl .kx-tmark text { font: 700 11px var(--mono); fill: var(--primary); }
