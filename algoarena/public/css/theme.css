@@ -718,1321 +718,437 @@ html[data-theme="light"] .g-node.colored text.label {
     color: var(--amber);
 }
 
-/* ═══════════════════════════════ Visualisasi deque monoton ═══════════════════════════════ */
-.mq-wrap {
-    display: grid;
-    justify-items: center;
+/* ═══════════════════════════════ Track tambahan (materi CP) ═══════════════════════════════ */
+.track-fondasi { --tc: #1d8a4a; --tc-2: #22b8cf; }
+.track-array, .pill-array { --tc: #2f5bd3; --tc-2: #6d8df0; }
+.track-sorting, .pill-sorting { --tc: #6d3fd1; --tc-2: #a07cf0; }
+.track-rekursi, .pill-rekursi { --tc: #b8326f; --tc-2: #e46aa3; }
+.track-greedy, .pill-greedy { --tc: #0f7a6c; --tc-2: #2fb3a1; }
+.track-matematika, .pill-matematika { --tc: #4338ca; --tc-2: #7c83f0; }
+.track-graph { --tc: #0b7f9a; --tc-2: #2bb4d4; }
+.track-dp { --tc: #c45a10; --tc-2: #ef8a3c; }
+.track-struktur-data, .pill-struktur-data { --tc: #b42323; --tc-2: #e46161; }
+.track-pohon, .pill-pohon { --tc: #2f7d32; --tc-2: #63b866; }
+.track-string, .pill-string { --tc: #9d2aa8; --tc-2: #d16bdb; }
+.track-geometri, .pill-geometri { --tc: #0369a1; --tc-2: #38a3d9; }
+.track-permainan, .pill-permainan { --tc: #9a4a12; --tc-2: #d9823f; }
+.track-kontes, .pill-kontes { --tc: #475569; --tc-2: #8392a8; }
+.track-latihan, .pill-latihan { --tc: #8a6a00; --tc-2: #d1a521; }
+
+:is(.track-array, .track-sorting, .track-rekursi, .track-greedy, .track-matematika, .track-struktur-data, .track-pohon,
+    .track-string, .track-geometri, .track-permainan, .track-kontes, .track-latihan) .track-icon {
+    background: linear-gradient(135deg, var(--tc), var(--tc-2));
+}
+html[data-theme="light"] :is(.track-array, .track-sorting, .track-rekursi, .track-greedy, .track-matematika, .track-struktur-data,
+    .track-pohon, .track-string, .track-geometri, .track-permainan, .track-kontes, .track-latihan) .track-icon {
+    background: var(--tc);
+}
+:is(.track-array, .track-sorting, .track-rekursi, .track-greedy, .track-matematika, .track-struktur-data, .track-pohon,
+    .track-string, .track-geometri, .track-permainan, .track-kontes, .track-latihan) .bar i {
+    background: linear-gradient(90deg, var(--tc), var(--tc-2));
+}
+:is(.pill-array, .pill-sorting, .pill-rekursi, .pill-greedy, .pill-matematika, .pill-struktur-data, .pill-pohon,
+    .pill-string, .pill-geometri, .pill-permainan, .pill-kontes, .pill-latihan) {
+    color: var(--tc);
+    background: color-mix(in srgb, var(--tc) 11%, transparent);
+}
+html[data-theme="dark"] :is(.pill-array, .pill-sorting, .pill-rekursi, .pill-greedy, .pill-matematika, .pill-struktur-data,
+    .pill-pohon, .pill-string, .pill-geometri, .pill-permainan, .pill-kontes, .pill-latihan) {
+    color: var(--tc-2);
+    background: color-mix(in srgb, var(--tc-2) 14%, transparent);
+}
+
+/* Lompat ke track di beranda */
+.track-jump {
+    display: flex;
+    flex-wrap: wrap;
     gap: 8px;
-    padding: 36px 12px 20px;
+    margin: 0 0 30px;
 }
-
-.mq-row,
-.mq-dq-wrap {
-    display: flex;
+.track-jump-item {
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
-}
-
-.mq-dq-wrap {
-    margin-top: 18px;
-}
-
-.mq-lbl {
-    width: 52px;
-    margin-right: 4px;
-    text-align: right;
-    font: 600 12px var(--mono);
-    color: var(--muted);
-}
-
-.mq-cell {
-    width: 44px;
-    height: 40px;
-    display: grid;
-    place-items: center;
-    border: 2px solid var(--border);
-    border-radius: 9px;
+    gap: 7px;
+    padding: 6px 11px 6px 6px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
     background: var(--panel);
-    font: 700 15px var(--mono);
-    color: var(--text-strong);
-    transition: background 0.2s, border-color 0.2s;
-}
-
-.mq-cell.idx {
-    height: 18px;
-    border-color: transparent;
-    background: transparent;
-    font-size: 11px;
-    color: var(--faint);
-}
-
-.mq-cell.mq-na {
-    color: var(--faint);
-}
-
-.mq-cell.win {
-    border-color: var(--cyan);
-    background: var(--cyan-soft);
-}
-
-.mq-cell.inq {
-    box-shadow: inset 0 -4px 0 var(--green);
-}
-
-.mq-cell.front {
-    border-color: var(--green);
-    background: var(--green-soft);
-}
-
-.mq-cell.cur {
-    border-color: var(--amber);
-    background: var(--amber-soft);
-}
-
-.mq-cell.gone {
-    border-color: var(--red);
-    background: var(--red-soft);
-}
-
-.mq-dq {
-    display: flex;
-    gap: 6px;
-    min-width: 220px;
-    min-height: 52px;
-    padding: 6px 10px;
-    border: 2px dashed var(--border);
-    border-radius: 12px;
-}
-
-.mq-dq .it {
-    display: grid;
-    place-items: center;
-    min-width: 54px;
-    padding: 3px 8px;
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    background: var(--panel);
-    font-family: var(--mono);
-}
-
-.mq-dq .it small {
-    font-size: 10px;
-    color: var(--faint);
-}
-
-.mq-dq .it b {
-    font-size: 15px;
-    color: var(--text-strong);
-}
-
-.mq-dq .it.front {
-    border-color: var(--green);
-    background: var(--green-soft);
-}
-
-.mq-dq .it.new {
-    border-color: var(--amber);
-    background: var(--amber-soft);
-}
-
-.mq-dq .it.gone {
-    border-color: var(--red);
-    background: var(--red-soft);
-    opacity: 0.75;
-}
-
-.mq-dq .it.gone b {
-    text-decoration: line-through;
-}
-
-.mq-empty,
-.mq-note {
-    align-self: center;
-    font-size: 12px;
-    color: var(--faint);
-}
-
-.mq-note {
-    margin: 2px 0 0;
-}
-
-/* ═══════════════════════════════ Visualisasi distribusi peluang ═══════════════════════════════ */
-.pb-wrap {
-    display: grid;
-    gap: 4px;
-    padding: 26px 12px 16px;
-}
-
-.pb-title {
-    margin: 10px 0 0;
-    font: 600 12px var(--mono);
-    color: var(--muted);
-}
-
-.pb-row {
-    display: flex;
-    gap: 3px;
-    align-items: flex-end;
-    overflow-x: auto;
-    padding-bottom: 2px;
-}
-
-.pb-col {
-    flex: 1 0 20px;
-    display: grid;
-    justify-items: center;
-    gap: 2px;
-    min-width: 20px;
-}
-
-.pb-bar {
-    display: flex;
-    align-items: flex-end;
-    width: 100%;
-    height: 96px;
-}
-
-.pb-bar i {
-    display: block;
-    width: 100%;
-    min-height: 1px;
-    border-radius: 4px 4px 0 0;
-    background: var(--line-strong);
-    transition: height 0.25s;
-}
-
-.pb-col b {
-    min-height: 14px;
-    font: 700 10.5px var(--mono);
-    color: var(--text-strong);
-    white-space: nowrap;
-}
-
-.pb-col small {
-    font: 500 10px var(--mono);
-    color: var(--faint);
-}
-
-.pb-col.src .pb-bar i {
-    background: var(--cyan);
-}
-
-.pb-col.cur .pb-bar i {
-    background: var(--amber);
-}
-
-.pb-col.cur b {
-    color: var(--hl-text);
-}
-
-.pb-col.best .pb-bar i {
-    background: var(--green);
-}
-
-/* ═══════════════════════════════ Track tambahan ═══════════════════════════════ */
-.track-struktur-data .track-icon,
-.track-struktur-data .bar i {
-    background: #4f5fd6;
-}
-
-.track-matematika .track-icon,
-.track-matematika .bar i {
-    background: #c2366e;
-}
-
-.track-string .track-icon,
-.track-string .bar i {
-    background: #0e8a7a;
-}
-
-.pill-struktur-data {
-    color: #4f5fd6;
-    background: rgba(79, 95, 214, 0.12);
-}
-
-.pill-matematika {
-    color: #c2366e;
-    background: rgba(194, 54, 110, 0.1);
-}
-
-.pill-string {
-    color: #0e8a7a;
-    background: rgba(14, 138, 122, 0.11);
-}
-
-/* ═══════════════════════════════ Visualisasi Fenwick tree ═══════════════════════════════ */
-.fw-grid {
-    display: grid;
-    gap: 6px;
-    padding: 26px 14px 18px;
-}
-
-.fw-lbl {
-    align-self: center;
-    text-align: right;
-    padding-right: 4px;
-    font: 600 11px var(--mono);
-    color: var(--muted);
-}
-
-.fw-node {
-    display: grid;
-    place-items: center;
-    padding: 4px 2px;
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    background: var(--panel);
-    font-family: var(--mono);
-    min-width: 0;
-}
-
-.fw-node b {
-    font-size: 14px;
-    color: var(--text-strong);
-    white-space: nowrap;
-}
-
-.fw-node small {
-    font-size: 10px;
-    color: var(--faint);
-}
-
-.fw-node.path {
-    border-color: var(--amber);
-    background: var(--amber-soft);
-}
-
-.fw-node.done {
-    border-color: var(--green);
-    background: var(--green-soft);
-}
-
-.fw-cell {
-    display: grid;
-    place-items: center;
-    height: 36px;
-    margin-top: 8px;
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    background: var(--panel);
-    font: 700 14px var(--mono);
-    color: var(--text-strong);
-}
-
-.fw-cell.hl {
-    border-color: var(--cyan);
-    background: var(--cyan-soft);
-}
-
-.fw-cell.pt {
-    box-shadow: inset 0 -4px 0 var(--amber);
-}
-
-.fw-idx {
-    display: grid;
-    justify-items: center;
-    font-family: var(--mono);
-}
-
-.fw-idx b {
-    font-size: 12px;
-    color: var(--text-strong);
-}
-
-.fw-idx small {
-    font-size: 10px;
-    color: var(--faint);
-}
-
-/* Segment tree memakai gaya simpul Fenwick + status tambahan */
-.fw-node.sg-split {
-    border-color: var(--cyan);
-    background: var(--cyan-soft);
-}
-
-.fw-node.sg-skip {
-    opacity: 0.45;
-    border-style: dashed;
-}
-
-.fw-idx.sg-in b {
-    color: var(--cyan);
-}
-
-.fw-idx.sg-in {
-    border-bottom: 3px solid var(--cyan);
-}
-
-.fw-idx.sg-pt {
-    border-bottom: 3px solid var(--amber);
-}
-
-/* ═══════════════════════════════ Visualisasi Euclid ═══════════════════════════════ */
-.eu-svg {
-    display: block;
-    width: 100%;
-    max-height: 340px;
-    margin: 18px 0 8px;
-}
-
-.eu-rest {
-    fill: rgba(148, 163, 184, 0.12);
-    stroke: var(--line-strong);
-    stroke-width: 1.5;
-}
-
-.eu-old {
-    fill: var(--cyan-soft);
-    stroke: var(--cyan);
-    stroke-width: 1.5;
-}
-
-.eu-cur {
-    fill: rgba(245, 158, 11, 0.3);
-    stroke: var(--amber);
-    stroke-width: 2;
-}
-
-.eu-grid {
-    stroke: var(--text-soft);
-    stroke-width: 0.8;
-    stroke-dasharray: 3 4;
-    opacity: 0.55;
-}
-
-.eu-lbl {
-    font: 700 13px var(--mono);
-    fill: var(--text-strong);
-    text-anchor: middle;
-    dominant-baseline: central;
-}
-
-.eu-dim {
-    font: 600 12px var(--mono);
-    fill: var(--muted);
-    text-anchor: middle;
-}
-
-.eu-table {
-    width: 100%;
-    border-collapse: collapse;
-    font: 13px var(--mono);
-}
-
-.eu-table th,
-.eu-table td {
-    padding: 4px 6px;
-    text-align: center;
-    border-bottom: 1px solid var(--border-soft);
-}
-
-.eu-table th {
-    font-weight: 600;
-    color: var(--muted);
-}
-
-.eu-table td {
-    color: var(--text-strong);
-}
-
-.eu-table tr.cur td {
-    background: var(--amber-soft);
-    font-weight: 700;
-}
-
-/* ═══════════════════════════════ Visualisasi saringan ═══════════════════════════════ */
-.sv-grid {
-    display: grid;
-    grid-template-columns: repeat(10, minmax(0, 1fr));
-    gap: 4px;
-    max-width: 520px;
-    margin: 20px auto 6px;
-}
-
-.sv-cell {
-    position: relative;
-    display: grid;
-    place-items: center;
-    height: 34px;
-    border: 1.5px solid var(--border);
-    border-radius: 7px;
-    background: var(--panel);
-    font: 600 13px var(--mono);
-    color: var(--text-strong);
-}
-
-.sv-cell small {
-    position: absolute;
-    top: 1px;
-    right: 3px;
-    font-size: 9px;
-    color: var(--faint);
-}
-
-.sv-cell.one {
-    color: var(--faint);
-}
-
-.sv-cell.out {
-    background: rgba(148, 163, 184, 0.14);
-    color: var(--faint);
-}
-
-.sv-cell.out b {
-    text-decoration: line-through;
-}
-
-.sv-cell.fresh {
-    border-color: var(--red);
-    background: var(--red-soft);
-    color: var(--red-text);
-}
-
-.sv-cell.fresh b {
-    text-decoration: line-through;
-}
-
-.sv-cell.cur {
-    border-color: var(--amber);
-    background: rgba(245, 158, 11, 0.35);
-}
-
-.sv-cell.prime {
-    border-color: var(--green);
-    background: var(--green-soft);
-    color: var(--green-text);
-}
-
-/* ═══════════════════════════════ Visualisasi jalur grid ═══════════════════════════════ */
-.gp-grid {
-    display: grid;
-    gap: 4px;
-    max-width: 520px;
-    margin: 26px auto 6px;
-}
-
-.gp-cell {
-    display: grid;
-    place-items: center;
-    height: 40px;
-    border: 1.5px solid var(--border);
-    border-radius: 7px;
-    background: var(--panel);
-    font: 700 13px var(--mono);
-    color: var(--text-strong);
-}
-
-.gp-cell.cur {
-    border-color: var(--amber);
-    background: rgba(245, 158, 11, 0.25);
-}
-
-.gp-cell.pre {
-    border-color: var(--cyan);
-    background: var(--cyan-soft);
-}
-
-.gp-cell.post {
-    border-color: #8b5cf6;
-    background: rgba(139, 92, 246, 0.12);
-}
-
-.gp-cell.hole {
-    border-color: var(--red);
-    background: rgba(239, 68, 68, 0.25);
-    color: var(--red-text);
-}
-
-.hs-v {
-    margin-left: 1px;
-    font-size: 9px;
-    font-weight: 500;
-    color: var(--faint);
-}
-
-.mq-wrap {
-    overflow-x: auto;
-}
-
-.mq-wrap {
-    justify-items: safe center;
-}
-
-.mq-wrap.compact .mq-row {
-    gap: 4px;
-}
-
-.mq-wrap.compact .mq-cell {
-    width: 36px;
+    color: var(--text);
     font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.15s, transform 0.15s;
 }
-
-.mq-wrap.compact .mq-lbl {
-    width: 40px;
+.track-jump-item:hover {
+    border-color: var(--tc);
+    transform: translateY(-1px);
 }
-
-/* ═══════════════════════════════ Visualisasi trie ═══════════════════════════════ */
-.tr-svg {
-    display: block;
-    width: 100%;
-    max-height: 420px;
-    margin: 14px 0 4px;
-}
-
-.tr-edge {
-    stroke: var(--line-strong);
-    stroke-width: 2;
-}
-
-.tr-edge.on {
-    stroke: var(--cyan);
-    stroke-width: 3.5;
-}
-
-.tr-ch {
-    font: 700 13px var(--mono);
-    fill: var(--muted);
-    text-anchor: middle;
-    dominant-baseline: central;
-}
-
-.tr-ch.on {
-    fill: var(--cyan);
-}
-
-.tr-node circle {
-    fill: var(--panel);
-    stroke: var(--line-strong);
-    stroke-width: 2;
-}
-
-.tr-node text {
-    font: 700 11px var(--mono);
-    fill: var(--text-strong);
-    text-anchor: middle;
-    dominant-baseline: central;
-}
-
-.tr-node.end circle {
-    stroke: #8b5cf6;
-    stroke-width: 4;
-}
-
-.tr-node.on circle {
-    fill: var(--cyan-soft);
-    stroke: var(--cyan);
-}
-
-.tr-node.on.end circle {
-    stroke: #8b5cf6;
-}
-
-.tr-node.fresh circle {
-    fill: var(--green-soft);
-    stroke: var(--green);
-}
-
-.tr-node.cur circle {
-    fill: rgba(245, 158, 11, 0.3);
-    stroke: var(--amber);
-}
-
-/* ═══════════════════════════════ Visualisasi greedy interval ═══════════════════════════════ */
-.iv-svg {
-    display: block;
-    width: 100%;
-    max-height: 440px;
-    margin: 12px 0 4px;
-}
-
-.iv-grid {
-    stroke: var(--border-soft);
-    stroke-width: 1;
-}
-
-.iv-tick,
-.iv-lane,
-.iv-tag {
-    font: 600 11px var(--mono);
-    fill: var(--faint);
-}
-
-.iv-tick {
-    text-anchor: middle;
-}
-
-.iv-lane {
-    dominant-baseline: central;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-}
-
-.iv-tag {
-    dominant-baseline: central;
-}
-
-.iv-lbl {
-    font: 700 12px var(--mono);
-    fill: var(--text-soft);
-    dominant-baseline: central;
-}
-
-.iv-lbl.cur {
-    fill: var(--amber-text);
-}
-
-.iv-lbl.take {
-    fill: var(--green-text);
-}
-
-.iv-lbl.skip {
-    fill: var(--red-text);
-    text-decoration: line-through;
-}
-
-.iv-room {
-    fill: var(--panel-deep);
-    stroke: var(--border);
-}
-
-.iv-bar {
-    fill: var(--cyan-soft);
-    stroke: var(--cyan);
-    stroke-width: 1.5;
-}
-
-.iv-bar.cur {
-    fill: rgba(245, 158, 11, 0.3);
-    stroke: var(--amber);
-    stroke-width: 2.5;
-}
-
-.iv-bar.take {
-    fill: rgba(34, 197, 94, 0.3);
-    stroke: var(--green);
-}
-
-.iv-bar.skip {
-    fill: rgba(239, 68, 68, 0.14);
-    stroke: var(--red);
-    stroke-dasharray: 5 4;
-}
-
-.iv-bar.blame {
-    stroke: #8b5cf6;
-    stroke-width: 3;
-}
-
-.iv-id {
-    font: 700 11px var(--mono);
-    fill: var(--text-strong);
-    text-anchor: middle;
-    dominant-baseline: central;
-}
-
-.iv-free {
-    stroke: var(--green);
-    stroke-width: 1.5;
-    stroke-dasharray: 4 4;
-}
-
-.iv-free-t {
-    font: 700 11px var(--mono);
-    fill: var(--green-text);
-}
-
-/* ═══════════════════════════════ Visualisasi DSU ═══════════════════════════════ */
-.dsu-svg {
-    display: block;
-    width: 100%;
-    max-height: 300px;
-    margin: 10px 0 8px;
-}
-
-.dsu-edge {
-    stroke: var(--line-strong);
-    stroke-width: 2;
-}
-
-.dsu-edge.on {
-    stroke: var(--cyan);
-    stroke-width: 3;
-}
-
-.dsu-edge.fresh {
-    stroke: #8b5cf6;
-    stroke-width: 3;
-    stroke-dasharray: 6 4;
-}
-
-.dsu-ah {
-    fill: var(--muted);
-}
-
-.dsu-node circle {
-    fill: var(--panel);
-    stroke: var(--line-strong);
-    stroke-width: 2;
-}
-
-.dsu-node text {
-    font: 700 13px var(--mono);
-    fill: var(--text-strong);
-    text-anchor: middle;
-    dominant-baseline: central;
-}
-
-.dsu-node.on circle {
-    fill: var(--cyan-soft);
-    stroke: var(--cyan);
-}
-
-.dsu-node.root circle {
-    fill: var(--green-soft);
-    stroke: var(--green);
-    stroke-width: 3;
-}
-
-.dsu-node.cur circle {
-    fill: rgba(245, 158, 11, 0.3);
-    stroke: var(--amber);
-    stroke-width: 3;
-}
-
-/* ═══════════════════════════════ Visualisasi algoritma Mo ═══════════════════════════════ */
-.mo-wrap {
+.track-jump-item .tj-icon {
     display: grid;
-    gap: 12px;
-    padding: 18px 8px 4px;
-    overflow-x: auto;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    color: #fff;
+    background: var(--tc);
+}
+.track-jump-item small {
+    color: var(--faint);
+    font-family: var(--mono);
+    font-size: 11px;
+}
+.track {
+    scroll-margin-top: 80px;
 }
 
-.mo-row {
+/* ═══════════════════════════════ Viz Kit (komponen visual bersama) ═══════════════════════════════ */
+.kx-stage {
     display: flex;
-    gap: 4px;
-    justify-content: safe center;
-    padding-bottom: 20px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+    min-height: 300px;
+    padding: 18px 10px;
 }
-
-.mo-cell {
+.kx-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+}
+.kx-row.has-ptr {
+    padding-bottom: 26px;
+}
+.kx-cell {
     position: relative;
     display: grid;
     place-items: center;
-    width: 38px;
-    height: 46px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
+    min-width: 46px;
+    height: 54px;
+    padding: 0 6px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
     background: var(--panel);
     font-family: var(--mono);
+    transition: background 0.25s, border-color 0.25s, transform 0.25s;
 }
-
-.mo-cell.blk {
-    margin-left: 8px;
-    box-shadow: -7px 0 0 -5px var(--line-strong);
-}
-
-.mo-cell small {
-    font-size: 10px;
+.kx-sm .kx-cell { min-width: 36px; height: 42px; border-radius: 8px; }
+.kx-sm .kx-cell b { font-size: 14px; }
+.kx-lg .kx-cell { min-width: 58px; height: 64px; }
+.kx-cell small {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 9.5px;
     color: var(--faint);
 }
-
-.mo-cell b {
-    font-size: 15px;
+.kx-cell b {
+    margin-top: 6px;
+    font-size: 17px;
     color: var(--text-strong);
 }
-
-.mo-cell.q {
-    border-color: var(--amber);
-}
-
-.mo-cell.in {
-    background: var(--cyan-soft);
-    border-color: var(--cyan);
-}
-
-.mo-cell.add {
-    background: rgba(34, 197, 94, 0.3);
-    border-color: var(--green);
-}
-
-.mo-cell.del {
-    background: rgba(239, 68, 68, 0.2);
-    border-color: var(--red);
-}
-
-.mo-cell .ptr {
+.kx-cell em {
     position: absolute;
-    bottom: -19px;
+    bottom: 2px;
+    font-style: normal;
+    font-size: 10px;
+    color: var(--muted);
+}
+.kx-cell .kx-ptr {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 2px;
     font: 700 11px var(--mono);
     font-style: normal;
-    color: var(--primary);
+    white-space: nowrap;
 }
-
-.mo-cell .ptr.l {
-    left: 4px;
+.kx-cell .kx-ptr span {
+    padding: 1px 5px;
+    border-radius: 6px;
+    background: var(--primary);
+    color: #fff;
 }
+.kx-cell .kx-ptr span:nth-child(2) { background: var(--pink); }
+.kx-cell .kx-ptr span:nth-child(3) { background: var(--green); }
+.kx-cell.on, .kx-box.on { border-color: var(--amber); background: var(--amber-soft); transform: translateY(-3px); }
+.kx-cell.in, .kx-box.in { border-color: var(--cyan); background: var(--cyan-soft); }
+.kx-cell.ok, .kx-box.ok { border-color: var(--green); background: var(--green-soft); }
+.kx-cell.bad, .kx-box.bad { border-color: var(--red); background: var(--red-soft); }
+.kx-cell.vi, .kx-box.vi { border-color: #7c5cdb; background: rgba(124, 92, 219, 0.12); }
+.kx-cell.dim, .kx-box.dim { opacity: 0.38; }
+.kx-cell.ask, .kx-box.ask { border-color: var(--amber); border-style: dashed; background: var(--hl-fill); }
+.kx-cell.ask b { color: var(--amber); }
+.kx-cell.gap { visibility: hidden; }
 
-.mo-cell .ptr.r {
-    right: 4px;
-}
-
-.mo-line {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-}
-
-.mo-cnt {
+.kx-line {
     display: grid;
-    place-items: center;
-    min-width: 34px;
-    padding: 3px 6px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    font-family: var(--mono);
-    background: var(--panel);
+    grid-template-columns: minmax(70px, max-content) 1fr;
+    align-items: center;
+    gap: 12px;
 }
-
-.mo-cnt small {
-    font-size: 10px;
-    color: var(--faint);
-}
-
-.mo-cnt.on {
-    border-color: var(--green);
-    background: var(--green-soft);
-}
-
-.mo-qs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-
-.mo-q {
-    padding: 4px 8px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
+.kx-lab {
     font: 600 12px var(--mono);
     color: var(--muted);
-    background: var(--panel);
+    text-align: right;
 }
+.kx-line .kx-row { justify-content: flex-start; }
+.kx-line-body { min-width: 0; }
 
-.mo-q.cur {
-    border-color: var(--amber);
-    background: rgba(245, 158, 11, 0.18);
-    color: var(--text-strong);
+.kx-bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+    height: var(--h);
+    padding: 0 6px;
 }
-
-.mo-q.done {
-    color: var(--green-text);
+.kx-bar {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    width: 38px;
+    height: 100%;
 }
-
-/* ═══════════════════════════════ Visualisasi pangkat matriks ═══════════════════════════════ */
-.mp-wrap {
-    display: grid;
-    gap: 18px;
-    padding: 20px 8px 6px;
-    justify-items: center;
+.kx-bar i {
+    display: block;
+    width: 100%;
+    border-radius: 6px 6px 3px 3px;
+    background: color-mix(in srgb, var(--primary) 28%, var(--panel));
+    border: 2px solid color-mix(in srgb, var(--primary) 55%, transparent);
+    transition: height 0.35s ease, background 0.25s;
 }
+.kx-bar b { font: 700 12px var(--mono); color: var(--text-strong); margin-bottom: 3px; }
+.kx-bar small { font: 10px var(--mono); color: var(--faint); margin-top: 3px; }
+.kx-bar em { position: absolute; bottom: -18px; font: 700 11px var(--mono); font-style: normal; color: var(--primary); }
+.kx-bar.on i { background: var(--amber); border-color: var(--amber); }
+.kx-bar.ok i { background: color-mix(in srgb, var(--green) 45%, var(--panel)); border-color: var(--green); }
+.kx-bar.bad i { background: color-mix(in srgb, var(--red) 40%, var(--panel)); border-color: var(--red); }
+.kx-bar.in i { background: color-mix(in srgb, var(--cyan) 35%, var(--panel)); border-color: var(--cyan); }
+.kx-bar.vi i { background: color-mix(in srgb, #7c5cdb 40%, var(--panel)); border-color: #7c5cdb; }
+.kx-bar.dim { opacity: 0.35; }
 
-.mp-bits {
+.kx-stackwrap {
     display: flex;
     align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    justify-content: center;
+    gap: 8px;
 }
-
-.mp-bit {
-    display: grid;
-    place-items: center;
-    width: 42px;
-    padding: 4px 0;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    background: var(--panel);
-    font-family: var(--mono);
-}
-
-.mp-bit small {
-    font-size: 10px;
-    color: var(--faint);
-}
-
-.mp-bit b {
-    font-size: 17px;
-    color: var(--muted);
-}
-
-.mp-bit.one b {
-    color: var(--text-strong);
-}
-
-.mp-bit.done {
-    opacity: 0.55;
-}
-
-.mp-bit.cur {
-    border-color: var(--amber);
-    background: rgba(245, 158, 11, 0.22);
-    opacity: 1;
-}
-
-.mp-mats {
-    display: flex;
-    gap: 28px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.mp-mat {
-    display: grid;
-    gap: 6px;
-    justify-items: center;
-}
-
-.mp-lbl {
-    font: 700 13px var(--mono);
-    color: var(--muted);
-}
-
-.mp-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(64px, auto));
-    gap: 4px;
-    padding: 8px 10px;
-    border-left: 2px solid var(--text-soft);
-    border-right: 2px solid var(--text-soft);
-    border-radius: 6px;
-}
-
-.mp-grid b {
-    padding: 6px 10px;
-    border-radius: 6px;
-    background: var(--panel-deep);
-    font: 700 15px var(--mono);
-    color: var(--text-strong);
-    text-align: center;
-}
-
-.mp-mat.chg .mp-grid b {
-    background: rgba(34, 197, 94, 0.22);
-}
-
-/* ═══════════════════════════════ Visualisasi teori permainan ═══════════════════════════════ */
-.gm-wrap {
-    display: grid;
-    gap: 10px;
-    padding: 24px 8px 6px;
-    overflow-x: auto;
-}
-
-.gm-row {
+.kx-stackwrap.kx-v { flex-direction: column; }
+.kx-stack-title { font: 600 12px var(--mono); color: var(--muted); }
+.kx-stack {
     display: flex;
     gap: 5px;
-    justify-content: safe center;
-    flex-wrap: wrap;
+    padding: 8px;
+    border: 2px solid var(--line-strong);
+    border-radius: 10px;
+    background: var(--panel-2);
+    min-width: 70px;
+    min-height: 56px;
 }
-
-.gm-cell {
-    display: grid;
-    place-items: center;
-    width: 40px;
-    height: 50px;
-    border: 1.5px solid var(--border);
-    border-radius: 9px;
+.kx-v .kx-stack {
+    flex-direction: column;
+    border-top-color: transparent;
+    border-radius: 0 0 12px 12px;
+    min-height: 120px;
+    justify-content: flex-end;
+}
+.kx-h .kx-stack {
+    border-left-style: dashed;
+    border-right-style: dashed;
+    align-items: center;
+}
+.kx-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 46px;
+    padding: 6px 9px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
     background: var(--panel);
     font-family: var(--mono);
+    transition: background 0.25s, border-color 0.25s;
 }
-
-.gm-cell small {
-    font-size: 10px;
+.kx-box b { font-size: 15px; color: var(--text-strong); }
+.kx-box small { font-size: 10px; color: var(--muted); }
+.kx-end { font: 600 11px var(--mono); color: var(--faint); }
+.kx-empty {
+    align-self: center;
+    margin: auto;
+    padding: 6px 10px;
+    font: italic 12px var(--sans);
     color: var(--faint);
 }
 
-.gm-cell b {
-    font-size: 16px;
-    min-height: 20px;
+.kx-tablewrap { overflow: auto; }
+.kx-table {
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 3px;
+    font: 13px var(--mono);
+}
+.kx-table th {
+    padding: 3px 8px;
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 11.5px;
+}
+.kx-table td {
+    min-width: 34px;
+    padding: 6px 8px;
+    border: 1.5px solid var(--border-soft);
+    border-radius: 7px;
+    background: var(--panel);
+    text-align: center;
     color: var(--text-strong);
+    transition: background 0.25s, border-color 0.25s;
 }
+.kx-table td.on { border-color: var(--amber); background: var(--amber-soft); }
+.kx-table td.in { border-color: var(--cyan); background: var(--cyan-soft); }
+.kx-table td.ok { border-color: var(--green); background: var(--green-soft); }
+.kx-table td.bad { border-color: var(--red); background: var(--red-soft); }
+.kx-table td.vi { border-color: #7c5cdb; background: rgba(124, 92, 219, 0.12); }
+.kx-table td.dim { opacity: 0.4; }
+.kx-table td.head { background: transparent; border-color: transparent; color: var(--muted); font-weight: 600; }
+.kx-table td.ask { border-style: dashed; border-color: var(--amber); background: var(--hl-fill); color: var(--amber); }
+.kx-table tr.on td:not(.head) { border-color: color-mix(in srgb, var(--amber) 55%, transparent); }
 
-.gm-cell.win {
-    border-color: var(--green);
-    background: rgba(34, 197, 94, 0.2);
-}
-
-.gm-cell.lose {
-    border-color: var(--red);
-    background: rgba(239, 68, 68, 0.14);
-}
-
-.gm-cell.reach {
-    box-shadow: 0 0 0 3px var(--cyan);
-}
-
-.gm-cell.cur {
-    border-color: var(--amber);
-    background: rgba(245, 158, 11, 0.28);
-    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.35);
-}
-
-/* ═══════════════════════════════ Visualisasi convex hull ═══════════════════════════════ */
-.hl-svg {
-    display: block;
-    width: 100%;
-    max-height: 380px;
-    margin: 8px 0 4px;
-}
-
-.hl-grid {
-    stroke: var(--border-soft);
-    stroke-width: 1;
-}
-
-.hl-chain {
-    stroke: var(--green);
-    stroke-width: 3;
-}
-
-.hl-try {
-    stroke: var(--amber);
-    stroke-width: 2.5;
-    stroke-dasharray: 6 4;
-}
-
-.hl-drop {
-    stroke: var(--red);
-    stroke-width: 2.5;
-    stroke-dasharray: 4 4;
-}
-
-.hl-poly {
-    fill: rgba(79, 95, 214, 0.14);
-    stroke: #4f5fd6;
-    stroke-width: 3;
-}
-
-.hl-pt circle {
-    fill: var(--panel);
-    stroke: var(--muted);
-    stroke-width: 2;
-}
-
-.hl-pt text {
-    font: 700 12px var(--mono);
-    fill: var(--text-soft);
-}
-
-.hl-pt.on circle {
-    fill: var(--green);
-    stroke: var(--green);
-}
-
-.hl-pt.cur circle {
-    fill: var(--amber);
-    stroke: var(--amber);
-}
-
-.hl-pt.drop circle {
-    fill: var(--red);
-    stroke: var(--red);
-}
-
-/* ═══════════════════════════════ Visualisasi kompresi & bit ═══════════════════════════════ */
-.kc-wrap .mq-cell.kc {
-    width: auto;
-    min-width: 46px;
-    padding: 0 8px;
-    position: relative;
-}
-
-.kc-wrap .mq-cell.kc small {
-    position: absolute;
-    top: -15px;
-    font-size: 10px;
-    color: var(--faint);
-}
-
-.bt-wrap {
-    display: grid;
-    gap: 10px;
-    padding: 22px 8px 6px;
-    justify-items: center;
-    overflow-x: auto;
-}
-
-.bt-row {
-    display: flex;
+.kx-chip {
+    display: inline-flex;
     align-items: center;
     gap: 4px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    font: 600 12px var(--mono);
+    color: var(--text-strong);
 }
-
-.bt-lbl {
-    width: 70px;
-    text-align: right;
-    padding-right: 8px;
-    font: 700 13px var(--mono);
+.kx-chip.on { border-color: var(--amber); background: var(--amber-soft); }
+.kx-chip.ok { border-color: var(--green); background: var(--green-soft); color: var(--green-text); }
+.kx-chip.bad { border-color: var(--red); background: var(--red-soft); color: var(--red-text); }
+.kx-chip.in { border-color: var(--cyan); background: var(--cyan-soft); }
+.kx-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.kx-note {
+    text-align: center;
+    font-size: 13px;
     color: var(--muted);
 }
-
-.bt-bit {
-    position: relative;
-    display: grid;
-    place-items: center;
-    width: 32px;
-    height: 36px;
-    border: 1.5px solid var(--border);
-    border-radius: 7px;
-    background: var(--panel);
-    font: 700 15px var(--mono);
-    color: var(--faint);
-}
-
-.bt-bit small {
-    position: absolute;
-    top: -14px;
-    font-size: 9px;
-    color: var(--faint);
-}
-
-.bt-bit.on {
-    border-color: var(--green);
-    background: rgba(34, 197, 94, 0.25);
+.kx-note b { color: var(--text-strong); }
+.kx-big {
+    text-align: center;
+    font: 700 22px var(--mono);
     color: var(--text-strong);
 }
 
-.bt-bit.hi {
-    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.6);
-}
-
-.bt-val {
-    padding-left: 10px;
-    font: 700 14px var(--mono);
-    color: var(--text-strong);
-}
-
-.bt-items {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.bt-item {
-    display: grid;
-    place-items: center;
-    min-width: 64px;
-    padding: 6px 10px;
-    border: 1.5px dashed var(--border);
-    border-radius: 9px;
-    font: 700 16px var(--mono);
-    color: var(--faint);
-}
-
-.bt-item small {
-    font: 600 10px var(--mono);
-}
-
-.bt-item.on {
-    border: 1.5px solid #4f5fd6;
-    background: rgba(79, 95, 214, 0.14);
-    color: var(--text-strong);
-}
-
-/* ═══════════════════════════════ Visualisasi Manacher ═══════════════════════════════ */
-.mn-wrap {
-    display: grid;
-    gap: 10px;
-    padding: 22px 6px 6px;
-    overflow-x: auto;
-}
-
-.mn-row {
-    display: flex;
-    gap: 2px;
-    justify-content: safe center;
-}
-
-.mn-cell {
-    display: grid;
-    grid-template-rows: auto auto auto;
-    place-items: center;
-    flex: none;
-    width: 27px;
-    padding: 3px 0;
-    border: 1.5px solid var(--border);
-    border-radius: 7px;
-    background: var(--panel);
-    font-family: var(--mono);
-}
-
-.mn-cell small {
-    font-size: 9px;
-    color: var(--faint);
-}
-
-.mn-cell b {
-    font-size: 16px;
-    color: var(--text-strong);
-}
-
-.mn-cell i {
-    min-height: 16px;
-    font-style: normal;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--primary);
-}
-
-.mn-cell.sep b {
-    color: var(--faint);
-    font-size: 13px;
-}
-
-.mn-cell.box {
-    background: var(--cyan-soft);
-    border-color: var(--cyan);
-}
-
-.mn-cell.pal {
-    box-shadow: inset 0 -4px 0 var(--green);
-}
-
-.mn-cell.mirror {
-    border-color: #8b5cf6;
-    background: rgba(139, 92, 246, 0.22);
-}
-
-.mn-cell.cmp {
-    border-color: var(--green);
-    background: rgba(34, 197, 94, 0.3);
-}
-
-.mn-cell.bad {
-    border-color: var(--red);
-    background: rgba(239, 68, 68, 0.2);
-}
-
-.mn-cell.cur {
-    border-color: var(--amber);
-    background: rgba(245, 158, 11, 0.35);
-}
-
-/* Editor cadangan saat Monaco tidak dapat dimuat (tanpa internet) */
-.plain-editor {
+/* Pohon SVG */
+.kx-tree, .kx-plot {
     display: block;
     width: 100%;
-    height: 100%;
-    min-height: 320px;
-    padding: 12px 14px;
-    border: 0;
-    outline: none;
-    resize: none;
-    background: var(--code-bg);
-    color: var(--code-text);
-    font: 14px/22px "JetBrains Mono", Consolas, monospace;
-    tab-size: 4;
-    white-space: pre;
+    height: auto;
+    max-height: 420px;
 }
+.kx-tedge { stroke: var(--edge); stroke-width: 2; }
+.kx-tedge.on { stroke: var(--amber); stroke-width: 3; }
+.kx-tedge.ok { stroke: var(--green); stroke-width: 3; }
+.kx-tedge.in { stroke: var(--cyan); stroke-width: 3; }
+.kx-tedge.vi { stroke: #7c5cdb; stroke-width: 3; }
+.kx-tedge.bad { stroke: var(--red); stroke-dasharray: 5 4; }
+.kx-tedge.dim { opacity: 0.3; }
+.kx-tedge-label { font: 600 11px var(--mono); fill: var(--muted); text-anchor: middle; }
+.kx-tnode circle, .kx-tnode rect { fill: var(--node-a); stroke: var(--line-strong); stroke-width: 2; transition: fill 0.25s, stroke 0.25s; }
+.kx-tnode text { font: 700 12.5px var(--mono); fill: var(--node-text); text-anchor: middle; dominant-baseline: central; }
+.kx-tnode .kx-tsub { font: 600 10.5px var(--mono); fill: var(--muted); }
+.kx-tnode .kx-ttag { font: 700 10.5px var(--mono); fill: var(--hl-text); }
+.kx-tnode.on circle, .kx-tnode.on rect { fill: var(--hl-fill); stroke: var(--amber); stroke-width: 3; }
+.kx-tnode.in circle, .kx-tnode.in rect { fill: color-mix(in srgb, var(--cyan) 16%, var(--panel)); stroke: var(--cyan); }
+.kx-tnode.ok circle, .kx-tnode.ok rect { fill: color-mix(in srgb, var(--green) 18%, var(--panel)); stroke: var(--green); }
+.kx-tnode.bad circle, .kx-tnode.bad rect { fill: color-mix(in srgb, var(--red) 14%, var(--panel)); stroke: var(--red); }
+.kx-tnode.vi circle, .kx-tnode.vi rect { fill: color-mix(in srgb, #7c5cdb 18%, var(--panel)); stroke: #7c5cdb; }
+.kx-tnode.dim { opacity: 0.35; }
+.kx-tnode.ask circle, .kx-tnode.ask rect { stroke: var(--amber); stroke-dasharray: 4 3; fill: var(--hl-fill); }
+
+/* Bidang koordinat */
+.kx-plot { color: var(--muted); }
+.kx-grid { stroke: var(--border-soft); stroke-width: 1; }
+.kx-grid.axis { stroke: var(--line-strong); stroke-width: 1.5; }
+.kx-axis-t { font: 10px var(--mono); fill: var(--faint); text-anchor: middle; }
+.kx-seg { stroke: var(--edge); stroke-width: 2.2; }
+.kx-seg.on { stroke: var(--amber); stroke-width: 3; }
+.kx-seg.ok { stroke: var(--green); stroke-width: 3; }
+.kx-seg.bad { stroke: var(--red); stroke-width: 2.5; stroke-dasharray: 6 4; }
+.kx-seg.in { stroke: var(--cyan); stroke-width: 2.5; }
+.kx-seg.vi { stroke: #7c5cdb; stroke-width: 2.5; }
+.kx-seg.dim { opacity: 0.3; }
+.kx-vline { stroke: var(--primary); stroke-width: 2; stroke-dasharray: 5 4; }
+.kx-vline.on { stroke: var(--amber); }
+.kx-curve { fill: none; stroke: var(--primary); stroke-width: 2.5; }
+.kx-curve.vi { stroke: #7c5cdb; }
+.kx-poly { fill: color-mix(in srgb, var(--green) 13%, transparent); stroke: var(--green); stroke-width: 2; }
+.kx-poly.on { fill: color-mix(in srgb, var(--amber) 14%, transparent); stroke: var(--amber); }
+.kx-poly.in { fill: color-mix(in srgb, var(--cyan) 12%, transparent); stroke: var(--cyan); }
+.kx-poly.bad { fill: color-mix(in srgb, var(--red) 12%, transparent); stroke: var(--red); stroke-dasharray: 5 4; }
+.kx-plabel { font: 600 11px var(--mono); fill: var(--muted); }
+.kx-plabel.on { fill: var(--amber); }
+.kx-plabel.ok { fill: var(--green-text); }
+.kx-pt circle { fill: var(--node-a); stroke: var(--text-strong); stroke-width: 2; }
+.kx-pt text { font: 600 11px var(--mono); fill: var(--text-strong); }
+.kx-pt.on circle { fill: var(--amber); stroke: var(--amber); }
+.kx-pt.ok circle { fill: var(--green); stroke: var(--green); }
+.kx-pt.bad circle { fill: var(--red); stroke: var(--red); }
+.kx-pt.in circle { fill: var(--cyan); stroke: var(--cyan); }
+.kx-pt.vi circle { fill: #7c5cdb; stroke: #7c5cdb; }
+.kx-pt.dim { opacity: 0.35; }
+
+/* Bit-bit (bitmask / bitset) */
+.kx-bits { display: inline-flex; gap: 3px; font-family: var(--mono); }
+.kx-bits span {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    background: var(--panel);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--faint);
+}
+.kx-bits span.one { color: var(--text-strong); background: color-mix(in srgb, var(--primary) 14%, var(--panel)); border-color: color-mix(in srgb, var(--primary) 50%, transparent); }
+.kx-bits span.on { border-color: var(--amber); background: var(--amber-soft); color: var(--text-strong); }
+.kx-bits span.ok { border-color: var(--green); background: var(--green-soft); color: var(--green-text); }
+.kx-bits span.bad { border-color: var(--red); background: var(--red-soft); color: var(--red-text); }
+
+@media (max-width: 700px) {
+    .kx-cell { min-width: 36px; height: 46px; }
+    .kx-cell b { font-size: 14px; }
+    .kx-bar { width: 26px; }
+    .kx-line { grid-template-columns: 1fr; gap: 4px; }
+    .kx-lab { text-align: left; }
+}
+.kx-cell.empty { border-style: dashed; background: transparent; }
+.kx-cell.empty b { color: var(--faint); }
+.kx-stage > .kx-line { align-self: center; }
+.viz-side .kx-v .kx-stack { min-height: 0; }
+
+/* Garis waktu interval (Kit greedy) */
+.kx-tl { width: 100%; max-width: 660px; height: auto; display: block; margin: 0 auto; }
+.kx-tl .kx-iv rect { fill: var(--panel-2); stroke: var(--line-strong); stroke-width: 1.5; }
+.kx-tl .kx-iv text { font: 600 11px var(--mono); fill: var(--svg-text); text-anchor: middle; }
+.kx-tl .kx-iv.on rect { fill: var(--amber-soft); stroke: var(--amber); stroke-width: 2; }
+.kx-tl .kx-iv.ok rect { fill: var(--green-soft); stroke: var(--green); }
+.kx-tl .kx-iv.in rect { fill: var(--cyan-soft); stroke: var(--cyan); }
+.kx-tl .kx-iv.vi rect { fill: rgba(124, 92, 219, 0.12); stroke: #7c5cdb; }
+.kx-tl .kx-iv.bad rect { fill: var(--red-soft); stroke: var(--red); stroke-dasharray: 4 3; }
+.kx-tl .kx-iv.dim { opacity: 0.4; }
+.kx-tl .kx-axis line { stroke: var(--edge); stroke-width: 1.2; }
+.kx-tl .kx-axis text { font: 500 10px var(--mono); fill: var(--muted); text-anchor: middle; }
+.kx-tl .kx-tmark line { stroke: var(--primary); stroke-width: 2; stroke-dasharray: 5 4; }
+.kx-tl .kx-tmark text { font: 700 11px var(--mono); fill: var(--primary); }

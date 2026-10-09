@@ -10,7 +10,7 @@
     <main class="container">
         <div class="page-head">
             <h1>Bank Soal</h1>
-            <p>{{ $problems->count() }} soal competitive programming. Kerjakan dalam JavaScript atau Python, dan kode dinilai otomatis.</p>
+            <p>{{ $problems->count() }} soal competitive programming. Kerjakan dalam C++, JavaScript, atau Python, dan kode dinilai otomatis.</p>
         </div>
 
         <section class="card list-card">
@@ -18,7 +18,9 @@
                 <div class="chips">
                     <button class="chip active" data-filter="all">Semua</button>
                     @foreach (\App\Models\Lesson::TRACKS as $key => $meta)
-                        <button class="chip" data-filter="{{ $key }}">{{ $meta['name'] }}</button>
+                        @if ($problems->contains(fn ($p) => $p->lesson?->track === $key))
+                            <button class="chip" data-filter="{{ $key }}">{{ $meta['name'] }}</button>
+                        @endif
                     @endforeach
                     <button class="chip" data-filter="todo">Belum AC</button>
                 </div>

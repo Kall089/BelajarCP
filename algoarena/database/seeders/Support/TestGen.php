@@ -133,6 +133,57 @@ class TestGen
         }
     }
 
+    /** @return int[] n bilangan acak di [lo, hi] */
+    public static function arr(int $n, int $lo, int $hi): array
+    {
+        $a = [];
+        for ($i = 0; $i < $n; $i++) {
+            $a[] = mt_rand($lo, $hi);
+        }
+
+        return $a;
+    }
+
+    /** @return int[] permutasi acak 1..n */
+    public static function perm(int $n): array
+    {
+        $p = $n > 0 ? range(1, $n) : [];
+        self::shuffle($p);
+
+        return $p;
+    }
+
+    /**
+     * Pohon acak berlabel 1..n sebagai daftar sisi [u, v].
+     * $shape: random (ayah acak), line (rantai), star (bintang), deep (ayah dekat → pohon dalam), wide (ayah dari awal → pohon lebar)
+     *
+     * @return array<int, array{0:int,1:int}>
+     */
+    public static function tree(int $n, string $shape = 'random'): array
+    {
+        $label = self::perm($n);
+        $edges = [];
+        for ($i = 1; $i < $n; $i++) {
+            $p = match ($shape) {
+                'line' => $i - 1,
+                'star' => 0,
+                'deep' => mt_rand(max(0, $i - 3), $i - 1),
+                'wide' => mt_rand(0, min($i - 1, 3)),
+                default => mt_rand(0, $i - 1),
+            };
+            $edges[] = mt_rand(0, 1) ? [$label[$p], $label[$i]] : [$label[$i], $label[$p]];
+        }
+        self::shuffle($edges);
+
+        return $edges;
+    }
+
+    /** Gabungkan bilangan menjadi satu baris berpemisah spasi. */
+    public static function join(array $a): string
+    {
+        return implode(' ', $a);
+    }
+
     /** Pecah input menjadi baris-baris (helper untuk solusi referensi). */
     public static function lines(string $input): array
     {
