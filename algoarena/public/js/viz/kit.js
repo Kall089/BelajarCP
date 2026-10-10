@@ -251,6 +251,87 @@ window.Kit = (() => {
     }
 
     /**
+     * Graph umum (SVG) dengan posisi simpul yang ditentukan pemanggil.
+     * spec: { nodes: [{id, x, y, label, cls, sub, tag, color}], edges: [{u, v, cls, label, bend}], w, h, r, directed }
+     * Sisi dua arah (u→v dan v→u) otomatis dilengkungkan agar tidak bertumpuk. color: warna komponen (kelas "col").
+     */
+    function graph(spec) {
+        const { nodes, edges = [], w = 600, h = 300, r = 17, directed = true } = spec;
+        const pos = new Map(nodes.map((n) => [String(n.id), n]));
+        const has = new Set(edges.map((e) => `${e.u}>${e.v}`));
+        const f = (x) => Math.round(x * 10) / 10;
+        let ge = "";
+        let gl = "";
+        for (const e of edges) {
+            const a = pos.get(String(e.u));
+            const b = pos.get(String(e.v));
+            if (!a || !b) continue;
+            const cls = e.cls || "";
+            if (String(e.u) === String(e.v)) {
+                ge += `<path class="kx-gedge ${cls}" d="M${f(a.x - 7)} ${f(a.y - r + 2)} C${f(a.x - 22)} ${f(a.y - r - 30)} ${f(a.x + 22)} ${f(a.y - r - 30)} ${f(a.x + 7)} ${f(a.y - r + 2)}"/>`;
+                if (e.label !== undefined) gl += `<text class="kx-gedge-label ${cls}" x="${f(a.x)}" y="${f(a.y - r - 26)}">${esc(e.label)}</text>`;
+                continue;
+            }
+            const dx = b.x - a.x;
+            const dy = b.y - a.y;
+            const L = Math.hypot(dx, dy) || 1;
+            const nx = -dy / L;
+            const ny = dx / L;
+            const bend = e.bend ?? (directed && has.has(`${e.v}>${e.u}`) ? 16 : 0);
+            const mx = (a.x + b.x) / 2 + nx * bend;
+            const my = (a.y + b.y) / 2 + ny * bend;
+            const s1 = Math.hypot(mx - a.x, my - a.y) || 1;
+            const sx = a.x + ((mx - a.x) / s1) * r;
+            const sy = a.y + ((my - a.y) / s1) * r;
+            const e1 = Math.hypot(b.x - mx, b.y - my) || 1;
+            const ux = (b.x - mx) / e1;
+            const uy = (b.y - my) / e1;
+            const ex = b.x - ux * (r + 1);
+            const ey = b.y - uy * (r + 1);
+            const lx = directed ? ex - ux * 7 : ex;
+            const ly = directed ? ey - uy * 7 : ey;
+            ge += `<path class="kx-gedge ${cls}" d="M${f(sx)} ${f(sy)} Q${f(mx)} ${f(my)} ${f(lx)} ${f(ly)}"/>`;
+            if (directed) {
+                const bx = ex - ux * 10;
+                const by = ey - uy * 10;
+                ge += `<polygon class="kx-garrow ${cls}" points="${f(ex)},${f(ey)} ${f(bx - uy * 5)},${f(by + ux * 5)} ${f(bx + uy * 5)},${f(by - ux * 5)}"/>`;
+            }
+            if (e.label !== undefined) {
+                const t = e.at ?? 0.5;
+                const qx = (1 - t) * (1 - t) * a.x + 2 * (1 - t) * t * mx + t * t * b.x;
+                const qy = (1 - t) * (1 - t) * a.y + 2 * (1 - t) * t * my + t * t * b.y;
+                const off = e.off ?? 9;
+                const tx = qx + nx * (Math.sign(bend) || 1) * off;
+                const ty = qy + ny * (Math.sign(bend) || 1) * off + 4;
+                gl += `<text class="kx-gedge-label ${cls}" x="${f(tx)}" y="${f(ty)}">${esc(e.label)}</text>`;
+            }
+        }
+        let body = "";
+        for (const n of nodes) {
+            const lab = String(n.label ?? n.id);
+            const rw = lab.length > 3 ? Math.max(r, lab.length * 4.4 + 8) : r;
+            const shape = rw > r ? `<rect x="${-rw}" y="${-r}" width="${rw * 2}" height="${r * 2}" rx="${r * 0.7}"/>` : `<circle r="${r}"/>`;
+            const style = n.color ? ` style="--c:${n.color}"` : "";
+            body += `<g class="kx-tnode ${n.color ? "col" : ""} ${n.cls || ""}"${style} transform="translate(${f(n.x)} ${f(n.y)})">${shape}<text>${esc(lab)}</text>${
+                n.sub !== undefined ? `<text class="kx-tsub" y="${r + 13}">${esc(n.sub)}</text>` : ""
+            }${n.tag !== undefined ? `<text class="kx-ttag" y="${-r - 6}">${esc(n.tag)}</text>` : ""}</g>`;
+        }
+        return `<svg class="kx-graph" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet">${ge}${gl}${body}</svg>`;
+    }
+
+    /** Posisi simpul pada lingkaran (untuk graph kecil tanpa struktur khusus). */
+    function circle(ids, w = 600, h = 300, pad = 40) {
+        const cx = w / 2;
+        const cy = h / 2;
+        const rx = w / 2 - pad;
+        const ry = h / 2 - pad;
+        return ids.map((id, i) => {
+            const t = -Math.PI / 2 + (2 * Math.PI * i) / Math.max(1, ids.length);
+            return { id, x: cx + rx * Math.cos(t), y: cy + ry * Math.sin(t) };
+        });
+    }
+
+    /**
      * Bidang koordinat (SVG) untuk geometri / garis.
      * spec: { xr: [x0, x1], yr: [y0, y1], w, h, grid: true,
      *         points: [{x, y, label, cls}], segs: [{a: [x, y], b: [x, y], cls}], polys: [{pts: [[x, y]], cls}],
@@ -319,5 +400,5 @@ window.Kit = (() => {
 
     const bin = (x, w) => (x >>> 0).toString(2).padStart(w, "0");
 
-    return { widget, swapCode, segVal, val, cells, line, bars, stack, table, chip, tree, plot, nums, bin, esc };
+    return { widget, swapCode, segVal, val, cells, line, bars, stack, table, chip, tree, graph, circle, plot, nums, bin, esc };
 })();
